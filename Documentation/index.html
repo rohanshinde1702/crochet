@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CozyLoops — Documentation & Setup Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-light: #eff6ff;
+      --brand: #6C2C12;
+      --brand-pink: #F88897;
+      --bg: #f8fafc;
+      --sidebar-bg: #0f172a;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --code-bg: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Mobile Sticky Top Header */
+    .mobile-header {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background-color: #0f172a;
+      color: white;
+      padding: 0 16px;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1000;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .mobile-header-title {
+      font-size: 16px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mobile-menu-btn {
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+    }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      width: 280px;
+      background-color: var(--sidebar-bg);
+      color: #f8fafc;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      overflow-y: auto;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      z-index: 1100;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(2px);
+      z-index: 1050;
+    }
+
+    .brand-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .brand-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      background: #1e293b;
+      color: #38bdf8;
+      padding: 3px 8px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      border: 1px solid #334155;
+    }
+
+    /* Search Input in Sidebar */
+    .search-box {
+      width: 100%;
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #ffffff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      margin-bottom: 16px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-box:focus {
+      border-color: var(--primary);
+    }
+
+    .nav-group-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #94a3b8;
+      margin: 16px 0 8px 10px;
+    }
+
+    .nav-links {
+      list-style: none;
+    }
+
+    .nav-links li a {
+      display: block;
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      margin-bottom: 2px;
+    }
+
+    .nav-links li a:hover,
+    .nav-links li a.active {
+      background-color: #1e293b;
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .nav-links li a.active {
+      border-left: 3px solid var(--primary);
+      color: #60a5fa;
+    }
+
+    /* Main Content Area */
+    .content {
+      margin-left: 280px;
+      flex: 1;
+      padding: 40px 48px 80px 48px;
+      max-width: 1100px;
+      min-width: 0;
+    }
+
+    .header-banner {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      color: white;
+      padding: 36px 36px;
+      border-radius: 20px;
+      margin-bottom: 36px;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.1);
+      border: 1px solid #334155;
+    }
+
+    .header-banner h1 {
+      font-size: clamp(24px, 4vw, 32px);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+
+    .header-banner p {
+      color: #94a3b8;
+      font-size: clamp(13px, 2vw, 15px);
+      max-width: 650px;
+    }
+
+    .meta-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .meta-pill {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      color: #e2e8f0;
+    }
+
+    /* Section Cards */
+    section {
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 28px;
+      margin-bottom: 28px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+      scroll-margin-top: 80px;
+    }
+
+    h2 {
+      font-size: clamp(18px, 3vw, 22px);
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.3px;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin: 18px 0 8px 0;
+      color: #1e293b;
+    }
+
+    p {
+      color: #475569;
+      font-size: 13.5px;
+      margin-bottom: 12px;
+    }
+
+    ul, ol {
+      margin-left: 18px;
+      margin-bottom: 14px;
+      color: #475569;
+      font-size: 13.5px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    /* Code Blocks */
+    .code-container {
+      position: relative;
+      margin: 14px 0 18px 0;
+    }
+
+    pre {
+      background-color: var(--code-bg);
+      color: #e2e8f0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      padding: 16px 18px;
+      border-radius: 12px;
+      overflow-x: auto;
+      border: 1px solid #334155;
+      line-height: 1.5;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 2px 5px;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      border: none;
+    }
+
+    /* Callout Alerts */
+    .callout {
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-size: 13px;
+      margin: 14px 0;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .callout-info {
+      background-color: #eff6ff;
+      border-left: 4px solid var(--primary);
+      color: #1e40af;
+    }
+
+    .callout-success {
+      background-color: #ecfdf5;
+      border-left: 4px solid #10b981;
+      color: #065f46;
+    }
+
+    .callout-warning {
+      background-color: #fffbeb;
+      border-left: 4px solid #f59e0b;
+      color: #92400e;
+    }
+
+    /* Table Responsive Wrapper */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 14px 0 20px 0;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 500px;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      padding: 11px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background-color: #f8fafc;
+      font-weight: 700;
+      color: #334155;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Back To Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      border: 1px solid #334155;
+      font-size: 18px;
+      opacity: 0.85;
+      transition: all 0.2s;
+      z-index: 999;
+    }
+
+    .back-to-top:hover {
+      opacity: 1;
+      transform: translateY(-2px);
+      background: var(--primary);
+    }
+
+    /* ========================================================================= */
+    /* RESPONSIVE MEDIA QUERIES                                                  */
+    /* ========================================================================= */
+    @media (max-width: 992px) {
+      .mobile-header {
+        display: flex;
+      }
+
+      .sidebar {
+        transform: translateX(-100%);
+        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .sidebar-overlay.active {
+        display: block;
+      }
+
+      .content {
+        margin-left: 0;
+        padding: 80px 20px 60px 20px;
+      }
+
+      .header-banner {
+        padding: 24px 20px;
+        border-radius: 16px;
+        margin-bottom: 24px;
+      }
+
+      section {
+        padding: 20px;
+        border-radius: 14px;
+        margin-bottom: 20px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .content {
+        padding: 72px 14px 60px 14px;
+      }
+
+      .header-banner {
+        padding: 20px 16px;
+      }
+
+      section {
+        padding: 16px;
+      }
+
+      pre {
+        padding: 12px 14px;
+        font-size: 11.5px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Mobile Sticky Top Header -->
+  <header class="mobile-header">
+    <div class="mobile-header-title">
+      <span>🧶 CozyLoops Docs</span>
+    </div>
+    <button class="mobile-menu-btn" id="menuToggleBtn" aria-label="Toggle Navigation">
+      <span>☰ Menu</span>
+    </button>
+  </header>
+
+  <!-- Mobile Backdrop Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Navigation Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand-title">
+      <span>🧶 CozyLoops</span>
+    </div>
+    <div class="brand-badge">Version 2.0.0 • MERN Stack</div>
+
+    <input type="text" id="docSearch" class="search-box" placeholder="🔍 Filter sections...">
+
+    <div class="nav-group-title">Getting Started</div>
+    <ul class="nav-links">
+      <li><a href="#overview" class="active">Overview & Features</a></li>
+      <li><a href="#tech-stack">Tech Stack & Requirements</a></li>
+      <li><a href="#installation">Installation & Setup</a></li>
+      <li><a href="#smtp-setup">Email / SMTP Config</a></li>
+    </ul>
+
+    <div class="nav-group-title">Admin Studio</div>
+    <ul class="nav-links">
+      <li><a href="#admin-features">Admin Dashboard</a></li>
+      <li><a href="#theme-switcher">Dark & Light Themes</a></li>
+      <li><a href="#settings-sync">Store Settings Sync</a></li>
+      <li><a href="#recycle-bin">Recycle Bin System</a></li>
+    </ul>
+
+    <div class="nav-group-title">Developer Reference</div>
+    <ul class="nav-links">
+      <li><a href="#api-reference">REST API Endpoints</a></li>
+      <li><a href="#deployment">Deployment Guide</a></li>
+      <li><a href="#troubleshooting">Troubleshooting & FAQ</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content Body -->
+  <main class="content">
+
+    <!-- Header Banner -->
+    <div class="header-banner">
+      <h1>🧶 CozyLoops Documentation</h1>
+      <p>Official installation guide, architectural reference, and administrator documentation for the CozyLoops full-stack e-commerce platform.</p>
+      <div class="meta-pills">
+        <span class="meta-pill">⚡ React 19 + Vite</span>
+        <span class="meta-pill">🎨 Tailwind CSS v4</span>
+        <span class="meta-pill">🟢 Node.js & Express</span>
+        <span class="meta-pill">🍃 MongoDB Database</span>
+        <span class="meta-pill">🌓 Dark & Light Studio</span>
+      </div>
+    </div>
+
+    <!-- 1. Overview & Features -->
+    <section id="overview">
+      <h2>🌟 1. Overview & Features</h2>
+      <p>CozyLoops is a modern, high-conversion full-stack e-commerce web application designed for handcrafted artisans, fashion boutique creators, and physical/digital store owners.</p>
+      
+      <h3>🛍️ Storefront Features:</h3>
+      <ul>
+        <li><strong>Artisanal Home & Shop Catalog:</strong> Dynamic category filtering, sorting (price, rating, newness), inventory stock indicators, and SKU lookups.</li>
+        <li><strong>Interactive Product Details:</strong> Image preview, rating system, customer reviews, yarn material breakdown, and multi-channel social sharing (WhatsApp, Instagram, Twitter/X).</li>
+        <li><strong>Handcrafted Craft Journal / Blog:</strong> Articles with reading time estimation, category filters, comment threads, and spotlight featured stories.</li>
+        <li><strong>Shopping Bag & Checkout:</strong> Real-time cart calculations, free shipping threshold progress, local storage sync, and multi-step delivery forms.</li>
+        <li><strong>Smart Contact Us:</strong> Automatically routes customer messages to the dynamic support email configured in the Admin Panel.</li>
+        <li><strong>Customer Profile:</strong> Address book, active order status tracking, and account security.</li>
+      </ul>
+
+      <h3>⚡ Executive Admin Studio (`/admin`):</h3>
+      <ul>
+        <li><strong>Executive Analytics Dashboard:</strong> Real-time KPI metrics, monthly revenue trend chart, category sales distribution progress bars, store health metrics, bestsellers leaderboard, and live MongoDB audit activity stream.</li>
+        <li><strong>Dark & Light Theme Mode:</strong> 1-click header switcher and settings preferences.</li>
+        <li><strong>Dynamic Store Settings:</strong> Manage Support Email, Phone, WhatsApp Number, Studio Address, Working Hours, and Social Media links with whole-store live propagation.</li>
+        <li><strong>Recycle Bin:</strong> Soft-delete protection with 1-click restore for products and blog stories.</li>
+      </ul>
+    </section>
+
+    <!-- 2. Tech Stack & Requirements -->
+    <section id="tech-stack">
+      <h2>🛠️ 2. Tech Stack & Requirements</h2>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Layer</th>
+              <th>Technology</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Frontend</strong></td>
+              <td>React 19 + Vite</td>
+              <td>Lightning-fast client rendering & hot module reloading</td>
+            </tr>
+            <tr>
+              <td><strong>Styling</strong></td>
+              <td>Tailwind CSS v4 + Framer Motion</td>
+              <td>Modern responsive design, animations & dark mode tokens</td>
+            </tr>
+            <tr>
+              <td><strong>Backend</strong></td>
+              <td>Node.js + Express.js</td>
+              <td>RESTful API service with route controllers & middleware</td>
+            </tr>
+            <tr>
+              <td><strong>Database</strong></td>
+              <td>MongoDB + Mongoose ODM</td>
+              <td>Document database for products, categories, orders, users, blogs</td>
+            </tr>
+            <tr>
+              <td><strong>Authentication</strong></td>
+              <td>JWT + Bcrypt.js + OTP</td>
+              <td>Secure token auth, hashed passwords, and 6-digit email OTPs</td>
+            </tr>
+            <tr>
+              <td><strong>Mailing</strong></td>
+              <td>Nodemailer (Gmail SMTP)</td>
+              <td>Automated contact inquiry delivery & verification codes</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>System Prerequisites:</h3>
+      <ul>
+        <li><strong>Node.js:</strong> v18.0.0 or higher (<a href="https://nodejs.org/" target="_blank">Download Node.js</a>)</li>
+        <li><strong>MongoDB:</strong> Local MongoDB Community Server or free cloud MongoDB Atlas cluster</li>
+        <li><strong>npm:</strong> v9.0.0 or higher</li>
+      </ul>
+    </section>
+
+    <!-- 3. Installation & Setup -->
+    <section id="installation">
+      <h2>🚀 3. Installation & Setup Guide</h2>
+
+      <h3>Step 1: Extract Project Files</h3>
+      <pre><code># Unzip the package into your desired directory
+cd crochet</code></pre>
+
+      <h3>Step 2: Backend Configuration</h3>
+      <pre><code># Navigate to backend
+cd backend
+
+# Install dependencies
+npm install
+
+# Copy environment variables template
+cp .env.example .env</code></pre>
+
+      <p>Open <code>backend/.env</code> in your code editor and configure your values:</p>
+      <pre><code>PORT=5000
+MONGO_URI=mongodb://127.0.0.1:27017/crochet
+JWT_SECRET=your_super_secret_jwt_key_2026
+
+# Administrator Email
+ADMIN_EMAIL=admin@cozyloops.com
+
+# SMTP Email Configuration (Gmail App Password)
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASS=your_16_character_app_password</code></pre>
+
+      <h3>Step 3: Seed Real Demo Data</h3>
+      <p>Run the built-in multi-model seeder to automatically populate products, categories, demo orders, customers, and blogs:</p>
+      <pre><code>node seeder.js</code></pre>
+
+      <div class="callout callout-success">
+        <div>
+          <strong>Database Seeded:</strong> You will see <code>✅ All Real Datasets Successfully Seeded to MongoDB!</code>
+        </div>
+      </div>
+
+      <h3>Step 4: Start Backend Server</h3>
+      <pre><code>npm run dev
+# Server running at: http://localhost:5000</code></pre>
+
+      <h3>Step 5: Frontend Configuration & Launch</h3>
+      <pre><code># Open a new terminal window and navigate to frontend
+cd ../frontend
+
+# Install frontend packages
+npm install
+
+# Start Vite Development Server
+npm run dev
+# App running at: http://localhost:5173</code></pre>
+    </section>
+
+    <!-- 4. Email / SMTP Config -->
+    <section id="smtp-setup">
+      <h2>📧 4. Email / SMTP Configuration</h2>
+      <p>CozyLoops uses <strong>Nodemailer</strong> to send OTP verification codes and route customer messages from the Contact Us page.</p>
+
+      <h3>Setting up Gmail SMTP (Free):</h3>
+      <ol>
+        <li>Go to your <a href="https://myaccount.google.com/security" target="_blank">Google Account Security Settings</a>.</li>
+        <li>Enable <strong>2-Step Verification</strong>.</li>
+        <li>Search for <strong>"App Passwords"</strong> (or go to <a href="https://myaccount.google.com/apppasswords" target="_blank">App Passwords</a>).</li>
+        <li>Create a new app password named <code>CozyLoops</code>.</li>
+        <li>Copy the 16-character generated code and paste it in <code>backend/.env</code>:
+          <pre><code>EMAIL_USER=your_gmail@gmail.com
+EMAIL_PASS=abcdefghijklmnop</code></pre>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 5. Admin Features -->
+    <section id="admin-features">
+      <h2>⚡ 5. Executive Admin Studio</h2>
+      <p>Access the admin portal at <code>http://localhost:5173/admin</code>. Sign in with the default admin credentials:</p>
+      
+      <div class="callout callout-info">
+        <div>
+          <strong>Default Admin Login:</strong><br>
+          Email: <code>admin@cozyloops.com</code><br>
+          Password: <code>Password@123</code>
+        </div>
+      </div>
+
+      <h3>Dedicated Admin Modules:</h3>
+      <ul>
+        <li><strong>/admin:</strong> Analytics Command Center with revenue bar charts and KPI metrics.</li>
+        <li><strong>/admin/products:</strong> Catalog manager with inventory counters, filters, and CSV export.</li>
+        <li><strong>/admin/categories:</strong> Collection organization with custom emoji icons.</li>
+        <li><strong>/admin/orders:</strong> Live order fulfillment with 1-click status dropdowns.</li>
+        <li><strong>/admin/customers:</strong> Customer directory with lifetime spend metrics.</li>
+        <li><strong>/admin/blogs:</strong> Story manager with spotlight toggles.</li>
+        <li><strong>/admin/recycle-bin:</strong> Soft-delete bin for 1-click recovery.</li>
+        <li><strong>/admin/settings:</strong> Whole-store brand and contact information control.</li>
+      </ul>
+    </section>
+
+    <!-- 6. Dark & Light Theme Switcher -->
+    <section id="theme-switcher">
+      <h2>🌓 6. Dark & Light Theme System</h2>
+      <p>The Admin Studio includes full <strong>Dark Mode</strong> and <strong>Light Mode</strong> styling.</p>
+      <ul>
+        <li><strong>Header Quick Toggle:</strong> Click the ☀️ / 🌙 button in the top navbar for immediate theme switching.</li>
+        <li><strong>Settings Appearance Selector:</strong> Choose between visual theme cards in <code>/admin/settings</code>.</li>
+        <li><strong>Persistent Storage:</strong> Saves theme state in <code>localStorage</code> under <code>adminTheme</code>.</li>
+      </ul>
+    </section>
+
+    <!-- 7. Store Settings Sync -->
+    <section id="settings-sync">
+      <h2>🔄 7. Store Settings & Social Links Sync</h2>
+      <p>When you update your <strong>Support Email, Contact Phone, WhatsApp Number, Studio Address, Working Hours, and Social Media Profiles</strong> in <code>/admin/settings</code>:</p>
+      <ol>
+        <li>Settings are saved to MongoDB via <code>PUT /api/settings</code>.</li>
+        <li>The global <code>SettingsContext</code> automatically synchronizes across all storefront pages without page reload.</li>
+        <li>The <strong>Footer</strong>, <strong>Contact Us</strong>, and <strong>Product Detail</strong> pages immediately reflect the new links and details.</li>
+      </ol>
+    </section>
+
+    <!-- 8. REST API Endpoints -->
+    <section id="api-reference">
+      <h2>📡 8. REST API Reference</h2>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Endpoint</th>
+              <th>Access</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>GET</code></td>
+              <td><code>/api/products</code></td>
+              <td>Public</td>
+              <td>Fetch active product catalog</td>
+            </tr>
+            <tr>
+              <td><code>POST</code></td>
+              <td><code>/api/products</code></td>
+              <td>Admin</td>
+              <td>Create new product</td>
+            </tr>
+            <tr>
+              <td><code>DELETE</code></td>
+              <td><code>/api/products/:id</code></td>
+              <td>Admin</td>
+              <td>Soft-delete product to Recycle Bin</td>
+            </tr>
+            <tr>
+              <td><code>GET</code></td>
+              <td><code>/api/orders</code></td>
+              <td>Public / Admin</td>
+              <td>Fetch customer orders</td>
+            </tr>
+            <tr>
+              <td><code>PUT</code></td>
+              <td><code>/api/orders/:id/status</code></td>
+              <td>Admin</td>
+              <td>Update order fulfillment status</td>
+            </tr>
+            <tr>
+              <td><code>GET / PUT</code></td>
+              <td><code>/api/settings</code></td>
+              <td>Public / Admin</td>
+              <td>Get and update global store configurations</td>
+            </tr>
+            <tr>
+              <td><code>POST</code></td>
+              <td><code>/api/contacts</code></td>
+              <td>Public</td>
+              <td>Submit contact message & dispatch email</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 9. Deployment Guide -->
+    <section id="deployment">
+      <h2>🌐 9. Production Deployment Guide</h2>
+      
+      <h3>Frontend Deployment (Vercel / Netlify):</h3>
+      <ol>
+        <li>Push your code to GitHub.</li>
+        <li>Import the <code>frontend</code> folder to Vercel or Netlify.</li>
+        <li>Build Command: <code>npm run build</code></li>
+        <li>Output Directory: <code>dist</code></li>
+      </ol>
+
+      <h3>Backend Deployment (Render / Railway / VPS):</h3>
+      <ol>
+        <li>Deploy the <code>backend</code> folder to Render or Railway.</li>
+        <li>Set environment variables from your <code>.env</code> in the hosting dashboard.</li>
+        <li>Start Command: <code>node server.js</code></li>
+      </ol>
+    </section>
+
+    <!-- 10. Troubleshooting & FAQ -->
+    <section id="troubleshooting">
+      <h2>❓ 10. Troubleshooting & FAQs</h2>
+
+      <h3>Q: MongoDB connection error on start?</h3>
+      <p>Make sure your MongoDB server is active or update <code>MONGO_URI</code> in <code>backend/.env</code> with your MongoDB Atlas connection string.</p>
+
+      <h3>Q: Emails are not sending?</h3>
+      <p>Ensure you created a 16-character <strong>Gmail App Password</strong> (not your standard Gmail login password) and pasted it in <code>EMAIL_PASS</code>.</p>
+
+      <h3>Q: How do I change the default currency?</h3>
+      <p>Update currency in <strong>Admin Studio &rarr; Settings</strong> or in <code>backend/models/Setting.js</code>.</p>
+    </section>
+
+  </main>
+
+  <!-- Back to top floating button -->
+  <a href="#overview" class="back-to-top" title="Back to top">↑</a>
+
+  <script>
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuToggleBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+
+    function toggleMenu() {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('active');
+    }
+
+    menuBtn.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', toggleMenu);
+
+    // Close menu when clicking nav links on mobile
+    document.querySelectorAll('.nav-links a').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+        this.classList.add('active');
+
+        if (window.innerWidth <= 992) {
+          sidebar.classList.remove('open');
+          overlay.classList.remove('active');
+        }
+      });
+    });
+
+    // Live search filter in sidebar
+    const searchInput = document.getElementById('docSearch');
+    searchInput.addEventListener('input', function(e) {
+      const query = e.target.value.toLowerCase().trim();
+      document.querySelectorAll('.nav-links li').forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (text.includes(query)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+
+    // Intersection Observer for scroll spy active navigation
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 120;
+        if (pageYOffset >= sectionTop) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
