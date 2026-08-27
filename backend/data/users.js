@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 
-// Passwords pre-hashed for 'Password@123'
-const defaultHashedPassword = bcrypt.hashSync("Password@123", 10);
+// Passwords pre-hashed for 'admin123'
+const defaultHashedPassword = bcrypt.hashSync("admin123", 10);
 
 module.exports = [
   {
