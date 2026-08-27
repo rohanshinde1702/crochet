@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   BsArrowLeft,
   BsEye,
@@ -11,10 +11,16 @@ import {
   BsShieldCheck,
   BsHeart,
   BsHeartFill,
+  BsTruck,
+  BsGift,
+  BsExclamationCircle,
 } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
-import { FaFacebook } from "react-icons/fa";
+import { FaFacebook, FaArrowRight } from "react-icons/fa";
+import { GiYarn } from "react-icons/gi";
+import { LuSparkles } from "react-icons/lu";
 import { API_ENDPOINTS } from "../config/api";
+import SocialAuthModal from "../components/auth/SocialAuthModal";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -32,6 +38,7 @@ const SignUp = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [timer, setTimer] = useState(60);
+  const [socialProvider, setSocialProvider] = useState(null); // 'Google' | 'Facebook'
 
   useEffect(() => {
     let interval;
@@ -151,7 +158,7 @@ const SignUp = () => {
       window.dispatchEvent(new Event("wishlistUpdated"));
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: `Welcome to Crochet, ${data.user.name}! 🧶` },
+          detail: { message: `Welcome to CozyLoops, ${data.user.name}! 🧶` },
         })
       );
       navigate("/");
@@ -163,53 +170,59 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7EFE9] flex items-center justify-center p-4 sm:p-6 lg:p-10 font-sans">
+    <div className="min-h-[80vh] bg-[#F7F3EE] flex items-center justify-center p-4 sm:p-6 lg:p-10 font-sans">
       <motion.div
-        initial={{ opacity: 0, scale: 0.98, y: 15 }}
+        layoutId="auth-card-wrapper"
+        initial={{ opacity: 0, scale: 1, y: 0 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="max-w-5xl w-full bg-[#FAF5F0] rounded-[28px] sm:rounded-[36px] shadow-[0_20px_60px_rgba(108,44,18,0.1)] border border-[#EADBCE] overflow-hidden grid grid-cols-1 lg:grid-cols-12"
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="max-w-5xl w-full min-h-[700px] lg:h-[720px] bg-white rounded-[32px] sm:rounded-[36px] shadow-[0_15px_50px_rgba(108,44,18,0.08)] border border-[#EBDCD0] overflow-hidden grid grid-cols-1 lg:grid-cols-12 relative"
       >
-        {/* ================= LEFT COLUMN: FORM ================= */}
-        <div className="lg:col-span-7 bg-[#FDFAF7] p-6 sm:p-10 lg:p-12 flex flex-col justify-center">
-          {/* Logo Header */}
-          <div className="text-center mb-6">
-            <Link to="/" className="inline-flex items-center gap-1.5 mb-2 group">
-              <span className="font-serif text-2xl font-bold tracking-tight text-[#E87A8A]">
-                Cozy<span className="text-[#6C2C12]">Loops</span>
-              </span>
-              <span className="w-6 h-6 rounded-full bg-[#FCE8EB] text-[#E87A8A] flex items-center justify-center text-xs">
-                🧶
-              </span>
-            </Link>
-
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#4A2E1B] flex items-center justify-center gap-1.5 tracking-tight">
-              {step === 1 ? "Create Your Account" : "Verify Your Email"}{" "}
-              <span className="text-[#E87A8A]">💕</span>
+        {/* ================= LEFT COLUMN: SIGN UP FORM ================= */}
+        <div className="lg:col-span-6 bg-white p-7 sm:p-9 lg:p-10 flex flex-col justify-center h-full overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.45, delay: 0.15 }}
+          >
+          {/* Header */}
+          <div className="text-center mb-3.5">
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#2B1810] tracking-tight mb-1">
+              {step === 1 ? "Create your account" : "Verify your email"}
             </h1>
-            <p className="text-xs sm:text-sm text-[#8C6D58] mt-1">
+
+            {/* Decorative Heart Divider */}
+            <div className="flex items-center justify-center gap-2 my-1.5">
+              <span className="w-10 h-[1px] bg-[#E87A8A]/40"></span>
+              <BsHeartFill className="text-[11px] text-[#E87A8A]" />
+              <span className="w-10 h-[1px] bg-[#E87A8A]/40"></span>
+            </div>
+
+            <p className="text-xs sm:text-sm text-[#7D6352]">
               {step === 1
                 ? "Join CozyLoops and discover handmade creations made with love."
-                : `Enter the 6-digit code sent to ${formData.email}`}
+                : `Enter the 6-digit verification code sent to ${formData.email}`}
             </p>
           </div>
 
+          {/* Error Banner */}
           {error && (
-            <div className="mb-4 p-3 text-xs bg-[#FFF1F2] text-[#E87A8A] border border-[#FCD5DC] rounded-xl font-medium text-center">
-              {error}
+            <div className="mb-2.5 p-2 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl text-xs font-medium flex items-center gap-2">
+              <BsExclamationCircle className="text-sm shrink-0" />
+              <span>{error}</span>
             </div>
           )}
 
           {step === 1 ? (
             /* Step 1: Sign Up Form */
-            <form onSubmit={handleSendOTP} className="space-y-4">
+            <form onSubmit={handleSendOTP} className="space-y-2.5">
               {/* Full Name */}
               <div>
-                <label className="block text-xs font-bold text-[#4A2E1B] mb-1">
+                <label className="block text-xs sm:text-sm font-bold text-[#2B1810] mb-0.5">
                   Full Name
                 </label>
                 <div className="relative">
-                  <BsPerson className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#A89284] text-base" />
+                  <BsPerson className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm sm:text-base" />
                   <input
                     type="text"
                     name="name"
@@ -217,18 +230,18 @@ const SignUp = () => {
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="Enter your full name"
-                    className="w-full pl-10 pr-4 py-3 bg-[#FAF7F2] border border-[#EADBCE] rounded-xl text-sm text-[#4A2E1B] placeholder-[#B5A497] focus:outline-none focus:border-[#7A3E20] focus:bg-white transition-colors"
+                    className="w-full pl-10 pr-4 py-2 sm:py-2.5 bg-white border border-[#E5D7CA] rounded-xl text-xs sm:text-sm text-[#2B1810] placeholder-gray-400 focus:outline-none focus:border-[#6C2C12] focus:ring-1 focus:ring-[#6C2C12] transition-all font-medium"
                   />
                 </div>
               </div>
 
               {/* Email Address */}
               <div>
-                <label className="block text-xs font-bold text-[#4A2E1B] mb-1">
+                <label className="block text-xs sm:text-sm font-bold text-[#2B1810] mb-0.5">
                   Email Address
                 </label>
                 <div className="relative">
-                  <BsEnvelope className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#A89284] text-sm" />
+                  <BsEnvelope className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm sm:text-base" />
                   <input
                     type="email"
                     name="email"
@@ -236,18 +249,18 @@ const SignUp = () => {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="Enter your email"
-                    className="w-full pl-10 pr-4 py-3 bg-[#FAF7F2] border border-[#EADBCE] rounded-xl text-sm text-[#4A2E1B] placeholder-[#B5A497] focus:outline-none focus:border-[#7A3E20] focus:bg-white transition-colors"
+                    className="w-full pl-10 pr-4 py-2 sm:py-2.5 bg-white border border-[#E5D7CA] rounded-xl text-xs sm:text-sm text-[#2B1810] placeholder-gray-400 focus:outline-none focus:border-[#6C2C12] focus:ring-1 focus:ring-[#6C2C12] transition-all font-medium"
                   />
                 </div>
               </div>
 
               {/* Password */}
               <div>
-                <label className="block text-xs font-bold text-[#4A2E1B] mb-1">
+                <label className="block text-xs sm:text-sm font-bold text-[#2B1810] mb-0.5">
                   Password
                 </label>
                 <div className="relative">
-                  <BsLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#A89284] text-base" />
+                  <BsLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm sm:text-base" />
                   <input
                     type={showPassword ? "text" : "password"}
                     name="password"
@@ -255,28 +268,25 @@ const SignUp = () => {
                     value={formData.password}
                     onChange={handleChange}
                     placeholder="Create a password"
-                    className="w-full pl-10 pr-11 py-3 bg-[#FAF7F2] border border-[#EADBCE] rounded-xl text-sm text-[#4A2E1B] placeholder-[#B5A497] focus:outline-none focus:border-[#7A3E20] focus:bg-white transition-colors"
+                    className="w-full pl-10 pr-11 py-2 sm:py-2.5 bg-white border border-[#E5D7CA] rounded-xl text-xs sm:text-sm text-[#2B1810] placeholder-gray-400 focus:outline-none focus:border-[#6C2C12] focus:ring-1 focus:ring-[#6C2C12] transition-all font-medium"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#A89284] hover:text-[#7A3E20] cursor-pointer"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
                   >
-                    {showPassword ? <BsEyeSlash /> : <BsEye />}
+                    {showPassword ? <BsEyeSlash className="text-sm" /> : <BsEye className="text-sm" />}
                   </button>
                 </div>
-                <p className="flex items-center gap-1 text-[11px] text-[#8C6D58] mt-1.5">
-                  <BsShieldCheck className="text-[#E87A8A]" /> Password must be at least 6 characters long
-                </p>
               </div>
 
               {/* Confirm Password */}
               <div>
-                <label className="block text-xs font-bold text-[#4A2E1B] mb-1">
+                <label className="block text-xs sm:text-sm font-bold text-[#2B1810] mb-0.5">
                   Confirm Password
                 </label>
                 <div className="relative">
-                  <BsLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#A89284] text-base" />
+                  <BsLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm sm:text-base" />
                   <input
                     type={showConfirmPassword ? "text" : "password"}
                     name="confirmPassword"
@@ -284,20 +294,20 @@ const SignUp = () => {
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     placeholder="Confirm your password"
-                    className="w-full pl-10 pr-11 py-3 bg-[#FAF7F2] border border-[#EADBCE] rounded-xl text-sm text-[#4A2E1B] placeholder-[#B5A497] focus:outline-none focus:border-[#7A3E20] focus:bg-white transition-colors"
+                    className="w-full pl-10 pr-11 py-2 sm:py-2.5 bg-white border border-[#E5D7CA] rounded-xl text-xs sm:text-sm text-[#2B1810] placeholder-gray-400 focus:outline-none focus:border-[#6C2C12] focus:ring-1 focus:ring-[#6C2C12] transition-all font-medium"
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#A89284] hover:text-[#7A3E20] cursor-pointer"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
                   >
-                    {showConfirmPassword ? <BsEyeSlash /> : <BsEye />}
+                    {showConfirmPassword ? <BsEyeSlash className="text-sm" /> : <BsEye className="text-sm" />}
                   </button>
                 </div>
               </div>
 
               {/* Agreement Checkbox */}
-              <div className="flex items-start gap-2 pt-1">
+              <div className="flex items-start gap-2 pt-0.5">
                 <input
                   type="checkbox"
                   id="agreeToTerms"
@@ -318,36 +328,31 @@ const SignUp = () => {
                 </label>
               </div>
 
-              {/* Sign Up Submit Button */}
+              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3.5 bg-[#7A3E20] hover:bg-[#633017] text-white font-bold rounded-xl text-sm transition-all shadow-md hover:shadow-lg cursor-pointer disabled:opacity-60 mt-2"
+                className="w-full py-2.5 sm:py-3 bg-[#6C2C12] hover:bg-[#54210D] text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-sm cursor-pointer disabled:opacity-60 flex items-center justify-center gap-2 mt-1 group"
               >
-                {loading ? "Sending Verification Code..." : "Sign Up"}
+                <span>{loading ? "Sending Verification Code..." : "Sign Up"}</span>
+                <FaArrowRight className="text-xs group-hover:translate-x-1 transition-transform" />
               </button>
 
               {/* Divider */}
-              <div className="relative flex items-center justify-center my-3">
-                <div className="border-t border-[#EADBCE] w-full"></div>
-                <span className="bg-[#FDFAF7] px-3 text-xs text-[#8C6D58] whitespace-nowrap">
+              <div className="relative flex items-center justify-center my-2">
+                <div className="border-t border-[#E5D7CA] w-full"></div>
+                <span className="bg-white px-2.5 text-xs text-gray-400 whitespace-nowrap">
                   or sign up with
                 </span>
-                <div className="border-t border-[#EADBCE] w-full"></div>
+                <div className="border-t border-[#E5D7CA] w-full"></div>
               </div>
 
               {/* Social Login Buttons */}
               <div className="space-y-2">
                 <button
                   type="button"
-                  onClick={() =>
-                    window.dispatchEvent(
-                      new CustomEvent("showToast", {
-                        detail: { message: "Google Sign-Up coming soon! 🧶" },
-                      })
-                    )
-                  }
-                  className="w-full py-2.5 px-4 bg-[#FAF7F2] hover:bg-white border border-[#EADBCE] rounded-xl text-xs sm:text-sm font-semibold text-[#4A2E1B] flex items-center justify-center gap-2.5 transition-colors cursor-pointer"
+                  onClick={() => setSocialProvider("Google")}
+                  className="w-full py-2.5 px-4 bg-white hover:bg-gray-50 border border-[#E5D7CA] rounded-xl text-xs sm:text-sm font-semibold text-gray-800 flex items-center justify-center gap-2.5 transition-colors cursor-pointer"
                 >
                   <FcGoogle className="text-lg" />
                   <span>Continue with Google</span>
@@ -355,14 +360,8 @@ const SignUp = () => {
 
                 <button
                   type="button"
-                  onClick={() =>
-                    window.dispatchEvent(
-                      new CustomEvent("showToast", {
-                        detail: { message: "Facebook Sign-Up coming soon! 🧶" },
-                      })
-                    )
-                  }
-                  className="w-full py-2.5 px-4 bg-[#FAF7F2] hover:bg-white border border-[#EADBCE] rounded-xl text-xs sm:text-sm font-semibold text-[#4A2E1B] flex items-center justify-center gap-2.5 transition-colors cursor-pointer"
+                  onClick={() => setSocialProvider("Facebook")}
+                  className="w-full py-2.5 px-4 bg-white hover:bg-gray-50 border border-[#E5D7CA] rounded-xl text-xs sm:text-sm font-semibold text-gray-800 flex items-center justify-center gap-2.5 transition-colors cursor-pointer"
                 >
                   <FaFacebook className="text-lg text-[#1877F2]" />
                   <span>Continue with Facebook</span>
@@ -371,19 +370,19 @@ const SignUp = () => {
             </form>
           ) : (
             /* Step 2: OTP Verification Form */
-            <form onSubmit={handleVerifyOTP} className="space-y-6 pt-2">
+            <form onSubmit={handleVerifyOTP} className="space-y-5 pt-1">
               <button
                 type="button"
                 onClick={() => {
                   setStep(1);
                   setError("");
                 }}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#7A3E20] hover:underline cursor-pointer"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#6C2C12] hover:underline cursor-pointer"
               >
                 <BsArrowLeft /> Back to account details
               </button>
 
-              <div className="flex justify-center gap-2 sm:gap-3">
+              <div className="flex justify-center gap-2 sm:gap-2.5">
                 {otp.map((digit, idx) => (
                   <input
                     key={idx}
@@ -393,7 +392,7 @@ const SignUp = () => {
                     value={digit}
                     onChange={(e) => handleOtpChange(e.target.value, idx)}
                     onKeyDown={(e) => handleKeyDown(e, idx)}
-                    className="w-11 h-12 sm:w-12 sm:h-14 text-center text-xl font-bold bg-[#FAF7F2] border border-[#EADBCE] rounded-xl text-[#4A2E1B] focus:outline-none focus:border-[#7A3E20] focus:bg-white transition-colors"
+                    className="w-10 h-12 text-center text-lg font-bold bg-white border border-[#E5D7CA] rounded-xl text-[#2B1810] focus:outline-none focus:border-[#6C2C12] transition-colors"
                   />
                 ))}
               </div>
@@ -401,16 +400,17 @@ const SignUp = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3.5 bg-[#7A3E20] hover:bg-[#633017] text-white font-bold rounded-xl text-sm transition-all shadow-md cursor-pointer disabled:opacity-60"
+                className="w-full py-3.5 bg-[#6C2C12] hover:bg-[#54210D] text-white font-bold rounded-xl text-sm transition-all shadow-md cursor-pointer disabled:opacity-60 flex items-center justify-center gap-2 group"
               >
-                {loading ? "Verifying Code..." : "Verify & Complete Registration"}
+                <span>{loading ? "Verifying Code..." : "Verify & Complete Registration"}</span>
+                <FaArrowRight className="text-xs group-hover:translate-x-1 transition-transform" />
               </button>
 
               <div className="text-center text-xs text-[#8C6D58]">
                 {timer > 0 ? (
                   <p>
                     Resend verification code in{" "}
-                    <strong className="text-[#7A3E20]">{timer}s</strong>
+                    <strong className="text-[#6C2C12]">{timer}s</strong>
                   </p>
                 ) : (
                   <button
@@ -426,51 +426,46 @@ const SignUp = () => {
           )}
 
           {/* Footer Link */}
-          <div className="mt-5 text-center text-xs text-[#8C6D58]">
+          <div className="mt-4 text-center text-xs sm:text-sm text-gray-600">
             Already have an account?{" "}
             <Link to="/signin" className="font-bold text-[#E87A8A] hover:underline">
               Sign In
             </Link>
           </div>
+        </motion.div>
         </div>
 
-        {/* ================= RIGHT COLUMN: ARTWORK SHOWCASE ================= */}
-        <div className="lg:col-span-5 bg-[#F6ECE2] relative flex flex-col justify-between overflow-hidden p-6 sm:p-10 border-t lg:border-t-0 lg:border-l border-[#EADBCE]">
-          {/* Top Decorative Text */}
-          <div className="text-center z-10">
-            <div className="w-10 h-10 mx-auto rounded-full bg-[#FDFAF7] text-[#E87A8A] flex items-center justify-center text-lg mb-3 shadow-xs">
-              <BsHeart />
-            </div>
+        {/* ================= RIGHT COLUMN: HERO ARTWORK & BENEFITS ================= */}
+        <motion.div
+          layoutId="auth-image-column"
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="lg:col-span-6 bg-[#FDF6F0] relative flex flex-col justify-between p-7 sm:p-10 lg:p-12 overflow-hidden h-full min-h-[260px] lg:min-h-full border-t lg:border-t-0 lg:border-l border-[#EBDCD0]"
+        >
+          {/* Subtle Warm Background Gradient & Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#FDF7F2]/95 via-[#FDF5EE]/80 to-[#FAF0E6]/95 pointer-events-none z-0" />
 
-            <h2 className="font-serif text-2xl sm:text-3xl text-[#4A2E1B] font-semibold leading-tight">
-              Handmade with love, <br />
-              <span className="text-[#E87A8A] italic font-normal">just for you.</span>
-            </h2>
+          {/* Background Image of Crochet Scene */}
+          <motion.img
+            layoutId="auth-crochet-image"
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            src="/uploads/others/signin_banner.jpg"
+            alt="Handmade Crochet Setup"
+            className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none mix-blend-multiply"
+            onError={(e) => {
+              e.target.src = "/uploads/others/signup_art.jpg";
+            }}
+          />
 
-            {/* Divider with heart */}
-            <div className="flex items-center justify-center gap-2 my-3 text-[#D5C2B2]">
-              <span className="w-8 h-[1px] bg-[#D5C2B2]"></span>
-              <BsHeartFill className="text-[10px] text-[#E87A8A]" />
-              <span className="w-8 h-[1px] bg-[#D5C2B2]"></span>
-            </div>
-
-            <p className="text-xs sm:text-sm text-[#7D6352] max-w-xs mx-auto leading-relaxed">
-              Create an account and be the first to know about new arrivals, special offers and more!
-            </p>
-          </div>
-
-          {/* Bottom Crochet Artwork Image */}
-          <div className="mt-6 sm:mt-8 relative rounded-2xl overflow-hidden shadow-md border border-[#EADBCE]/80 z-10 aspect-[4/4.2]">
-            <img
-              src="/uploads/others/signup_art.jpg"
-              alt="Handmade Crochet Creations"
-              className="w-full h-full object-cover"
-            />
-            {/* Subtle bottom gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none"></div>
-          </div>
-        </div>
+        </motion.div>
       </motion.div>
+
+      {/* ================= DEVICE-AWARE SOCIAL AUTH MODAL ================= */}
+      <SocialAuthModal
+        isOpen={!!socialProvider}
+        provider={socialProvider}
+        onClose={() => setSocialProvider(null)}
+        onSuccess={() => navigate("/")}
+      />
     </div>
   );
 };

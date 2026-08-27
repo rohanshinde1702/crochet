@@ -35,6 +35,10 @@ const protect = async (req, res, next) => {
       return res.status(401).json({ message: "User not found with this token." });
     }
 
+    if (user.isBlocked) {
+      return res.status(403).json({ message: "Your account has been suspended by an administrator." });
+    }
+
     // Auto-sync admin role for authorized emails
     if (isEmailAdmin(user.email) && user.role !== "admin") {
       user.role = "admin";

@@ -12,10 +12,15 @@ import {
   BsArrowLeft,
   BsCheck2Circle,
   BsExclamationCircle,
+  BsShieldCheck,
+  BsTruck,
 } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
-import { FaFacebook } from "react-icons/fa";
+import { FaFacebook, FaArrowRight } from "react-icons/fa";
+import { GiYarn } from "react-icons/gi";
+import { LuSparkles } from "react-icons/lu";
 import { API_ENDPOINTS } from "../config/api";
+import SocialAuthModal from "../components/auth/SocialAuthModal";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -26,6 +31,7 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [socialProvider, setSocialProvider] = useState(null); // 'Google' | 'Facebook'
 
   // Forgot Password Modal State
   const [showForgotModal, setShowForgotModal] = useState(false);
@@ -73,21 +79,28 @@ const SignIn = () => {
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
+
       // Restore cart from server or user backup
-      const userScopedCart = JSON.parse(localStorage.getItem(`user_cart_${data.user.id}`));
-      const restoredCart = (Array.isArray(data.user.cart) && data.user.cart.length > 0)
-        ? data.user.cart
-        : (Array.isArray(userScopedCart) && userScopedCart.length > 0)
-        ? userScopedCart
-        : [];
+      const userScopedCart = JSON.parse(
+        localStorage.getItem(`user_cart_${data.user.id || data.user._id}`)
+      );
+      const restoredCart =
+        Array.isArray(data.user.cart) && data.user.cart.length > 0
+          ? data.user.cart
+          : Array.isArray(userScopedCart) && userScopedCart.length > 0
+          ? userScopedCart
+          : [];
 
       // Restore wishlist from server or user backup
-      const userScopedWishlist = JSON.parse(localStorage.getItem(`user_wishlist_${data.user.id}`));
-      const restoredWishlist = (Array.isArray(data.user.wishlist) && data.user.wishlist.length > 0)
-        ? data.user.wishlist
-        : (Array.isArray(userScopedWishlist) && userScopedWishlist.length > 0)
-        ? userScopedWishlist
-        : [];
+      const userScopedWishlist = JSON.parse(
+        localStorage.getItem(`user_wishlist_${data.user.id || data.user._id}`)
+      );
+      const restoredWishlist =
+        Array.isArray(data.user.wishlist) && data.user.wishlist.length > 0
+          ? data.user.wishlist
+          : Array.isArray(userScopedWishlist) && userScopedWishlist.length > 0
+          ? userScopedWishlist
+          : [];
 
       localStorage.setItem("cart", JSON.stringify(restoredCart));
       localStorage.setItem("wishlist", JSON.stringify(restoredWishlist));
@@ -218,198 +231,181 @@ const SignIn = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7EFE9] flex items-center justify-center p-4 sm:p-6 lg:p-10 font-sans">
+    <div className="min-h-[80vh] bg-[#F7F3EE] flex items-center justify-center p-4 sm:p-6 lg:p-10 font-sans">
       <motion.div
-        initial={{ opacity: 0, scale: 0.98, y: 15 }}
+        layoutId="auth-card-wrapper"
+        initial={{ opacity: 0, scale: 1, y: 0 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="max-w-5xl w-full bg-[#FAF5F0] rounded-[28px] sm:rounded-[36px] shadow-[0_20px_60px_rgba(108,44,18,0.1)] border border-[#EADBCE] overflow-hidden grid grid-cols-1 lg:grid-cols-12 relative"
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="max-w-5xl w-full min-h-[700px] lg:h-[720px] bg-white rounded-[32px] sm:rounded-[36px] shadow-[0_15px_50px_rgba(108,44,18,0.08)] border border-[#EBDCD0] overflow-hidden grid grid-cols-1 lg:grid-cols-12 relative"
       >
-        {/* ================= LEFT COLUMN: FORM ================= */}
-        <div className="lg:col-span-7 bg-[#FDFAF7] p-6 sm:p-10 lg:p-14 flex flex-col justify-center">
-          {/* Logo Header */}
-          <div className="text-center mb-8">
-            <Link to="/" className="inline-flex items-center gap-1.5 mb-2 group">
-              <span className="font-serif text-2xl font-bold tracking-tight text-[#E87A8A]">
-                Cozy<span className="text-[#6C2C12]">Loops</span>
-              </span>
-              <span className="w-6 h-6 rounded-full bg-[#FCE8EB] text-[#E87A8A] flex items-center justify-center text-xs">
-                🧶
-              </span>
-            </Link>
+        {/* ================= LEFT COLUMN: HERO ARTWORK & BENEFITS ================= */}
+        <motion.div
+          layoutId="auth-image-column"
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="lg:col-span-6 bg-[#FDF6F0] relative flex flex-col justify-between p-7 sm:p-10 lg:p-12 overflow-hidden h-full min-h-[260px] lg:min-h-full border-b lg:border-b-0 lg:border-r border-[#EBDCD0]"
+        >
+          {/* Subtle Warm Background Gradient & Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#FDF7F2]/95 via-[#FDF5EE]/80 to-[#FAF0E6]/95 pointer-events-none z-0" />
 
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#4A2E1B] flex items-center justify-center gap-1.5 tracking-tight">
-              Welcome Back <span className="text-[#E87A8A]">💕</span>
-            </h1>
-            <p className="text-xs sm:text-sm text-[#8C6D58] mt-1">
-              Sign in to manage your orders, cart and favorite crochet items.
-            </p>
-          </div>
+          {/* Background Image of Crochet Scene */}
+          <motion.img
+            layoutId="auth-crochet-image"
+            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+            src="/uploads/others/signin_banner.jpg"
+            alt="Handmade Crochet Setup"
+            className="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none mix-blend-multiply"
+            onError={(e) => {
+              e.target.src = "/uploads/others/signup_art.jpg";
+            }}
+          />
+         
+        </motion.div>
 
-          {error && (
-            <div className="mb-5 p-3.5 text-xs bg-[#FFF1F2] text-[#E87A8A] border border-[#FCD5DC] rounded-xl font-medium text-center">
-              {error}
-            </div>
-          )}
+        {/* ================= RIGHT COLUMN: SIGN IN FORM ================= */}
+        <div className="lg:col-span-6 bg-white p-7 sm:p-9 lg:p-10 flex flex-col justify-center h-full overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.45, delay: 0.15 }}
+          >
+            {/* Header */}
+            <div className="text-center mb-5">
+              <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#2B1810] tracking-tight mb-2">
+                Sign in to your account
+              </h1>
 
-          {/* Form */}
-          <form onSubmit={handleSignIn} className="space-y-4">
-            {/* Email Address */}
-            <div>
-              <label className="block text-xs font-bold text-[#4A2E1B] mb-1">
-                Email Address
-              </label>
-              <div className="relative">
-                <BsEnvelope className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#A89284] text-sm" />
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="Enter your email"
-                  className="w-full pl-10 pr-4 py-2.5 sm:py-3 bg-[#FAF7F2] border border-[#EADBCE] rounded-xl text-sm text-[#4A2E1B] placeholder-[#B5A497] focus:outline-none focus:border-[#7A3E20] focus:bg-white transition-colors"
-                />
+              {/* Decorative Heart Divider */}
+              <div className="flex items-center justify-center gap-2 my-1.5">
+                <span className="w-10 h-[1px] bg-[#E87A8A]/40"></span>
+                <BsHeartFill className="text-[11px] text-[#E87A8A]" />
+                <span className="w-10 h-[1px] bg-[#E87A8A]/40"></span>
               </div>
+
+              <p className="text-xs sm:text-sm text-[#7D6352]">
+                Sign in to manage your orders, cart and favorite crochet items.
+              </p>
             </div>
 
-            {/* Password */}
-            <div>
-              <div className="flex items-center justify-between mb-1">
-                <label className="block text-xs font-bold text-[#4A2E1B]">
-                  Password
+            {/* Error Banner */}
+            {error && (
+              <div className="mb-3.5 p-2.5 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl text-xs font-medium flex items-center gap-2">
+                <BsExclamationCircle className="text-sm shrink-0" />
+                <span>{error}</span>
+              </div>
+            )}
+
+            {/* Form */}
+            <form onSubmit={handleSignIn} className="space-y-3.5">
+              {/* Email Address */}
+              <div>
+                <label className="block text-xs sm:text-sm font-bold text-[#2B1810] mb-1.5">
+                  Email Address
                 </label>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setForgotEmail(formData.email);
-                    setForgotStep(1);
-                    setForgotError("");
-                    setForgotSuccess("");
-                    setShowForgotModal(true);
-                  }}
-                  className="text-xs font-semibold text-[#E87A8A] hover:underline cursor-pointer"
-                >
-                  Forgot?
-                </button>
+                <div className="relative">
+                  <BsEnvelope className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm sm:text-base" />
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="Enter your email"
+                    className="w-full pl-10 pr-4 py-2.5 sm:py-3 bg-white border border-[#E5D7CA] rounded-xl text-xs sm:text-sm text-[#2B1810] placeholder-gray-400 focus:outline-none focus:border-[#6C2C12] focus:ring-1 focus:ring-[#6C2C12] transition-all font-medium"
+                  />
+                </div>
               </div>
-              <div className="relative">
-                <BsLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#A89284] text-base" />
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  required
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Enter your password"
-                  className="w-full pl-10 pr-11 py-2.5 sm:py-3 bg-[#FAF7F2] border border-[#EADBCE] rounded-xl text-sm text-[#4A2E1B] placeholder-[#B5A497] focus:outline-none focus:border-[#7A3E20] focus:bg-white transition-colors"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#A89284] hover:text-[#7A3E20] cursor-pointer"
-                >
-                  {showPassword ? <BsEyeSlash /> : <BsEye />}
-                </button>
+
+              {/* Password */}
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-xs sm:text-sm font-bold text-[#2B1810]">
+                    Password
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setForgotEmail(formData.email);
+                      setForgotStep(1);
+                      setForgotError("");
+                      setForgotSuccess("");
+                      setShowForgotModal(true);
+                    }}
+                    className="text-xs font-bold text-[#E87A8A] hover:underline cursor-pointer"
+                  >
+                    Forgot Password?
+                  </button>
+                </div>
+                <div className="relative">
+                  <BsLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-base" />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    required
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="Enter your password"
+                    className="w-full pl-10 pr-11 py-2.5 sm:py-3 bg-white border border-[#E5D7CA] rounded-xl text-xs sm:text-sm text-[#2B1810] placeholder-gray-400 focus:outline-none focus:border-[#6C2C12] focus:ring-1 focus:ring-[#6C2C12] transition-all font-medium"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+                  >
+                    {showPassword ? <BsEyeSlash className="text-sm" /> : <BsEye className="text-sm" />}
+                  </button>
+                </div>
               </div>
-            </div>
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 sm:py-3.5 bg-[#7A3E20] hover:bg-[#633017] text-white font-bold rounded-xl text-sm transition-all shadow-md hover:shadow-lg cursor-pointer disabled:opacity-60 mt-2"
-            >
-              {loading ? "Signing In..." : "Sign In"}
-            </button>
-
-            {/* Divider */}
-            <div className="relative flex items-center justify-center my-4">
-              <div className="border-t border-[#EADBCE] w-full"></div>
-              <span className="bg-[#FDFAF7] px-3 text-xs text-[#8C6D58] whitespace-nowrap">
-                or sign in with
-              </span>
-              <div className="border-t border-[#EADBCE] w-full"></div>
-            </div>
-
-            {/* Social Login Buttons */}
-            <div className="space-y-2.5">
+              {/* Sign In Button */}
               <button
-                type="button"
-                onClick={() =>
-                  window.dispatchEvent(
-                    new CustomEvent("showToast", {
-                      detail: { message: "Google Sign-In coming soon! 🧶" },
-                    })
-                  )
-                }
-                className="w-full py-2.5 px-4 bg-[#FAF7F2] hover:bg-white border border-[#EADBCE] rounded-xl text-xs sm:text-sm font-semibold text-[#4A2E1B] flex items-center justify-center gap-2.5 transition-colors cursor-pointer"
+                type="submit"
+                disabled={loading}
+                className="w-full py-3 bg-[#6C2C12] hover:bg-[#54210D] text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-sm cursor-pointer disabled:opacity-60 flex items-center justify-center gap-2 mt-1.5 group"
               >
-                <FcGoogle className="text-lg" />
-                <span>Continue with Google</span>
+                <span>{loading ? "Signing in..." : "Sign In"}</span>
+                <FaArrowRight className="text-xs group-hover:translate-x-1 transition-transform" />
               </button>
 
-              <button
-                type="button"
-                onClick={() =>
-                  window.dispatchEvent(
-                    new CustomEvent("showToast", {
-                      detail: { message: "Facebook Sign-In coming soon! 🧶" },
-                    })
-                  )
-                }
-                className="w-full py-2.5 px-4 bg-[#FAF7F2] hover:bg-white border border-[#EADBCE] rounded-xl text-xs sm:text-sm font-semibold text-[#4A2E1B] flex items-center justify-center gap-2.5 transition-colors cursor-pointer"
-              >
-                <FaFacebook className="text-lg text-[#1877F2]" />
-                <span>Continue with Facebook</span>
-              </button>
+              {/* Divider */}
+              <div className="relative flex items-center justify-center my-2.5">
+                <div className="border-t border-[#E5D7CA] w-full"></div>
+                <span className="bg-white px-3 text-xs text-gray-400 whitespace-nowrap">
+                  or continue with
+                </span>
+                <div className="border-t border-[#E5D7CA] w-full"></div>
+              </div>
+
+              {/* Social Login Buttons */}
+              <div className="space-y-2">
+                <button
+                  type="button"
+                  onClick={() => setSocialProvider("Google")}
+                  className="w-full py-2.5 px-4 bg-white hover:bg-gray-50 border border-[#E5D7CA] rounded-xl text-xs sm:text-sm font-semibold text-gray-800 flex items-center justify-center gap-2.5 transition-colors cursor-pointer"
+                >
+                  <FcGoogle className="text-lg" />
+                  <span>Continue with Google</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSocialProvider("Facebook")}
+                  className="w-full py-2.5 px-4 bg-white hover:bg-gray-50 border border-[#E5D7CA] rounded-xl text-xs sm:text-sm font-semibold text-gray-800 flex items-center justify-center gap-2.5 transition-colors cursor-pointer"
+                >
+                  <FaFacebook className="text-lg text-[#1877F2]" />
+                  <span>Continue with Facebook</span>
+                </button>
+              </div>
+            </form>
+
+            {/* Footer Link */}
+            <div className="mt-5 text-center text-xs sm:text-sm text-gray-600">
+              Don&apos;t have an account?{" "}
+              <Link to="/signup" className="font-bold text-[#E87A8A] hover:underline">
+                Sign Up
+              </Link>
             </div>
-          </form>
-
-          {/* Footer Link */}
-          <div className="mt-8 text-center text-xs text-[#8C6D58]">
-            Don&apos;t have an account?{" "}
-            <Link to="/signup" className="font-bold text-[#E87A8A] hover:underline">
-              Sign Up
-            </Link>
-          </div>
-        </div>
-
-        {/* ================= RIGHT COLUMN: ARTWORK SHOWCASE ================= */}
-        <div className="lg:col-span-5 bg-[#F6ECE2] relative flex flex-col justify-between overflow-hidden p-6 sm:p-10 border-t lg:border-t-0 lg:border-l border-[#EADBCE]">
-          {/* Top Decorative Text */}
-          <div className="text-center z-10">
-            <div className="w-10 h-10 mx-auto rounded-full bg-[#FDFAF7] text-[#E87A8A] flex items-center justify-center text-lg mb-3 shadow-xs">
-              <BsHeart />
-            </div>
-
-            <h2 className="font-serif text-2xl sm:text-3xl text-[#4A2E1B] font-semibold leading-tight">
-              Handmade with love, <br />
-              <span className="text-[#E87A8A] italic font-normal">just for you.</span>
-            </h2>
-
-            {/* Divider with heart */}
-            <div className="flex items-center justify-center gap-2 my-3 text-[#D5C2B2]">
-              <span className="w-8 h-[1px] bg-[#D5C2B2]"></span>
-              <BsHeartFill className="text-[10px] text-[#E87A8A]" />
-              <span className="w-8 h-[1px] bg-[#D5C2B2]"></span>
-            </div>
-
-            <p className="text-xs sm:text-sm text-[#7D6352] max-w-xs mx-auto leading-relaxed">
-              Sign in to manage your orders, cart and favorite crochet items.
-            </p>
-          </div>
-
-          {/* Bottom Crochet Artwork Image */}
-          <div className="mt-6 sm:mt-8 relative rounded-2xl overflow-hidden shadow-md border border-[#EADBCE]/80 z-10 aspect-[4/4.2]">
-            <img
-              src="/uploads/others/signup_art.jpg"
-              alt="Handmade Crochet Creations"
-              className="w-full h-full object-cover"
-            />
-            {/* Subtle bottom gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none"></div>
-          </div>
+          </motion.div>
         </div>
       </motion.div>
 
@@ -474,7 +470,7 @@ const SignIn = () => {
                   <button
                     type="submit"
                     disabled={forgotLoading}
-                    className="w-full py-3 bg-[#7A3E20] hover:bg-[#633017] text-white font-bold rounded-xl text-sm transition-all shadow-md cursor-pointer disabled:opacity-60"
+                    className="w-full py-3 bg-[#6C2C12] hover:bg-[#54210D] text-white font-bold rounded-xl text-sm transition-all shadow-md cursor-pointer disabled:opacity-60"
                   >
                     {forgotLoading ? "Sending Code..." : "Send Verification Code"}
                   </button>
@@ -526,7 +522,7 @@ const SignIn = () => {
                   <button
                     type="submit"
                     disabled={forgotLoading}
-                    className="w-full py-3 bg-[#7A3E20] hover:bg-[#633017] text-white font-bold rounded-xl text-sm transition-all shadow-md cursor-pointer disabled:opacity-60"
+                    className="w-full py-3 bg-[#6C2C12] hover:bg-[#54210D] text-white font-bold rounded-xl text-sm transition-all shadow-md cursor-pointer disabled:opacity-60"
                   >
                     {forgotLoading ? "Resetting Password..." : "Reset Password"}
                   </button>
@@ -557,6 +553,17 @@ const SignIn = () => {
           </div>
         )}
       </AnimatePresence>
+
+      {/* ================= DEVICE-AWARE SOCIAL AUTH MODAL ================= */}
+      <SocialAuthModal
+        isOpen={!!socialProvider}
+        provider={socialProvider}
+        onClose={() => setSocialProvider(null)}
+        onSuccess={(u) => {
+          if (u.role === "admin") navigate("/admin");
+          else navigate("/");
+        }}
+      />
     </div>
   );
 };

@@ -27,6 +27,7 @@ import {
   LuMail,
   LuMenu,
   LuX,
+  LuUser,
 } from "react-icons/lu";
 import { API_ENDPOINTS } from "../config/api";
 
@@ -166,6 +167,7 @@ const AdminLayout = () => {
   // Nav items configuration
   const navItems = [
     { label: "Dashboard", path: "/admin", icon: <LuLayoutDashboard />, exact: true },
+    { label: "Profile", path: "/admin/profile", icon: <LuUser /> },
     { label: "Products", path: "/admin/products", icon: <LuBoxes />, count: counts.products },
     { label: "Categories", path: "/admin/categories", icon: <LuLayers /> },
     { label: "Orders", path: "/admin/orders", icon: <LuShoppingBag /> },
@@ -495,6 +497,13 @@ const AdminLayout = () => {
                     </p>
                     <p className="text-[10px] text-gray-400 truncate">{currentUser?.email}</p>
                   </div>
+                  <Link
+                    to="/admin/profile"
+                    onClick={() => setProfileDropdownOpen(false)}
+                    className={`block px-4 py-2 text-xs font-bold text-[#2563EB] ${isDark ? "hover:bg-slate-800" : "hover:bg-blue-50"}`}
+                  >
+                    Admin Profile
+                  </Link>
                   <Link
                     to="/shop"
                     target="_blank"

@@ -13,11 +13,11 @@ import ProductDetail from '../pages/ProductDetail';
 import SignIn from '../pages/SignIn';
 import SignUp from '../pages/SignUp';
 import Profile from '../pages/Profile';
-import Services from '../pages/Services';
 
 // Admin Layout and Pages
 import AdminLayout from '../layouts/AdminLayout';
 import AdminDashboard from '../pages/admin/AdminDashboard';
+import AdminProfile from '../pages/admin/AdminProfile';
 import AdminProducts from '../pages/admin/AdminProducts';
 import AdminCategories from '../pages/admin/AdminCategories';
 import AdminOrders from '../pages/admin/AdminOrders';
@@ -51,7 +51,6 @@ const AppRoutes = () => {
         <Route path='cart' element={<Cart />} />
         <Route path='wishlist' element={<Wishlist />} />
         <Route path='about' element={<About />} />
-        <Route path='services' element={<Services />} />
         <Route path='contact' element={<Contact />} />
         <Route path='shop' element={<Shop />} />
         <Route path='blog' element={<Blog />} />
@@ -66,6 +65,7 @@ const AppRoutes = () => {
       <Route path='/admin' element={<AdminLayout />}>
         <Route index element={<AdminDashboard />} />
         <Route path='dashboard' element={<AdminDashboard />} />
+        <Route path='profile' element={<AdminProfile />} />
         <Route path='products' element={<AdminProducts />} />
         <Route path='categories' element={<AdminCategories />} />
         <Route path='orders' element={<AdminOrders />} />

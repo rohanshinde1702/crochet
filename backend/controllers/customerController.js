@@ -6,7 +6,7 @@ const Order = require("../models/Order");
 // @access  Admin
 const getCustomers = async (req, res) => {
   try {
-    const users = await User.find({ role: "user" }).select("-password").sort({ createdAt: -1 });
+    const users = await User.find().select("-password").sort({ createdAt: -1 });
     const orders = await Order.find({ isDeleted: false });
 
     const customersWithStats = users.map((user) => {
@@ -20,7 +20,9 @@ const getCustomers = async (req, res) => {
       const totalSpent = userOrders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
 
       let status = "New";
-      if (totalSpent >= 4000 || totalOrders >= 4) {
+      if (user.isBlocked) {
+        status = "Blocked";
+      } else if (totalSpent >= 4000 || totalOrders >= 4) {
         status = "VIP";
       } else if (totalOrders >= 2) {
         status = "Regular";
@@ -33,6 +35,9 @@ const getCustomers = async (req, res) => {
         email: user.email,
         phone: user.phone || "+91 98200 00000",
         avatar: user.avatar,
+        role: user.role || "user",
+        isBlocked: Boolean(user.isBlocked),
+        blockReason: user.blockReason || "",
         orders: totalOrders,
         spent: totalSpent,
         status,
@@ -73,7 +78,106 @@ const getCustomerById = async (req, res) => {
   }
 };
 
+// @desc    Toggle block/unblock customer
+// @route   PUT /api/customers/:id/block
+// @access  Admin
+const toggleBlockCustomer = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: "Customer not found" });
+
+    if (user.email === "admin@cozyloops.com") {
+      return res.status(400).json({ message: "Cannot block the primary Master Admin account." });
+    }
+
+    const { blockReason } = req.body || {};
+    user.isBlocked = !user.isBlocked;
+    if (user.isBlocked && blockReason) {
+      user.blockReason = blockReason.trim();
+    } else if (!user.isBlocked) {
+      user.blockReason = "";
+    }
+
+    await user.save();
+
+    res.json({
+      message: user.isBlocked
+        ? `Customer "${user.name}" has been blocked. 🚫`
+        : `Customer "${user.name}" has been unblocked. ✅`,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        isBlocked: user.isBlocked,
+        role: user.role,
+        blockReason: user.blockReason
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Update customer role (Make Admin / Revoke Admin)
+// @route   PUT /api/customers/:id/role
+// @access  Admin
+const updateCustomerRole = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: "Customer not found" });
+
+    const { role } = req.body;
+    if (!role || !["user", "admin"].includes(role)) {
+      return res.status(400).json({ message: "Valid role ('user' or 'admin') is required." });
+    }
+
+    if (user.email === "admin@cozyloops.com" && role !== "admin") {
+      return res.status(400).json({ message: "Cannot revoke admin privileges from the primary Master Admin." });
+    }
+
+    user.role = role;
+    await user.save();
+
+    res.json({
+      message: `Updated role for "${user.name}" to ${role === "admin" ? "Admin 👑" : "Customer 👤"}!`,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Permanently delete a customer
+// @route   DELETE /api/customers/:id
+// @access  Admin
+const deleteCustomer = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: "Customer not found" });
+
+    if (user.email === "admin@cozyloops.com") {
+      return res.status(400).json({ message: "Cannot delete the primary Master Admin account." });
+    }
+
+    await User.findByIdAndDelete(req.params.id);
+
+    res.json({
+      message: `Customer account "${user.name}" (${user.email}) permanently removed. 🗑️`
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   getCustomers,
-  getCustomerById
+  getCustomerById,
+  toggleBlockCustomer,
+  updateCustomerRole,
+  deleteCustomer
 };

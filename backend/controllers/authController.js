@@ -169,6 +169,12 @@ const signIn = async (req, res, next) => {
       return res.status(400).json({ message: "Invalid email or password." });
     }
 
+    if (user.isBlocked) {
+      return res.status(403).json({
+        message: "Your account has been suspended by an administrator. Please contact support.",
+      });
+    }
+
     // Ensure authorized admin emails always have admin role
     if (isEmailAdmin(normalizedEmail) && user.role !== "admin") {
       user.role = "admin";
@@ -182,14 +188,92 @@ const signIn = async (req, res, next) => {
       token,
       user: {
         id: user._id,
+        _id: user._id,
         name: user.name,
         email: user.email,
         role: user.role || (isEmailAdmin(normalizedEmail) ? "admin" : "user"),
-        phone: user.phone,
+        phone: user.phone || "",
         avatar: user.avatar,
+        bio: user.bio || "",
+        address: user.address || "",
+        city: user.city || "",
+        state: user.state || "",
+        pincode: user.pincode || "",
         cart: user.cart || [],
         wishlist: user.wishlist || []
       }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// 3.5 SOCIAL LOGIN (Google & Facebook)
+const socialLogin = async (req, res, next) => {
+  try {
+    const { email, name, avatar, provider } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required for social authentication." });
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+    let user = await User.findOne({ email: normalizedEmail });
+
+    if (!user) {
+      // Create new user account with social data
+      const randomPassword = Math.random().toString(36).slice(-10) + "Aa1!";
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(randomPassword, salt);
+      const isAdminUser = isEmailAdmin(normalizedEmail);
+
+      user = await User.create({
+        name: name ? name.trim() : normalizedEmail.split("@")[0],
+        email: normalizedEmail,
+        password: hashedPassword,
+        role: isAdminUser ? "admin" : "user",
+        avatar: avatar || `https://api.dicebear.com/7.x/adventurer/svg?seed=${encodeURIComponent(normalizedEmail)}`,
+        cart: [],
+        wishlist: [],
+        isVerified: true,
+      });
+    } else {
+      if (!user.avatar && avatar) {
+        user.avatar = avatar;
+      }
+      if (isEmailAdmin(normalizedEmail) && user.role !== "admin") {
+        user.role = "admin";
+      }
+      await user.save();
+    }
+
+    if (user.isBlocked) {
+      return res.status(403).json({
+        message: "Your account has been suspended by an administrator. Please contact support.",
+      });
+    }
+
+    const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: "30d" });
+
+    res.json({
+      message: `Successfully authenticated with ${provider || "Social Login"}! Welcome to CozyLoops.`,
+      token,
+      user: {
+        id: user._id,
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        avatar: user.avatar,
+        phone: user.phone || "",
+        bio: user.bio || "",
+        address: user.address || "",
+        city: user.city || "",
+        state: user.state || "",
+        pincode: user.pincode || "",
+        cart: user.cart || [],
+        wishlist: user.wishlist || [],
+      },
     });
   } catch (error) {
     next(error);
@@ -230,13 +314,18 @@ const getMe = async (req, res, next) => {
 // 6. UPDATE PROFILE
 const updateProfile = async (req, res, next) => {
   try {
-    const { name, phone, avatar } = req.body;
+    const { name, phone, avatar, bio, address, city, state, pincode } = req.body;
     const user = await User.findById(req.user._id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
     if (name) user.name = name.trim();
     if (phone !== undefined) user.phone = phone.trim();
     if (avatar) user.avatar = avatar;
+    if (bio !== undefined) user.bio = bio.trim();
+    if (address !== undefined) user.address = address.trim();
+    if (city !== undefined) user.city = city.trim();
+    if (state !== undefined) user.state = state.trim();
+    if (pincode !== undefined) user.pincode = pincode.trim();
 
     if (isEmailAdmin(user.email) && user.role !== "admin") {
       user.role = "admin";
@@ -248,11 +337,17 @@ const updateProfile = async (req, res, next) => {
       message: "Profile updated successfully! ✨",
       user: {
         id: user._id,
+        _id: user._id,
         name: user.name,
         email: user.email,
         role: user.role || "user",
         phone: user.phone,
         avatar: user.avatar,
+        bio: user.bio,
+        address: user.address,
+        city: user.city,
+        state: user.state,
+        pincode: user.pincode,
         cart: user.cart || [],
         wishlist: user.wishlist || [],
         createdAt: user.createdAt,
@@ -370,6 +465,7 @@ module.exports = {
   sendSignupOTP,
   verifySignupOTP,
   signIn,
+  socialLogin,
   syncData,
   getMe,
   updateProfile,

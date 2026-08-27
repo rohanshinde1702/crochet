@@ -15,6 +15,34 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin"],
       default: "user"
     },
+    bio: {
+      type: String,
+      default: "Passionate crochet & handmade enthusiast 🧶"
+    },
+    address: {
+      type: String,
+      default: ""
+    },
+    city: {
+      type: String,
+      default: ""
+    },
+    state: {
+      type: String,
+      default: ""
+    },
+    pincode: {
+      type: String,
+      default: ""
+    },
+    isBlocked: {
+      type: Boolean,
+      default: false
+    },
+    blockReason: {
+      type: String,
+      default: ""
+    },
     cart: {
       type: Array,
       default: []

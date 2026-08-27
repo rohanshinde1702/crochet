@@ -116,11 +116,6 @@ const Footer = () => {
                   About
                 </li>
               </Link>
-              <Link to="/services">
-                <li className={`cursor-pointer transition-all duration-300 hover:text-[#F88897] ${isLinkActive("/services") ? "text-[#F88897] font-semibold" : "text-gray-600"}`}>
-                  Services
-                </li>
-              </Link>
               <Link to="/blog">
                 <li className={`cursor-pointer transition-all duration-300 hover:text-[#F88897] ${isLinkActive("/blog") ? "text-[#F88897] font-semibold" : "text-gray-600"}`}>
                   Blog

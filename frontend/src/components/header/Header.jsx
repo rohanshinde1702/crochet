@@ -196,11 +196,6 @@ const Header = () => {
                 About
               </li>
             </Link>
-            <Link to="/services">
-              <li className={`transition-all duration-300 hover:text-[#F88897] ${isActive("/services") ? "text-[#F88897]" : "text-[#6C2C12]"}`}>
-                Services
-              </li>
-            </Link>
             <Link to="/shop">
               <li className={`transition-all duration-300 hover:text-[#F88897] ${isActive("/shop") ? "text-[#F88897]" : "text-[#6C2C12]"}`}>
                 Shop
@@ -555,11 +550,6 @@ const Header = () => {
                 <Link to="/about">
                   <li className={`border-b border-gray-100 py-3 transition-all duration-300 hover:text-[#F88897] ${isActive("/about") ? "text-[#F88897]" : "text-[#6C2C12]"}`}
                     onClick={() => setMenuOpen(false)}> About
-                  </li>
-                </Link>
-                <Link to="/services">
-                  <li className={`border-b border-gray-100 py-3 transition-all duration-300 hover:text-[#F88897] ${isActive("/services") ? "text-[#F88897]" : "text-[#6C2C12]"}`}
-                    onClick={() => setMenuOpen(false)}> Services
                   </li>
                 </Link>
                 <Link to="/shop">
