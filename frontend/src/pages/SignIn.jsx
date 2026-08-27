@@ -130,7 +130,14 @@ const SignIn = () => {
 
       setForgotStep(2);
       setForgotTimer(60);
-      setForgotSuccess(`Verification code sent to ${forgotEmail}! ✉️`);
+      if (data.previewOtp) {
+        setForgotOtp(data.previewOtp.split(""));
+      }
+      setForgotSuccess(
+        data.previewOtp
+          ? `Reset Code: ${data.previewOtp} (Auto-filled for testing) ✉️`
+          : `Verification code sent to ${forgotEmail}! ✉️`
+      );
     } catch (err) {
       setForgotError(err.message);
     } finally {

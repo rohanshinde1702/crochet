@@ -83,9 +83,16 @@ const SignUp = () => {
 
       setStep(2);
       setTimer(60);
+      if (data.previewOtp) {
+        setOtp(data.previewOtp.split(""));
+      }
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: `Verification code sent to ${email}! ✉️` },
+          detail: {
+            message: data.previewOtp
+              ? `Verification code: ${data.previewOtp} (Auto-filled for testing) ✉️`
+              : `Verification code sent to ${email}! ✉️`,
+          },
         })
       );
     } catch (err) {

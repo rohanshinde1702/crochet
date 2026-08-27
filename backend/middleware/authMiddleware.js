@@ -1,13 +1,22 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
-const ADMIN_EMAILS = [
-  (process.env.ADMIN_EMAIL || "admin@cozyloops.com").toLowerCase().trim()
-];
+const getAdminEmails = () => {
+  const raw = process.env.ADMIN_EMAIL || "admin@cozyloops.com";
+  const list = raw
+    .split(",")
+    .map((e) => e.toLowerCase().trim())
+    .filter(Boolean);
+
+  if (!list.includes("admin@cozyloops.com")) {
+    list.push("admin@cozyloops.com");
+  }
+  return list;
+};
 
 const isEmailAdmin = (email) => {
   if (!email) return false;
-  return ADMIN_EMAILS.includes(email.toLowerCase().trim());
+  return getAdminEmails().includes(email.toLowerCase().trim());
 };
 
 // Protect middleware: verifies JWT token
@@ -50,6 +59,6 @@ const adminOnly = (req, res, next) => {
 module.exports = {
   protect,
   adminOnly,
-  ADMIN_EMAILS,
+  getAdminEmails,
   isEmailAdmin
 };

@@ -10,6 +10,19 @@ const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString()
 
 // Helper to send email OTP
 const sendOtpEmail = async (email, otp, purpose) => {
+  const isEmailConfigured =
+    process.env.EMAIL_USER &&
+    process.env.EMAIL_PASS &&
+    !process.env.EMAIL_USER.includes("your_email") &&
+    !process.env.EMAIL_PASS.includes("your_gmail");
+
+  if (!isEmailConfigured) {
+    console.log(
+      `⚠️ [GMAIL NOT CONFIGURED] Real email was skipped because EMAIL_USER/EMAIL_PASS in backend/.env are placeholders.\n👉 Verification Code for ${email}: [ ${otp} ]`
+    );
+    return { success: false, reason: "unconfigured" };
+  }
+
   const mailOptions = {
     from: `"Crochet Handcrafted" <${process.env.EMAIL_USER}>`,
     to: email,
@@ -34,8 +47,10 @@ const sendOtpEmail = async (email, otp, purpose) => {
   try {
     await transporter.sendMail(mailOptions);
     console.log(`📧 OTP ${otp} sent to ${email}`);
+    return { success: true };
   } catch (err) {
-    console.log(`⚠️ Email sending failed: ${err.message}. (OTP for local testing: ${otp})`);
+    console.log(`⚠️ Email sending failed: ${err.message}. 👉 (OTP for testing: ${otp})`);
+    return { success: false, reason: err.message };
   }
 };
 
@@ -66,8 +81,11 @@ const sendSignupOTP = async (req, res, next) => {
     await OTP.deleteMany({ email: normalizedEmail, type: "signup" });
     await OTP.create({ email: normalizedEmail, otp, type: "signup" });
 
-    await sendOtpEmail(normalizedEmail, otp, "Account Registration");
-    res.json({ message: `Verification code sent to ${normalizedEmail}` });
+    const emailStatus = await sendOtpEmail(normalizedEmail, otp, "Account Registration");
+    res.json({
+      message: `Verification code sent to ${normalizedEmail}`,
+      previewOtp: !emailStatus.success ? otp : undefined,
+    });
   } catch (error) {
     next(error);
   }
@@ -298,8 +316,11 @@ const sendForgotPasswordOTP = async (req, res, next) => {
     await OTP.deleteMany({ email: normalizedEmail, type: "forgot_password" });
     await OTP.create({ email: normalizedEmail, otp, type: "forgot_password" });
 
-    await sendOtpEmail(normalizedEmail, otp, "Password Reset");
-    res.json({ message: `Password reset code sent to ${normalizedEmail}` });
+    const emailStatus = await sendOtpEmail(normalizedEmail, otp, "Password Reset");
+    res.json({
+      message: `Password reset code sent to ${normalizedEmail}`,
+      previewOtp: !emailStatus.success ? otp : undefined,
+    });
   } catch (error) {
     next(error);
   }
