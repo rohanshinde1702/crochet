@@ -18,6 +18,7 @@ import {
   LuPackage,
   LuTrash2,
 } from "react-icons/lu";
+import { API_ENDPOINTS } from "../../config/api";
 
 const CATEGORIES = [
   "Decor & Gifts",
@@ -47,7 +48,7 @@ const AdminProducts = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:5000/api/products");
+      const res = await fetch(API_ENDPOINTS.PRODUCTS);
       const data = await res.json();
       if (Array.isArray(data)) setProducts(data);
       if (refreshCounts) refreshCounts();
@@ -128,7 +129,7 @@ const AdminProducts = () => {
 
     try {
       const itemId = deletingProduct.id || deletingProduct._id;
-      const res = await fetch(`http://localhost:5000/api/products/${itemId}`, {
+      const res = await fetch(`${API_ENDPOINTS.PRODUCTS}/${itemId}`, {
         method: "DELETE",
       });
       const data = await res.json();

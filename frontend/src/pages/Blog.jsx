@@ -7,6 +7,7 @@ import {
 } from "react-icons/bs";
 import { GiSewingNeedle, GiYarn } from "react-icons/gi";
 import { LuBookOpen, LuHandHeart } from "react-icons/lu";
+import { API_ENDPOINTS } from "../config/api";
 
 export const BLOG_CATEGORIES = [
   "All Stories",
@@ -27,7 +28,7 @@ const Blog = () => {
 
   // Fetch blogs from API
   useEffect(() => {
-    fetch("http://localhost:5000/api/blogs")
+    fetch(API_ENDPOINTS.BLOGS)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {

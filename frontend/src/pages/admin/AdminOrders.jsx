@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useOutletContext } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import { LuShoppingBag, LuDownload } from "react-icons/lu";
+import { API_ENDPOINTS } from "../../config/api";
 
 const AdminOrders = () => {
   const { globalSearch, isDark } = useOutletContext();
@@ -13,7 +14,7 @@ const AdminOrders = () => {
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:5000/api/orders");
+      const res = await fetch(API_ENDPOINTS.ORDERS);
       const data = await res.json();
       if (Array.isArray(data)) setOrders(data);
     } catch (err) {
@@ -43,7 +44,7 @@ const AdminOrders = () => {
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/orders/${orderId}/status`, {
+      const res = await fetch(`${API_ENDPOINTS.ORDERS}/${orderId}/status`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),

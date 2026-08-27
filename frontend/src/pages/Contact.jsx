@@ -5,6 +5,7 @@ import { FaInstagram, FaFacebookF, FaPinterestP, FaYoutube, FaRegEnvelope, FaHea
 import { LuUser, LuMail, LuTag, LuPenLine, LuSend } from "react-icons/lu";
 import TopBar from "../components/topBar/TopBar";
 import { useSettings } from "../context/SettingsContext";
+import { API_ENDPOINTS } from "../config/api";
 
 const Contact = () => {
   const { settings } = useSettings();
@@ -45,7 +46,7 @@ const Contact = () => {
     setStatus("sending");
 
     try {
-      const res = await fetch("http://localhost:5000/api/contacts", {
+      const res = await fetch(API_ENDPOINTS.CONTACTS, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

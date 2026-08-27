@@ -28,6 +28,7 @@ import {
   LuMenu,
   LuX,
 } from "react-icons/lu";
+import { API_ENDPOINTS } from "../config/api";
 
 const AdminLayout = () => {
   const navigate = useNavigate();
@@ -75,10 +76,10 @@ const AdminLayout = () => {
   const fetchCounts = async () => {
     try {
       const [prodRes, binProdRes, blogRes, binBlogRes] = await Promise.all([
-        fetch("http://localhost:5000/api/products"),
-        fetch("http://localhost:5000/api/products/recycle-bin"),
-        fetch("http://localhost:5000/api/blogs"),
-        fetch("http://localhost:5000/api/blogs/recycle-bin"),
+        fetch(API_ENDPOINTS.PRODUCTS),
+        fetch(`${API_ENDPOINTS.PRODUCTS}/recycle-bin`),
+        fetch(API_ENDPOINTS.BLOGS),
+        fetch(`${API_ENDPOINTS.BLOGS}/recycle-bin`),
       ]);
 
       const [prods, binProds, blogs, binBlogs] = await Promise.all([
@@ -135,7 +136,7 @@ const AdminLayout = () => {
     setIsSubmittingCat(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/categories", {
+      const res = await fetch(API_ENDPOINTS.CATEGORIES, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

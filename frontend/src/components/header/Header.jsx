@@ -5,6 +5,7 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { API_BASE_URL } from "../../config/api";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -129,7 +130,7 @@ const Header = () => {
       const query = searchTerm.trim();
       setDebouncedQuery(query);
 
-      fetch(`http://localhost:5000/api/products?search=${encodeURIComponent(query)}`)
+      fetch(`${API_BASE_URL}/api/products?search=${encodeURIComponent(query)}`)
         .then((res) => res.json())
         .then((data) => {
           if (Array.isArray(data)) {
@@ -193,6 +194,11 @@ const Header = () => {
             <Link to="/about">
               <li className={`transition-all duration-300 hover:text-[#F88897] ${isActive("/about") ? "text-[#F88897]" : "text-[#6C2C12]"}`}>
                 About
+              </li>
+            </Link>
+            <Link to="/services">
+              <li className={`transition-all duration-300 hover:text-[#F88897] ${isActive("/services") ? "text-[#F88897]" : "text-[#6C2C12]"}`}>
+                Services
               </li>
             </Link>
             <Link to="/shop">
@@ -549,6 +555,11 @@ const Header = () => {
                 <Link to="/about">
                   <li className={`border-b border-gray-100 py-3 transition-all duration-300 hover:text-[#F88897] ${isActive("/about") ? "text-[#F88897]" : "text-[#6C2C12]"}`}
                     onClick={() => setMenuOpen(false)}> About
+                  </li>
+                </Link>
+                <Link to="/services">
+                  <li className={`border-b border-gray-100 py-3 transition-all duration-300 hover:text-[#F88897] ${isActive("/services") ? "text-[#F88897]" : "text-[#6C2C12]"}`}
+                    onClick={() => setMenuOpen(false)}> Services
                   </li>
                 </Link>
                 <Link to="/shop">

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { LuPlus, LuX, LuBoxes } from "react-icons/lu";
+import { API_ENDPOINTS } from "../../config/api";
 
 const AdminCategories = () => {
   const { isDark } = useOutletContext();
@@ -16,7 +17,7 @@ const AdminCategories = () => {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:5000/api/categories");
+      const res = await fetch(API_ENDPOINTS.CATEGORIES);
       const data = await res.json();
       if (Array.isArray(data)) setCategoriesList(data);
     } catch (err) {
@@ -36,7 +37,7 @@ const AdminCategories = () => {
     setSubmitting(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/categories", {
+      const res = await fetch(API_ENDPOINTS.CATEGORIES, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

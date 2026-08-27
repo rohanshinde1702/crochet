@@ -6,6 +6,7 @@ import { BsHandbag, BsHeart, BsHeartFill, BsListUl, BsSearch, BsX, BsStarFill, B
 import { GiYarn } from "react-icons/gi";
 import { LuRotateCcw } from "react-icons/lu";
 import { saveCart, saveWishlist } from "../utils/syncHelper";
+import { API_ENDPOINTS } from "../config/api";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -83,7 +84,7 @@ const Shop = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:5000/api/products")
+    fetch(API_ENDPOINTS.PRODUCTS)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {

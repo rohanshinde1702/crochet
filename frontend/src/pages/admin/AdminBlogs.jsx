@@ -10,6 +10,7 @@ import {
   BsArrowCounterclockwise,
 } from "react-icons/bs";
 import { LuBookOpen, LuPlus, LuStar, LuTrash2 } from "react-icons/lu";
+import { API_ENDPOINTS } from "../../config/api";
 
 const BLOG_CATEGORIES = [
   "Crochet Guides",
@@ -42,8 +43,8 @@ const AdminBlogs = () => {
     try {
       setLoading(true);
       const [resActive, resBin] = await Promise.all([
-        fetch("http://localhost:5000/api/blogs"),
-        fetch("http://localhost:5000/api/blogs/recycle-bin"),
+        fetch(API_ENDPOINTS.BLOGS),
+        fetch(`${API_ENDPOINTS.BLOGS}/recycle-bin`),
       ]);
       const [activeData, binData] = await Promise.all([
         resActive.json(),
@@ -98,8 +99,8 @@ const AdminBlogs = () => {
       const isPermanent = deletingBlog.isPermanent;
       const itemId = deletingBlog.blog.id || deletingBlog.blog._id || deletingBlog.blog.slug;
       const endpoint = isPermanent
-        ? `http://localhost:5000/api/blogs/${itemId}/permanent`
-        : `http://localhost:5000/api/blogs/${itemId}`;
+        ? `${API_ENDPOINTS.BLOGS}/${itemId}/permanent`
+        : `${API_ENDPOINTS.BLOGS}/${itemId}`;
 
       const res = await fetch(endpoint, { method: "DELETE" });
       const data = await res.json();
@@ -128,7 +129,7 @@ const AdminBlogs = () => {
     const itemId = blog.id || blog._id || blog.slug;
     try {
       setRestoreLoadingId(itemId);
-      const res = await fetch(`http://localhost:5000/api/blogs/${itemId}/restore`, {
+      const res = await fetch(`${API_ENDPOINTS.BLOGS}/${itemId}/restore`, {
         method: "PUT",
       });
       const data = await res.json();

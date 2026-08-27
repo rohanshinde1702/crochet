@@ -15,6 +15,7 @@ import {
 } from "react-icons/bs";
 import { GiYarn } from "react-icons/gi";
 import { LuPackage, LuPlus, LuDownload } from "react-icons/lu";
+import { API_ENDPOINTS } from "../config/api";
 
 const CATEGORIES = [
   "Decor & Gifts",
@@ -106,7 +107,7 @@ const AddProduct = () => {
   useEffect(() => {
     if (isEdit && isAuthorized) {
       setLoadingInitial(true);
-      fetch(`http://localhost:5000/api/products/${id}`)
+      fetch(`${API_ENDPOINTS.PRODUCTS}/${id}`)
         .then((res) => {
           if (!res.ok) throw new Error("Product not found");
           return res.json();
@@ -150,7 +151,7 @@ const AddProduct = () => {
       uploadData.append("image", file);
 
       const res = await fetch(
-        `http://localhost:5000/api/upload?category=${encodeURIComponent(formData.category)}`,
+        `${API_ENDPOINTS.UPLOAD}?category=${encodeURIComponent(formData.category)}`,
         {
           method: "POST",
           body: uploadData,
@@ -194,8 +195,8 @@ const AddProduct = () => {
 
     try {
       const url = isEdit
-        ? `http://localhost:5000/api/products/${id}`
-        : "http://localhost:5000/api/products";
+        ? `${API_ENDPOINTS.PRODUCTS}/${id}`
+        : API_ENDPOINTS.PRODUCTS;
       const method = isEdit ? "PUT" : "POST";
 
       const res = await fetch(url, {

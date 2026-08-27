@@ -12,6 +12,7 @@ import {
   BsEye,
 } from "react-icons/bs";
 import { LuBookOpen, LuStar } from "react-icons/lu";
+import { API_ENDPOINTS } from "../config/api";
 
 const BLOG_CATEGORIES = [
   "Crochet Guides",
@@ -85,7 +86,7 @@ const AddBlog = () => {
   useEffect(() => {
     if (isEdit && isAuthorized) {
       setLoadingInitial(true);
-      fetch(`http://localhost:5000/api/blogs/${id}`)
+      fetch(`${API_ENDPOINTS.BLOGS}/${id}`)
         .then((res) => {
           if (!res.ok) throw new Error("Blog story not found");
           return res.json();
@@ -137,7 +138,7 @@ const AddBlog = () => {
       uploadData.append("type", "blog");
       uploadData.append("image", file);
 
-      const res = await fetch("http://localhost:5000/api/upload?category=blogs&type=blog", {
+      const res = await fetch(`${API_ENDPOINTS.UPLOAD}?category=blogs&type=blog`, {
         method: "POST",
         body: uploadData,
       });
@@ -179,8 +180,8 @@ const AddBlog = () => {
 
     try {
       const url = isEdit
-        ? `http://localhost:5000/api/blogs/${id}`
-        : "http://localhost:5000/api/blogs";
+        ? `${API_ENDPOINTS.BLOGS}/${id}`
+        : API_ENDPOINTS.BLOGS;
       const method = isEdit ? "PUT" : "POST";
 
       const payload = {

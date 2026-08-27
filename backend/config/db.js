@@ -1,4 +1,8 @@
 const mongoose = require("mongoose");
+const dns = require("dns");
+
+// Set DNS servers to Google & Cloudflare DNS to avoid querySrv ECONNREFUSED issues with ISP DNS
+dns.setServers(["8.8.8.8", "8.8.4.4", "1.1.1.1"]);
 
 const connectDB = async () => {
     try {

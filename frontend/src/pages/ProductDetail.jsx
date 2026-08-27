@@ -10,6 +10,7 @@ import { LuHandHeart, LuLeaf } from "react-icons/lu";
 import { saveCart, saveWishlist } from "../utils/syncHelper";
 import TopBar from "../components/topBar/TopBar";
 import { useSettings } from "../context/SettingsContext";
+import { API_ENDPOINTS } from "../config/api";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -47,7 +48,7 @@ const ProductDetail = () => {
   // Fetch product and related products from API
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/products/${id}`)
+    fetch(`${API_ENDPOINTS.PRODUCTS}/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error("Product not found");
         return res.json();
@@ -61,7 +62,7 @@ const ProductDetail = () => {
         setLoading(false);
       });
 
-    fetch("http://localhost:5000/api/products")
+    fetch(API_ENDPOINTS.PRODUCTS)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {

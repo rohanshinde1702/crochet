@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { API_ENDPOINTS } from "../config/api";
 
 const DEFAULT_SETTINGS = {
   storeName: "CozyLoops Studio",
@@ -33,7 +34,7 @@ export const SettingsProvider = ({ children }) => {
   const fetchSettings = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:5000/api/settings");
+      const res = await fetch(API_ENDPOINTS.SETTINGS);
       if (res.ok) {
         const data = await res.json();
         setSettings((prev) => ({
@@ -58,7 +59,7 @@ export const SettingsProvider = ({ children }) => {
 
   const updateSettings = async (newSettingsData) => {
     try {
-      const res = await fetch("http://localhost:5000/api/settings", {
+      const res = await fetch(API_ENDPOINTS.SETTINGS, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newSettingsData)

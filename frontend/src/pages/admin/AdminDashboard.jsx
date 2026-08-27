@@ -19,6 +19,7 @@ import {
   LuSparkles,
   LuPercent,
 } from "react-icons/lu";
+import { API_ENDPOINTS } from "../../config/api";
 
 const AdminDashboard = () => {
   const { currentUser, refreshCounts, isDark } = useOutletContext();
@@ -32,10 +33,10 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       const [prodRes, orderRes, custRes, catRes] = await Promise.all([
-        fetch("http://localhost:5000/api/products"),
-        fetch("http://localhost:5000/api/orders"),
-        fetch("http://localhost:5000/api/customers"),
-        fetch("http://localhost:5000/api/categories"),
+        fetch(API_ENDPOINTS.PRODUCTS),
+        fetch(API_ENDPOINTS.ORDERS),
+        fetch(API_ENDPOINTS.CUSTOMERS),
+        fetch(API_ENDPOINTS.CATEGORIES),
       ]);
 
       const [prodData, orderData, custData, catData] = await Promise.all([

@@ -21,6 +21,7 @@ import {
   BsEyeSlash,
 } from "react-icons/bs";
 import { GiYarn } from "react-icons/gi";
+import { API_ENDPOINTS } from "../config/api";
 
 const PRESET_AVATARS = [
   "https://api.dicebear.com/7.x/adventurer/svg?seed=CrochetArtisan",
@@ -87,7 +88,7 @@ const Profile = () => {
     }
 
     // Fetch user details
-    fetch("http://localhost:5000/api/auth/me", {
+    fetch(`${API_ENDPOINTS.AUTH}/me`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {
@@ -126,7 +127,7 @@ const Profile = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/auth/profile", {
+      const res = await fetch(`${API_ENDPOINTS.AUTH}/profile`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -177,7 +178,7 @@ const Profile = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/auth/change-password", {
+      const res = await fetch(`${API_ENDPOINTS.AUTH}/change-password`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -211,7 +212,7 @@ const Profile = () => {
     setForgotMsg({ type: "", text: "" });
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/forgot-password-otp", {
+      const res = await fetch(`${API_ENDPOINTS.AUTH}/forgot-password-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: user.email }),
@@ -278,7 +279,7 @@ const Profile = () => {
     setForgotMsg({ type: "", text: "" });
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/reset-password-otp", {
+      const res = await fetch(`${API_ENDPOINTS.AUTH}/reset-password-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

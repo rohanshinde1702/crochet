@@ -13,6 +13,7 @@ import ProductDetail from '../pages/ProductDetail';
 import SignIn from '../pages/SignIn';
 import SignUp from '../pages/SignUp';
 import Profile from '../pages/Profile';
+import Services from '../pages/Services';
 
 // Admin Layout and Pages
 import AdminLayout from '../layouts/AdminLayout';
@@ -50,6 +51,7 @@ const AppRoutes = () => {
         <Route path='cart' element={<Cart />} />
         <Route path='wishlist' element={<Wishlist />} />
         <Route path='about' element={<About />} />
+        <Route path='services' element={<Services />} />
         <Route path='contact' element={<Contact />} />
         <Route path='shop' element={<Shop />} />
         <Route path='blog' element={<Blog />} />

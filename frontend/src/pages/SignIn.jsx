@@ -15,6 +15,7 @@ import {
 } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
+import { API_ENDPOINTS } from "../config/api";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -62,7 +63,7 @@ const SignIn = () => {
     setError("");
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/auth/signin", {
+      const res = await fetch(`${API_ENDPOINTS.AUTH}/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.trim(), password }),
@@ -118,7 +119,7 @@ const SignIn = () => {
     setForgotLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/forgot-password-otp", {
+      const res = await fetch(`${API_ENDPOINTS.AUTH}/forgot-password-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: forgotEmail.trim() }),
@@ -173,7 +174,7 @@ const SignIn = () => {
     setForgotLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/reset-password-otp", {
+      const res = await fetch(`${API_ENDPOINTS.AUTH}/reset-password-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

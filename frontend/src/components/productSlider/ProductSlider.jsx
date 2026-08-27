@@ -5,6 +5,7 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { motion } from "framer-motion";
 import { BsHeart, BsHeartFill, BsHandbag, BsEye, BsCheck2, BsStarFill, BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { saveCart, saveWishlist } from "../../utils/syncHelper";
+import { API_ENDPOINTS } from "../../config/api";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -17,7 +18,7 @@ const ProductSlider = () => {
   const [allProducts, setAllProducts] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/products")
+    fetch(API_ENDPOINTS.PRODUCTS)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {

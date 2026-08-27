@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useOutletContext } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import { LuUsers, LuDownload, LuStar } from "react-icons/lu";
+import { API_ENDPOINTS } from "../../config/api";
 
 const AdminCustomers = () => {
   const { globalSearch, isDark } = useOutletContext();
@@ -12,7 +13,7 @@ const AdminCustomers = () => {
   const fetchCustomers = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:5000/api/customers");
+      const res = await fetch(API_ENDPOINTS.CUSTOMERS);
       const data = await res.json();
       if (Array.isArray(data)) setCustomers(data);
     } catch (err) {

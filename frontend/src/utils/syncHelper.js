@@ -1,3 +1,5 @@
+import { API_ENDPOINTS } from "../config/api";
+
 // Helper to save and sync cart/wishlist to localStorage and MongoDB for logged in user
 export const saveCart = (cartItems) => {
   localStorage.setItem("cart", JSON.stringify(cartItems));
@@ -13,7 +15,7 @@ export const saveCart = (cartItems) => {
   // Sync to MongoDB database
   const token = localStorage.getItem("token");
   if (token) {
-    fetch("http://localhost:5000/api/auth/sync-data", {
+    fetch(`${API_ENDPOINTS.AUTH}/sync-data`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -40,7 +42,7 @@ export const saveWishlist = (wishlistItems) => {
   // Sync to MongoDB database
   const token = localStorage.getItem("token");
   if (token) {
-    fetch("http://localhost:5000/api/auth/sync-data", {
+    fetch(`${API_ENDPOINTS.AUTH}/sync-data`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

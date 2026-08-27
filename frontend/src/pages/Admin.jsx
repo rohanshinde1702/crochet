@@ -16,6 +16,7 @@ import {
   BsEye,
 } from "react-icons/bs";
 import { GiYarn } from "react-icons/gi";
+import { API_ENDPOINTS } from "../config/api";
 import {
   LuLayoutDashboard,
   LuBoxes,
@@ -159,7 +160,7 @@ const Admin = () => {
   const fetchProducts = async () => {
     try {
       setProductsLoading(true);
-      const res = await fetch("http://localhost:5000/api/products");
+      const res = await fetch(API_ENDPOINTS.PRODUCTS);
       const data = await res.json();
       if (Array.isArray(data)) setProducts(data);
     } catch (err) {
@@ -171,7 +172,7 @@ const Admin = () => {
 
   const fetchProductRecycleBin = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/products/recycle-bin");
+      const res = await fetch(`${API_ENDPOINTS.PRODUCTS}/recycle-bin`);
       const data = await res.json();
       if (Array.isArray(data)) setRecycleBinProducts(data);
     } catch (err) {
@@ -183,7 +184,7 @@ const Admin = () => {
   const fetchBlogs = async () => {
     try {
       setBlogsLoading(true);
-      const res = await fetch("http://localhost:5000/api/blogs");
+      const res = await fetch(API_ENDPOINTS.BLOGS);
       const data = await res.json();
       if (Array.isArray(data)) setBlogs(data);
     } catch (err) {
@@ -195,7 +196,7 @@ const Admin = () => {
 
   const fetchBlogRecycleBin = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/blogs/recycle-bin");
+      const res = await fetch(`${API_ENDPOINTS.BLOGS}/recycle-bin`);
       const data = await res.json();
       if (Array.isArray(data)) setRecycleBinBlogs(data);
     } catch (err) {
@@ -347,7 +348,7 @@ const Admin = () => {
     const itemId = product.id || product._id;
     try {
       setActionLoadingId(`restore-prod-${itemId}`);
-      const res = await fetch(`http://localhost:5000/api/products/${itemId}/restore`, {
+      const res = await fetch(`${API_ENDPOINTS.PRODUCTS}/${itemId}/restore`, {
         method: "PUT",
       });
       const data = await res.json();
@@ -373,7 +374,7 @@ const Admin = () => {
     const itemId = blog.id || blog._id || blog.slug;
     try {
       setActionLoadingId(`restore-blog-${itemId}`);
-      const res = await fetch(`http://localhost:5000/api/blogs/${itemId}/restore`, {
+      const res = await fetch(`${API_ENDPOINTS.BLOGS}/${itemId}/restore`, {
         method: "PUT",
       });
       const data = await res.json();
@@ -403,7 +404,7 @@ const Admin = () => {
       // 1. Empty Recycle Bin Handler
       if (deletingItem.type === "empty_bin") {
         if (deletingItem.target === "products" || deletingItem.target === "all") {
-          const res = await fetch("http://localhost:5000/api/products/recycle-bin/empty", {
+          const res = await fetch(`${API_ENDPOINTS.PRODUCTS}/recycle-bin/empty`, {
             method: "DELETE",
           });
           if (!res.ok) {
@@ -412,7 +413,7 @@ const Admin = () => {
           }
         }
         if (deletingItem.target === "blogs" || deletingItem.target === "all") {
-          const res = await fetch("http://localhost:5000/api/blogs/recycle-bin/empty", {
+          const res = await fetch(`${API_ENDPOINTS.BLOGS}/recycle-bin/empty`, {
             method: "DELETE",
           });
           if (!res.ok) {
@@ -440,11 +441,11 @@ const Admin = () => {
 
       const endpoint = isBlog
         ? isPermanent
-          ? `http://localhost:5000/api/blogs/${itemId}/permanent`
-          : `http://localhost:5000/api/blogs/${itemId}`
+          ? `${API_ENDPOINTS.BLOGS}/${itemId}/permanent`
+          : `${API_ENDPOINTS.BLOGS}/${itemId}`
         : isPermanent
-        ? `http://localhost:5000/api/products/${itemId}/permanent`
-        : `http://localhost:5000/api/products/${itemId}`;
+        ? `${API_ENDPOINTS.PRODUCTS}/${itemId}/permanent`
+        : `${API_ENDPOINTS.PRODUCTS}/${itemId}`;
 
       const res = await fetch(endpoint, { method: "DELETE" });
       const data = await res.json();

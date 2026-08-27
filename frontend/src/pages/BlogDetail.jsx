@@ -5,6 +5,7 @@ import { useSettings } from "../context/SettingsContext";
 import { motion } from "framer-motion";
 import { BsArrowLeft, BsCalendar3, BsClock, BsChatDots, BsShare, BsLightbulb, BsArrowRight, BsChevronRight, 
   BsWhatsapp, BsInstagram,BsTwitterX, BsFacebook } from "react-icons/bs";
+import { API_ENDPOINTS } from "../config/api";
 
 const BlogDetail = () => {
   const { id } = useParams();
@@ -23,7 +24,7 @@ const BlogDetail = () => {
     setLoading(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
 
-    fetch(`http://localhost:5000/api/blogs/${id}`)
+    fetch(`${API_ENDPOINTS.BLOGS}/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error("Blog not found");
         return res.json();
@@ -38,7 +39,7 @@ const BlogDetail = () => {
         setLoading(false);
       });
 
-    fetch("http://localhost:5000/api/blogs")
+    fetch(API_ENDPOINTS.BLOGS)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {

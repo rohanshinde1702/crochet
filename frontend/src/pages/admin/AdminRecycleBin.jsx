@@ -7,6 +7,7 @@ import {
   BsExclamationTriangle,
 } from "react-icons/bs";
 import { LuBoxes, LuBookOpen, LuTrash2 } from "react-icons/lu";
+import { API_ENDPOINTS } from "../../config/api";
 
 const AdminRecycleBin = () => {
   const { refreshCounts, isDark } = useOutletContext();
@@ -27,8 +28,8 @@ const AdminRecycleBin = () => {
     try {
       setLoading(true);
       const [prodRes, blogRes] = await Promise.all([
-        fetch("http://localhost:5000/api/products/recycle-bin"),
-        fetch("http://localhost:5000/api/blogs/recycle-bin"),
+        fetch(`${API_ENDPOINTS.PRODUCTS}/recycle-bin`),
+        fetch(`${API_ENDPOINTS.BLOGS}/recycle-bin`),
       ]);
       const [prodData, blogData] = await Promise.all([
         prodRes.json(),
@@ -67,7 +68,7 @@ const AdminRecycleBin = () => {
     const itemId = product.id || product._id;
     try {
       setRestoringId(`prod-${itemId}`);
-      const res = await fetch(`http://localhost:5000/api/products/${itemId}/restore`, {
+      const res = await fetch(`${API_ENDPOINTS.PRODUCTS}/${itemId}/restore`, {
         method: "PUT",
       });
       const data = await res.json();
@@ -90,7 +91,7 @@ const AdminRecycleBin = () => {
     const itemId = blog.id || blog._id || blog.slug;
     try {
       setRestoringId(`blog-${itemId}`);
-      const res = await fetch(`http://localhost:5000/api/blogs/${itemId}/restore`, {
+      const res = await fetch(`${API_ENDPOINTS.BLOGS}/${itemId}/restore`, {
         method: "PUT",
       });
       const data = await res.json();
@@ -118,8 +119,8 @@ const AdminRecycleBin = () => {
         const target = deletingModalItem.target;
         const endpoint =
           target === "products"
-            ? "http://localhost:5000/api/products/recycle-bin/empty"
-            : "http://localhost:5000/api/blogs/recycle-bin/empty";
+            ? `${API_ENDPOINTS.PRODUCTS}/recycle-bin/empty`
+            : `${API_ENDPOINTS.BLOGS}/recycle-bin/empty`;
 
         const res = await fetch(endpoint, { method: "DELETE" });
         if (!res.ok) throw new Error("Failed to empty recycle bin");
@@ -136,8 +137,8 @@ const AdminRecycleBin = () => {
         const item = deletingModalItem.item;
         const itemId = item.id || item._id || (isBlog ? item.slug : null);
         const endpoint = isBlog
-          ? `http://localhost:5000/api/blogs/${itemId}/permanent`
-          : `http://localhost:5000/api/products/${itemId}/permanent`;
+          ? `${API_ENDPOINTS.BLOGS}/${itemId}/permanent`
+          : `${API_ENDPOINTS.PRODUCTS}/${itemId}/permanent`;
 
         const res = await fetch(endpoint, { method: "DELETE" });
         if (!res.ok) throw new Error("Failed to permanently delete item");

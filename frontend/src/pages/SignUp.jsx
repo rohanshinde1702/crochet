@@ -14,6 +14,7 @@ import {
 } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
+import { API_ENDPOINTS } from "../config/api";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -72,7 +73,7 @@ const SignUp = () => {
     setError("");
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/auth/send-signup-otp", {
+      const res = await fetch(`${API_ENDPOINTS.AUTH}/send-signup-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -121,7 +122,7 @@ const SignUp = () => {
     setError("");
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/auth/verify-signup-otp", {
+      const res = await fetch(`${API_ENDPOINTS.AUTH}/verify-signup-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
