@@ -13,7 +13,7 @@ const getAllProducts = async (req, res, next) => {
       query.title = { $regex: search, $options: "i" };
     }
 
-    const products = await Product.find(query).sort({ id: 1 });
+    const products = await Product.find(query).sort({ id: -1 });
     res.json(products);
   } catch (err) {
     next(err);
