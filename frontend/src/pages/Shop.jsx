@@ -6,7 +6,7 @@ import { BsHandbag, BsHeart, BsHeartFill, BsListUl, BsSearch, BsX, BsStarFill, B
 import { GiYarn } from "react-icons/gi";
 import { LuRotateCcw } from "react-icons/lu";
 import { saveCart, saveWishlist } from "../utils/syncHelper";
-import { API_ENDPOINTS } from "../config/api";
+import { getProducts } from "../services/dataService";
 import { getCategoryIcon } from "../utils/categoryIcons";
 
 const ITEMS_PER_PAGE = 12;
@@ -85,8 +85,7 @@ const Shop = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(API_ENDPOINTS.PRODUCTS)
-      .then((res) => res.json())
+    getProducts()
       .then((data) => {
         if (Array.isArray(data)) {
           setProducts(data);
@@ -97,6 +96,14 @@ const Shop = () => {
         console.error("Failed to load products:", err);
         setLoading(false);
       });
+
+    const handleUpdate = () => {
+      getProducts().then((data) => {
+        if (Array.isArray(data)) setProducts(data);
+      });
+    };
+    window.addEventListener("productsUpdated", handleUpdate);
+    return () => window.removeEventListener("productsUpdated", handleUpdate);
   }, []);
 
   // Update category and search query when URL search params change

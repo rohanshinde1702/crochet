@@ -1,158 +1,101 @@
-# 🧶 CozyLoops — Handcrafted Crochet E-Commerce Store & Admin Studio
+# 🧶 CozyLoops — Handcrafted Crochet React eCommerce & Admin Template
 
-> A full-stack MERN (MongoDB, Express, React, Node.js) e-commerce web application featuring a boutique handcrafted storefront, customer authentication with email OTP, automated order routing, and a multi-page **Executive Admin Studio** with Dark & Light theme modes.
+> A modern, responsive, and ultra-clean React eCommerce and Executive Admin Studio template designed for artisan crafters, handmade crochet businesses, boutique studios, and creative stores.
 
----
-
-## 🌟 Key Features
-
-### 🛍️ Customer Storefront
-- **Artisanal Home & Shop**: Hero sliders, curated collections, dynamic category tabs, stock indicators, and price filters.
-- **Product Details**: Multi-angle image preview, rating reviews, yarn material tags, social sharing, and instant cart/wishlist sync.
-- **Story Journal / Blog**: Craft tutorials, yarn selection guides, read-time calculator, and comments stream.
-- **Shopping Bag & Checkout**: Local & cloud-synced cart, free shipping calculation, delivery form, and simulated payment.
-- **Contact Us**: Connected to dynamic store settings with **automated email dispatch** directly to the store administrator's inbox.
-- **Customer Account**: Profile dashboard, saved shipping address, order history tracking, and security settings.
-
-### ⚡ Executive Admin Studio (`/admin`)
-- **🌓 Dark & Light Theme Modes**: Quick toggle button in header, persistent theme preference in `localStorage`.
-- **📊 Command Analytics Dashboard**: Gross revenue counter, total orders, average order value, registered customers, interactive monthly revenue chart, category revenue distribution, store health metrics, top creations leaderboard, and live activity stream.
-- **🧶 Product Catalog Management**: Add, edit, soft-delete to Recycle Bin, inventory units tracker, and CSV export.
-- **🗂️ Categories Manager**: Emoji icons, category descriptions, and live product counter.
-- **🛍️ Order Fulfillment Hub**: Live MongoDB order tracking, 1-click status dropdowns (`Processing` -> `Shipped` -> `Delivered`), and CSV export.
-- **👥 Customer Directory**: Lifetime spend aggregator, order history count, and VIP badges.
-- **📝 Stories & Blog Studio**: Full markdown/HTML story composer, category tagging, and spotlight featured toggles.
-- **♻️ Dedicated Recycle Bin**: Separate tabs for Deleted Products and Deleted Blogs, 1-click instant restore, permanent purge, and empty bin modal.
-- **🖼️ Media Library**: Image asset browser with category filtering and 1-click clipboard URL copy.
-- **⚙️ Store Settings**: Update Store Name, Support Email, Phone Number, WhatsApp Number, Studio Address, Working Hours, Social Media Links (Instagram, Facebook, Pinterest, YouTube, Twitter/X), Free Shipping threshold, and Currency.
+Built with **React 18**, **Vite**, **Lucide Icons**, and pure CSS modules with zero heavy dependencies.
 
 ---
 
-## 🛠️ Technology Stack
+## 🌟 Key Highlights
 
-| Layer | Technologies |
-| :--- | :--- |
-| **Frontend** | React 19, Vite, Tailwind CSS v4, Framer Motion, React Router DOM v7, React Icons |
-| **Backend** | Node.js, Express.js, Mongoose ODM, JSON Web Tokens (JWT), Bcrypt.js, Multer |
-| **Database** | MongoDB (Local Community Server or MongoDB Atlas Cloud) |
-| **Email Service** | Nodemailer (Gmail SMTP Service / App Passwords) |
+- **100% Standalone Ready**: Fully functional frontend out of the box with pre-configured schemas, mock datasets, and browser `localStorage` persistence.
+- **ThemeForest Compliant**: All 46 demo images use neutral, dimension-indicating placeholders (`1905 × 680`, `600 × 600`, `1200 × 750`, etc.).
+- **Executive Admin Studio (`/admin`)**: Built-in Analytics Dashboard, Product Catalog Manager, Category Manager, Story/Blog Publisher, Order Fulfillment Center, Customer Directory, Soft-delete Recycle Bin, and Global Store Settings.
+- **Cart & Wishlist System**: Interactive slide-out cart drawer, free shipping threshold progress meter, and persistent wishlist.
+- **Backend-Agnostic Schemas**: Ready to connect to any backend API (Node/Express, Firebase, Supabase, Laravel, Django, Python FastAPI, Go, etc.) via `src/config/api.js`.
+
+---
+
+## 📁 Package Structure
+
+```text
+crochet/
+├── Documentation/            # Interactive HTML Documentation
+│   ├── index.html            # Complete Documentation Guide
+│   └── INSTALLATION.md       # Quick start markdown instructions
+├── frontend/                 # React Application Source
+│   ├── public/
+│   │   └── uploads/          # Dimension placeholder image assets
+│   ├── src/
+│   │   ├── components/       # Reusable UI components
+│   │   ├── config/           # API configuration
+│   │   ├── context/          # State providers (SettingsContext, AdminThemeContext)
+│   │   ├── data/             # Standalone seed datasets
+│   │   ├── pages/            # Storefront and Admin views
+│   │   ├── schema/           # Data schemas, models, and validators
+│   │   ├── services/         # Data service layer (localStorage + API)
+│   │   ├── styles/           # CSS stylesheets
+│   │   └── App.jsx           # App layout and routing
+│   ├── package.json
+│   └── vite.config.js
+└── README.md
+```
 
 ---
 
 ## 🚀 Quick Start Guide
 
-### 1. Prerequisites
-- **Node.js** (v18.x or higher)
-- **npm** (v9.x or higher)
-- **MongoDB** (Local instance running on `mongodb://127.0.0.1:27017` or MongoDB Atlas URI)
-
----
-
-### 2. Backend Setup
+### 1. Installation
 ```bash
-# Navigate to backend directory
-cd backend
-
-# Install dependencies
+cd frontend
 npm install
-
-# Configure environment variables
-# Copy .env.example to .env
-cp .env.example .env
 ```
 
-Edit `backend/.env` with your settings:
-```env
-PORT=5000
-MONGO_URI=mongodb://127.0.0.1:27017/crochet
-JWT_SECRET=your_super_secret_jwt_key_2026
-
-# Administrator Email
-ADMIN_EMAIL=admin@cozyloops.com
-
-# SMTP Email Configuration (for OTP verification and Contact messages)
-EMAIL_USER=your_email@gmail.com
-EMAIL_PASS=your_16_character_gmail_app_password
-```
-
-#### Seed Demo Data (Products, Categories, Orders, Customers, Blogs, Settings)
-```bash
-node seeder.js
-```
-
-#### Start Backend Server
+### 2. Run Local Development Server
 ```bash
 npm run dev
-# Server running at http://localhost:5000
 ```
+Open **`http://localhost:5173`** in your browser.
 
----
-
-### 3. Frontend Setup
+### 3. Build Production Bundle
 ```bash
-# Navigate to frontend directory
-cd ../frontend
-
-# Install dependencies
-npm install
-
-# Start Vite Development Server
-npm run dev
-# Frontend running at http://localhost:5173
+npm run build
 ```
+Compiled production files are output to `frontend/dist/`.
 
 ---
 
-## 🔑 Default Demo Accounts
+## 📊 Data Customization & Schemas
 
-| Role | Email | Password | Access |
+To customize store data without touching React components:
+- **Products Catalog**: `frontend/src/data/products.js`
+- **Store Categories**: `frontend/src/data/categories.js`
+- **Craft Journal & Blogs**: `frontend/src/data/blogs.js`
+- **Store Settings & Contact Info**: `frontend/src/data/settings.js`
+
+Full schema definitions and TypeScript/JSDoc types are available in [frontend/src/schema/SCHEMA.md](frontend/src/schema/SCHEMA.md).
+
+---
+
+## 📐 Image Dimension Standards
+
+| Usage | Dimensions | Aspect Ratio | Location |
 | :--- | :--- | :--- | :--- |
-| **Administrator** | `admin@cozyloops.com` | `Password@123` | Storefront + Admin Studio (`/admin`) |
-| **Customer** | `aarav.s@gmail.com` | `Password@123` | Storefront + Profile (`/profile`) |
-| **Customer** | `priya.p@outlook.com` | `Password@123` | Storefront + Profile (`/profile`) |
+| **Hero Slider Banners** | `1905 × 680 px` | ~2.8:1 | `/uploads/slider-*.png` |
+| **Product Cards** | `600 × 600 px` | 1:1 | `/uploads/products/...` |
+| **Category Banners** | `600 × 400 px` | 3:2 | `/uploads/categories/...` |
+| **Blog Featured Covers**| `1200 × 750 px` | 16:10 | `/uploads/blogs/...` |
+| **Avatars / Team** | `300 × 300 px` | 1:1 | `/uploads/avatars/...` |
 
 ---
 
-## 📁 Project Directory Structure
+## 📚 Full Interactive Documentation
 
-```
-crochet/
-├── backend/
-│   ├── config/             # DB & Nodemailer connection
-│   ├── controllers/        # Express request handlers (Products, Orders, Blogs, Settings, Auth, etc.)
-│   ├── data/               # Seed datasets (products, categories, orders, customers, blogs)
-│   ├── middleware/         # Auth verification & error handling
-│   ├── models/             # Mongoose schemas (Product, Order, Category, Blog, Setting, User, OTP)
-│   ├── routes/             # REST API endpoint routes
-│   ├── uploads/            # Static image assets (products, blogs, banners)
-│   ├── .env.example        # Sample environment variables
-│   ├── seeder.js           # Database population script
-│   └── server.js           # Express main server entrypoint
-│
-├── frontend/
-│   ├── public/             # Static public assets & favicons
-│   ├── src/
-│   │   ├── assets/         # CSS styles & design tokens
-│   │   ├── components/     # Reusable UI components (Header, Footer, TopBar, Modals, Cards)
-│   │   ├── context/        # React Context (SettingsContext, AdminThemeContext)
-│   │   ├── layouts/        # Layout wrappers (AdminLayout)
-│   │   ├── pages/          # Storefront & Admin page views
-│   │   │   ├── admin/      # Dedicated Admin pages (Dashboard, Products, Orders, Settings, etc.)
-│   │   │   ├── Shop.jsx, ProductDetail.jsx, Blog.jsx, Contact.jsx, Cart.jsx, Profile.jsx...
-│   │   ├── routes/         # React Router route definitions
-│   │   ├── utils/          # Helpers & localStorage sync
-│   │   ├── App.jsx         # App root & toast notification manager
-│   │   └── main.jsx        # React root mount & providers
-│   ├── package.json
-│   └── vite.config.js
-│
-└── Documentation/          # Standalone HTML Documentation
-    └── index.html
-```
+Open **`Documentation/index.html`** in any web browser to view the interactive documentation guide.
 
 ---
 
 ## 📄 License & Attribution
 
-- Created with ❤️ by CozyLoops Studio.
-- All code is structured for commercial deployment and marketplace submission (ThemeForest / CodeCanyon).
+- Created for commercial distribution on ThemeForest / Envato Market.
+- Libraries used: React (MIT), Vite (MIT), Lucide Icons (ISC), Google Fonts (OFL).

@@ -13,7 +13,7 @@ import {
   LuChevronRight,
   LuLayers,
 } from "react-icons/lu";
-import { API_ENDPOINTS } from "../../config/api";
+import { getCategories, saveCategory } from "../../services/dataService";
 import { getCategoryIcon } from "../../utils/categoryIcons";
 
 const AdminCategories = () => {
@@ -32,11 +32,10 @@ const AdminCategories = () => {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const res = await fetch(API_ENDPOINTS.CATEGORIES);
-      const data = await res.json();
+      const data = await getCategories();
       if (Array.isArray(data)) setCategoriesList(data);
     } catch (err) {
-      console.error("Failed to load real categories:", err);
+      console.error("Failed to load categories:", err);
     } finally {
       setLoading(false);
     }
@@ -52,28 +51,25 @@ const AdminCategories = () => {
     setSubmitting(true);
 
     try {
-      const res = await fetch(API_ENDPOINTS.CATEGORIES, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: newCatName.trim(),
-          description: newCatDesc.trim() || "Custom handcrafted collection.",
-        }),
-      });
+      const payload = {
+        name: newCatName.trim(),
+        description: newCatDesc.trim() || "Custom handcrafted collection.",
+        icon: "🧶",
+        image: "/uploads/products/decor/sunflower.png",
+      };
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to create category");
-
-      window.dispatchEvent(
-        new CustomEvent("showToast", {
-          detail: { message: `Category "${newCatName.trim()}" created successfully!` },
-        })
-      );
+      await saveCategory(payload);
 
       setNewCatName("");
       setNewCatDesc("");
       setIsAddOpen(false);
       fetchCategories();
+
+      window.dispatchEvent(
+        new CustomEvent("showToast", {
+          detail: { message: `Category "${payload.name}" created successfully!` },
+        })
+      );
     } catch (err) {
       alert(err.message);
     } finally {
@@ -110,7 +106,7 @@ const AdminCategories = () => {
             </span>
           </div>
           <p className={`text-xs sm:text-sm mt-0.5 ${isDark ? "text-gray-400" : "text-[#6B7280]"}`}>
-            Organize and manage your product classifications and collections in MongoDB
+            Organize and manage your product classifications and collections in your store catalog
           </p>
         </div>
 

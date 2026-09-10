@@ -21,7 +21,7 @@ import {
   LuCalendar,
   LuTrendingUp,
 } from "react-icons/lu";
-import { API_ENDPOINTS } from "../../config/api";
+import { getProducts, getOrders, getCustomers, getCategories } from "../../services/dataService";
 
 const AdminDashboard = () => {
   const { currentUser, refreshCounts, isDark } = useOutletContext();
@@ -34,18 +34,11 @@ const AdminDashboard = () => {
   const loadAllDashboardData = async () => {
     try {
       setLoading(true);
-      const [prodRes, orderRes, custRes, catRes] = await Promise.all([
-        fetch(API_ENDPOINTS.PRODUCTS),
-        fetch(API_ENDPOINTS.ORDERS),
-        fetch(API_ENDPOINTS.CUSTOMERS),
-        fetch(API_ENDPOINTS.CATEGORIES),
-      ]);
-
       const [prodData, orderData, custData, catData] = await Promise.all([
-        prodRes.json().catch(() => []),
-        orderRes.json().catch(() => []),
-        custRes.json().catch(() => []),
-        catRes.json().catch(() => []),
+        getProducts(),
+        getOrders(),
+        getCustomers(),
+        getCategories(),
       ]);
 
       if (Array.isArray(prodData)) setProducts(prodData);
@@ -54,7 +47,7 @@ const AdminDashboard = () => {
       if (Array.isArray(catData)) setCategories(catData);
       if (refreshCounts) refreshCounts();
     } catch (err) {
-      console.error("Failed to load real dashboard metrics:", err);
+      console.error("Failed to load dashboard metrics:", err);
     } finally {
       setLoading(false);
     }
@@ -161,7 +154,7 @@ const AdminDashboard = () => {
             </h1>
             <span className="px-2.5 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full text-[11px] font-bold flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-              Live MongoDB
+              Live Store Data
             </span>
           </div>
           <p className={`text-xs sm:text-sm mt-0.5 ${isDark ? "text-gray-400" : "text-[#6B7280]"}`}>
@@ -224,7 +217,7 @@ const AdminDashboard = () => {
               {stats.totalOrders}
             </h3>
             <p className="text-[11px] text-gray-500 mt-1">
-              Real MongoDB transactions
+              Real store transactions
             </p>
           </div>
         </div>
@@ -532,7 +525,7 @@ const AdminDashboard = () => {
               <div>
                 <h3 className="text-base font-bold">Real Store Activity Feed</h3>
                 <p className={`text-xs mt-0.5 ${isDark ? "text-gray-400" : "text-[#6B7280]"}`}>
-                  Live MongoDB audit transactions
+                  Live store audit transactions
                 </p>
               </div>
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
@@ -559,7 +552,7 @@ const AdminDashboard = () => {
           </div>
 
           <div className={`pt-4 mt-4 border-t text-center ${isDark ? "border-slate-800" : "border-gray-100"}`}>
-            <p className="text-[11px] text-gray-500">Connected to MongoDB Database</p>
+            <p className="text-[11px] text-gray-500">Connected to Store Data Layer</p>
           </div>
         </div>
       </div>

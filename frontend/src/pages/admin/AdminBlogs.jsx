@@ -10,6 +10,7 @@ import {
   BsArrowCounterclockwise,
 } from "react-icons/bs";
 import { LuBookOpen, LuPlus, LuStar, LuTrash2 } from "react-icons/lu";
+import { getBlogs, deleteBlog, restoreBlog } from "../../services/dataService";
 import { API_ENDPOINTS } from "../../config/api";
 
 const BLOG_CATEGORIES = [
@@ -42,16 +43,11 @@ const AdminBlogs = () => {
   const fetchBlogs = async () => {
     try {
       setLoading(true);
-      const [resActive, resBin] = await Promise.all([
-        fetch(API_ENDPOINTS.BLOGS),
-        fetch(`${API_ENDPOINTS.BLOGS}/recycle-bin`),
-      ]);
-      const [activeData, binData] = await Promise.all([
-        resActive.json(),
-        resBin.json(),
-      ]);
-      if (Array.isArray(activeData)) setBlogs(activeData);
-      if (Array.isArray(binData)) setRecycleBinBlogs(binData);
+      const all = await getBlogs(true);
+      if (Array.isArray(all)) {
+        setBlogs(all.filter((b) => !b.isDeleted));
+        setRecycleBinBlogs(all.filter((b) => b.isDeleted));
+      }
       if (refreshCounts) refreshCounts();
     } catch (err) {
       console.error("Failed to load blogs:", err);
@@ -98,13 +94,16 @@ const AdminBlogs = () => {
     try {
       const isPermanent = deletingBlog.isPermanent;
       const itemId = deletingBlog.blog.id || deletingBlog.blog._id || deletingBlog.blog.slug;
-      const endpoint = isPermanent
-        ? `${API_ENDPOINTS.BLOGS}/${itemId}/permanent`
-        : `${API_ENDPOINTS.BLOGS}/${itemId}`;
-
-      const res = await fetch(endpoint, { method: "DELETE" });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to delete");
+      
+      try {
+        const endpoint = isPermanent
+          ? `${API_ENDPOINTS.BLOGS}/${itemId}/permanent`
+          : `${API_ENDPOINTS.BLOGS}/${itemId}`;
+        await fetch(endpoint, { method: "DELETE" });
+      } catch (e) {
+        // Fallback to local service
+      }
+      await deleteBlog(itemId, isPermanent);
 
       window.dispatchEvent(
         new CustomEvent("showToast", {
@@ -129,11 +128,14 @@ const AdminBlogs = () => {
     const itemId = blog.id || blog._id || blog.slug;
     try {
       setRestoreLoadingId(itemId);
-      const res = await fetch(`${API_ENDPOINTS.BLOGS}/${itemId}/restore`, {
-        method: "PUT",
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to restore blog");
+      try {
+        await fetch(`${API_ENDPOINTS.BLOGS}/${itemId}/restore`, {
+          method: "PUT",
+        });
+      } catch (e) {
+        // Fallback to local service
+      }
+      await restoreBlog(itemId);
 
       window.dispatchEvent(
         new CustomEvent("showToast", {

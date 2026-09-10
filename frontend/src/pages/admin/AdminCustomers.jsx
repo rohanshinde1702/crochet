@@ -19,6 +19,7 @@ import {
   LuTrash2,
   LuShieldAlert,
 } from "react-icons/lu";
+import { getCustomers } from "../../services/dataService";
 import { API_ENDPOINTS } from "../../config/api";
 
 const AdminCustomers = () => {
@@ -37,11 +38,10 @@ const AdminCustomers = () => {
   const fetchCustomers = async () => {
     try {
       setLoading(true);
-      const res = await fetch(API_ENDPOINTS.CUSTOMERS);
-      const data = await res.json();
+      const data = await getCustomers();
       if (Array.isArray(data)) setCustomers(data);
     } catch (err) {
-      console.error("Failed to load real customers:", err);
+      console.error("Failed to load customers:", err);
     } finally {
       setLoading(false);
     }
@@ -653,7 +653,7 @@ const AdminCustomers = () => {
               </div>
 
               <p className="text-xs text-gray-400 mb-5 leading-relaxed">
-                Deleting this customer will remove their profile record from MongoDB.
+                Deleting this customer will remove their profile record from the store directory.
               </p>
 
               <div className="flex items-center justify-end gap-3">

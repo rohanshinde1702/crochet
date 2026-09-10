@@ -7,7 +7,7 @@ import {
 } from "react-icons/bs";
 import { GiSewingNeedle, GiYarn } from "react-icons/gi";
 import { LuBookOpen, LuHandHeart } from "react-icons/lu";
-import { API_ENDPOINTS } from "../config/api";
+import { getBlogs } from "../services/dataService";
 
 export const BLOG_CATEGORIES = [
   "All Stories",
@@ -26,10 +26,9 @@ const Blog = () => {
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Fetch blogs from API
+  // Fetch blogs
   useEffect(() => {
-    fetch(API_ENDPOINTS.BLOGS)
-      .then((res) => res.json())
+    getBlogs()
       .then((data) => {
         if (Array.isArray(data)) {
           setBlogs(data);
@@ -37,9 +36,17 @@ const Blog = () => {
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Error loading blogs from backend:", err);
+        console.error("Error loading blogs:", err);
         setLoading(false);
       });
+
+    const handleUpdate = () => {
+      getBlogs().then((data) => {
+        if (Array.isArray(data)) setBlogs(data);
+      });
+    };
+    window.addEventListener("blogsUpdated", handleUpdate);
+    return () => window.removeEventListener("blogsUpdated", handleUpdate);
   }, []);
 
   // Category and Filter states directly from params or state

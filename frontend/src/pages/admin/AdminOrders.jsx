@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useOutletContext } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import { LuShoppingBag, LuDownload } from "react-icons/lu";
+import { getOrders, updateOrderStatus } from "../../services/dataService";
 import { API_ENDPOINTS } from "../../config/api";
 
 const AdminOrders = () => {
@@ -14,11 +15,10 @@ const AdminOrders = () => {
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const res = await fetch(API_ENDPOINTS.ORDERS);
-      const data = await res.json();
+      const data = await getOrders();
       if (Array.isArray(data)) setOrders(data);
     } catch (err) {
-      console.error("Failed to load real orders:", err);
+      console.error("Failed to load orders:", err);
     } finally {
       setLoading(false);
     }
@@ -44,12 +44,16 @@ const AdminOrders = () => {
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      const res = await fetch(`${API_ENDPOINTS.ORDERS}/${orderId}/status`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus }),
-      });
-      if (!res.ok) throw new Error("Failed to update status");
+      try {
+        await fetch(`${API_ENDPOINTS.ORDERS}/${orderId}/status`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: newStatus }),
+        });
+      } catch (e) {
+        // Fallback to local storage
+      }
+      await updateOrderStatus(orderId, newStatus);
 
       setOrders((prev) =>
         prev.map((o) => (o.orderId === orderId ? { ...o, status: newStatus } : o))

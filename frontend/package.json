@@ -1,8 +1,22 @@
 {
-  "name": "crochet",
-  "private": true,
-  "version": "0.0.0",
+  "name": "cozyloops-react-ecommerce-template",
+  "version": "1.0.0",
+  "description": "CozyLoops - Handcrafted Crochet & Artisan eCommerce Store React Template with Admin Dashboard",
+  "author": "CozyLoops Studio",
+  "license": "Envato Regular License",
   "type": "module",
+  "keywords": [
+    "react",
+    "vite",
+    "ecommerce",
+    "artisan",
+    "crochet",
+    "craft",
+    "handmade",
+    "shop",
+    "admin-dashboard",
+    "themeforest"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",

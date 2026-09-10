@@ -10,7 +10,7 @@ import { LuHandHeart, LuLeaf } from "react-icons/lu";
 import { saveCart, saveWishlist } from "../utils/syncHelper";
 import TopBar from "../components/topBar/TopBar";
 import { useSettings } from "../context/SettingsContext";
-import { API_ENDPOINTS } from "../config/api";
+import { getProductById, getProducts } from "../services/dataService";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -45,14 +45,10 @@ const ProductDetail = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [id]);
 
-  // Fetch product and related products from API
+  // Fetch product and related products
   useEffect(() => {
     setLoading(true);
-    fetch(`${API_ENDPOINTS.PRODUCTS}/${id}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Product not found");
-        return res.json();
-      })
+    getProductById(id)
       .then((data) => {
         setProduct(data);
         setLoading(false);
@@ -62,8 +58,7 @@ const ProductDetail = () => {
         setLoading(false);
       });
 
-    fetch(API_ENDPOINTS.PRODUCTS)
-      .then((res) => res.json())
+    getProducts()
       .then((data) => {
         if (Array.isArray(data)) {
           setRelatedProducts(data.filter((p) => p.id !== parseInt(id, 10)).slice(0, 4));

@@ -1,81 +1,70 @@
-# CozyLoops Quick Installation & Setup Guide
+# CozyLoops - Quick Installation & Setup Guide
 
-This guide walks you through setting up **CozyLoops** locally or in production in under 5 minutes.
-
----
-
-## Prerequisites
-
-1. **Node.js** (v18 or higher) — [Download Node.js](https://nodejs.org/)
-2. **MongoDB** (Local Community Server or [MongoDB Atlas Cloud](https://www.mongodb.com/cloud/atlas))
-3. **npm** (v9 or higher)
+This guide walks you through setting up and running the **CozyLoops React eCommerce & Admin Template** in less than 2 minutes.
 
 ---
 
-## Step 1: Backend Setup
+## 📋 Prerequisites
 
-```bash
-# 1. Navigate to the backend directory
-cd backend
-
-# 2. Install required packages
-npm install
-
-# 3. Create .env file from template
-cp .env.example .env
-```
-
-### Configure `backend/.env`:
-```env
-PORT=5000
-MONGO_URI=mongodb://127.0.0.1:27017/crochet
-JWT_SECRET=your_jwt_secret_key_here
-ADMIN_EMAIL=admin@cozyloops.com
-
-# SMTP configuration for email OTP & Contact forms
-EMAIL_USER=your_email@gmail.com
-EMAIL_PASS=your_gmail_app_password
-```
-
-### Seed Database with Demo Products & Admin:
-```bash
-node seeder.js
-```
-
-### Start Backend Server:
-```bash
-npm run dev
-# Running on http://localhost:5000
-```
+- **Node.js**: v18.0.0 or higher ([Download Node.js](https://nodejs.org/))
+- **npm** (v9+), **yarn**, or **pnpm**
 
 ---
 
-## Step 2: Frontend Setup
+## ⚡ 1. Quick Start (Local Development)
 
 ```bash
-# 1. Open a new terminal and navigate to frontend directory
+# 1. Navigate to the frontend directory
 cd frontend
 
-# 2. Install frontend packages
+# 2. Install dependencies
 npm install
 
-# 3. Launch Vite Development Server
+# 3. Start local development server
 npm run dev
-# Open in browser: http://localhost:5173
 ```
 
----
-
-## Default Credentials
-
-- **Admin Portal**: `http://localhost:5173/admin`
-  - **Email**: `admin@cozyloops.com`
-  - **Password**: `Password@123`
-- **Customer Account**:
-  - **Email**: `aarav.s@gmail.com`
-  - **Password**: `Password@123`
+Open your browser and visit: **`http://localhost:5173`**
 
 ---
 
-## Standalone Documentation
-Open **`Documentation/index.html`** in any browser for complete interactive documentation, API guides, and deployment walkthroughs.
+## 🛠️ 2. Production Build
+
+```bash
+# Build optimized production bundle
+npm run build
+
+# Preview production build locally
+npm run preview
+```
+
+The compiled, production-ready static files will be generated in the `dist/` directory, ready to deploy to any hosting service (Vercel, Netlify, Cloudflare Pages, GitHub Pages, Apache, or Nginx).
+
+---
+
+## 🗄️ 3. Standalone Mode & Customizing Data
+
+CozyLoops is pre-configured with complete mock datasets and browser `localStorage` persistence.
+
+To customize products, blogs, categories, or store information:
+- **Products**: Edit `src/data/products.js`
+- **Categories**: Edit `src/data/categories.js`
+- **Blogs**: Edit `src/data/blogs.js`
+- **Store Settings**: Edit `src/data/settings.js`
+
+---
+
+## 🔌 4. Connecting a Custom Backend API
+
+To connect the template to your custom REST API:
+1. Copy `.env.example` to `.env`:
+   ```env
+   VITE_API_URL=https://your-api-server.com
+   ```
+2. The `src/services/dataService.js` will automatically use your backend endpoints and fall back to local storage if offline.
+
+---
+
+## 📖 Full Documentation
+
+Open **`Documentation/index.html`** in your browser for the full interactive guide, schema specifications, component walkthroughs, and theming guide.

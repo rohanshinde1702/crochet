@@ -5,7 +5,7 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { motion } from "framer-motion";
 import { BsHeart, BsHeartFill, BsHandbag, BsEye, BsCheck2, BsStarFill, BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { saveCart, saveWishlist } from "../../utils/syncHelper";
-import { API_ENDPOINTS } from "../../config/api";
+import { getProducts } from "../../services/dataService";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -18,14 +18,19 @@ const ProductSlider = () => {
   const [allProducts, setAllProducts] = useState([]);
 
   useEffect(() => {
-    fetch(API_ENDPOINTS.PRODUCTS)
-      .then((res) => res.json())
+    getProducts()
       .then((data) => {
         if (Array.isArray(data)) {
           setAllProducts(data);
         }
       })
-      .catch((err) => console.error("Error fetching slider products:", err));
+      .catch((err) => console.error("Error loading slider products:", err));
+
+    const handleUpdate = () => {
+      getProducts().then((data) => setAllProducts(data || []));
+    };
+    window.addEventListener("productsUpdated", handleUpdate);
+    return () => window.removeEventListener("productsUpdated", handleUpdate);
   }, []);
 
   // Exactly 10 products (2 from each of the 5 categories), interleaved so categories are not placed together

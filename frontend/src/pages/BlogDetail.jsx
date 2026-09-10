@@ -5,7 +5,7 @@ import { useSettings } from "../context/SettingsContext";
 import { motion } from "framer-motion";
 import { BsArrowLeft, BsCalendar3, BsClock, BsChatDots, BsShare, BsLightbulb, BsArrowRight, BsChevronRight, 
   BsWhatsapp, BsInstagram,BsTwitterX, BsFacebook } from "react-icons/bs";
-import { API_ENDPOINTS } from "../config/api";
+import { getBlogById, getBlogs } from "../services/dataService";
 
 const BlogDetail = () => {
   const { id } = useParams();
@@ -24,14 +24,12 @@ const BlogDetail = () => {
     setLoading(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
 
-    fetch(`${API_ENDPOINTS.BLOGS}/${id}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Blog not found");
-        return res.json();
-      })
+    getBlogById(id)
       .then((data) => {
-        setBlog(data);
-        setComments(data.comments || []);
+        if (data) {
+          setBlog(data);
+          setComments(data.comments || []);
+        }
         setLoading(false);
       })
       .catch((err) => {
@@ -39,8 +37,7 @@ const BlogDetail = () => {
         setLoading(false);
       });
 
-    fetch(API_ENDPOINTS.BLOGS)
-      .then((res) => res.json())
+    getBlogs()
       .then((data) => {
         if (Array.isArray(data)) {
           setRelatedBlogs(data.filter((b) => b.slug !== id && b.id !== parseInt(id, 10)).slice(0, 3));

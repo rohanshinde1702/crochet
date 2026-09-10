@@ -7,6 +7,7 @@ import {
   BsExclamationTriangle,
 } from "react-icons/bs";
 import { LuBoxes, LuBookOpen, LuTrash2 } from "react-icons/lu";
+import { getProducts, getBlogs, restoreProduct, restoreBlog, deleteProduct, deleteBlog } from "../../services/dataService";
 import { API_ENDPOINTS } from "../../config/api";
 
 const AdminRecycleBin = () => {
@@ -27,16 +28,12 @@ const AdminRecycleBin = () => {
   const fetchRecycleBinData = async () => {
     try {
       setLoading(true);
-      const [prodRes, blogRes] = await Promise.all([
-        fetch(`${API_ENDPOINTS.PRODUCTS}/recycle-bin`),
-        fetch(`${API_ENDPOINTS.BLOGS}/recycle-bin`),
+      const [allProds, allBlogs] = await Promise.all([
+        getProducts(true),
+        getBlogs(true),
       ]);
-      const [prodData, blogData] = await Promise.all([
-        prodRes.json(),
-        blogRes.json(),
-      ]);
-      if (Array.isArray(prodData)) setRecycleProducts(prodData);
-      if (Array.isArray(blogData)) setRecycleBlogs(blogData);
+      if (Array.isArray(allProds)) setRecycleProducts(allProds.filter((p) => p.isDeleted));
+      if (Array.isArray(allBlogs)) setRecycleBlogs(allBlogs.filter((b) => b.isDeleted));
       if (refreshCounts) refreshCounts();
     } catch (err) {
       console.error("Failed to load recycle bin data:", err);
@@ -68,11 +65,14 @@ const AdminRecycleBin = () => {
     const itemId = product.id || product._id;
     try {
       setRestoringId(`prod-${itemId}`);
-      const res = await fetch(`${API_ENDPOINTS.PRODUCTS}/${itemId}/restore`, {
-        method: "PUT",
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to restore product");
+      try {
+        await fetch(`${API_ENDPOINTS.PRODUCTS}/${itemId}/restore`, {
+          method: "PUT",
+        });
+      } catch (e) {
+        // Fallback to local storage
+      }
+      await restoreProduct(itemId);
 
       window.dispatchEvent(
         new CustomEvent("showToast", {
@@ -91,11 +91,14 @@ const AdminRecycleBin = () => {
     const itemId = blog.id || blog._id || blog.slug;
     try {
       setRestoringId(`blog-${itemId}`);
-      const res = await fetch(`${API_ENDPOINTS.BLOGS}/${itemId}/restore`, {
-        method: "PUT",
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to restore blog story");
+      try {
+        await fetch(`${API_ENDPOINTS.BLOGS}/${itemId}/restore`, {
+          method: "PUT",
+        });
+      } catch (e) {
+        // Fallback to local storage
+      }
+      await restoreBlog(itemId);
 
       window.dispatchEvent(
         new CustomEvent("showToast", {
@@ -117,35 +120,60 @@ const AdminRecycleBin = () => {
     try {
       if (deletingModalItem.type === "empty_bin") {
         const target = deletingModalItem.target;
-        const endpoint =
-          target === "products"
-            ? `${API_ENDPOINTS.PRODUCTS}/recycle-bin/empty`
-            : `${API_ENDPOINTS.BLOGS}/recycle-bin/empty`;
+        try {
+          const endpoint =
+            target === "products"
+              ? `${API_ENDPOINTS.PRODUCTS}/recycle-bin/empty`
+              : `${API_ENDPOINTS.BLOGS}/recycle-bin/empty`;
 
-        const res = await fetch(endpoint, { method: "DELETE" });
-        if (!res.ok) throw new Error("Failed to empty recycle bin");
+          await fetch(endpoint, { method: "DELETE" });
+        } catch (e) {
+          // Fallback to local storage
+        }
+
+        if (target === "products") {
+          for (const p of recycleProducts) {
+            await deleteProduct(p.id, true);
+          }
+        } else {
+          for (const b of recycleBlogs) {
+            await deleteBlog(b.id, true);
+          }
+        }
 
         window.dispatchEvent(
           new CustomEvent("showToast", {
             detail: {
-              message: `Emptied ${target === "products" ? "Products" : "Stories"} Recycle Bin.`,
+              message: `Recycle bin emptied for ${target === "products" ? "products" : "stories"}.`,
             },
           })
         );
-      } else {
-        const isBlog = deletingModalItem.isBlog;
-        const item = deletingModalItem.item;
-        const itemId = item.id || item._id || (isBlog ? item.slug : null);
-        const endpoint = isBlog
-          ? `${API_ENDPOINTS.BLOGS}/${itemId}/permanent`
-          : `${API_ENDPOINTS.PRODUCTS}/${itemId}/permanent`;
+      } else if (deletingModalItem.type === "purge_single") {
+        const { item, target } = deletingModalItem;
+        const itemId = item.id || item._id || item.slug;
 
-        const res = await fetch(endpoint, { method: "DELETE" });
-        if (!res.ok) throw new Error("Failed to permanently delete item");
+        try {
+          const endpoint =
+            target === "products"
+              ? `${API_ENDPOINTS.PRODUCTS}/${itemId}/permanent`
+              : `${API_ENDPOINTS.BLOGS}/${itemId}/permanent`;
+
+          await fetch(endpoint, { method: "DELETE" });
+        } catch (e) {
+          // Fallback to local storage
+        }
+
+        if (target === "products") {
+          await deleteProduct(itemId, true);
+        } else {
+          await deleteBlog(itemId, true);
+        }
 
         window.dispatchEvent(
           new CustomEvent("showToast", {
-            detail: { message: `Permanently deleted "${item.title}".` },
+            detail: {
+              message: `Permanently deleted "${item.title}".`,
+            },
           })
         );
       }

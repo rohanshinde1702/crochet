@@ -85,7 +85,7 @@ const SocialAuthModal = ({ isOpen, provider, onClose, onSuccess }) => {
                   executeLogin(payload.email, payload.name, payload.picture);
                 }
               } catch (err) {
-                console.log("Google Credential parse fallback", err);
+                // Ignore credential parse fallback
               }
             },
           });

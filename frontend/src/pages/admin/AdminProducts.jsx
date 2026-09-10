@@ -18,6 +18,7 @@ import {
   LuPackage,
   LuTrash2,
 } from "react-icons/lu";
+import { getProducts, deleteProduct as deleteProductService } from "../../services/dataService";
 import { API_ENDPOINTS } from "../../config/api";
 
 const CATEGORIES = [
@@ -48,8 +49,7 @@ const AdminProducts = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const res = await fetch(API_ENDPOINTS.PRODUCTS);
-      const data = await res.json();
+      const data = await getProducts();
       if (Array.isArray(data)) setProducts(data);
       if (refreshCounts) refreshCounts();
     } catch (err) {
@@ -129,11 +129,14 @@ const AdminProducts = () => {
 
     try {
       const itemId = deletingProduct.id || deletingProduct._id;
-      const res = await fetch(`${API_ENDPOINTS.PRODUCTS}/${itemId}`, {
-        method: "DELETE",
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to delete product");
+      try {
+        await fetch(`${API_ENDPOINTS.PRODUCTS}/${itemId}`, {
+          method: "DELETE",
+        });
+      } catch (e) {
+        // Fallback to local service
+      }
+      await deleteProductService(itemId);
 
       window.dispatchEvent(
         new CustomEvent("showToast", {
