@@ -1,4 +1,4 @@
-import { FaInstagram, FaFacebookF, FaPinterestP, FaYoutube } from "react-icons/fa";
+import { FaInstagram, FaFacebookF, FaPinterestP, FaYoutube, FaHeart } from "react-icons/fa";
 import { IoMailOutline, IoCallOutline, IoLocationOutline } from "react-icons/io5";
 import { FaArrowUp } from "react-icons/fa6";
 import { Link, useLocation } from "react-router-dom";
@@ -201,8 +201,8 @@ const Footer = () => {
             © 2026 {settings?.storeName || "CozyLoops"}. All Rights Reserved.
           </p>
 
-          <p className="text-sm text-gray-500">
-            Handmade with <span className="text-[#F88897]">♥</span> by {settings?.storeName || "CozyLoops"}
+          <p className="text-sm text-gray-500 flex items-center justify-center sm:justify-start gap-1">
+            Handmade with <FaHeart className="inline text-[#F88897] text-xs" /> by {settings?.storeName || "CozyLoops"}
           </p>
         </div>
       </div>

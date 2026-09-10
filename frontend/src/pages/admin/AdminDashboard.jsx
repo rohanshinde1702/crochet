@@ -18,6 +18,8 @@ import {
   LuUsers,
   LuSparkles,
   LuPercent,
+  LuCalendar,
+  LuTrendingUp,
 } from "react-icons/lu";
 import { API_ENDPOINTS } from "../../config/api";
 
@@ -171,8 +173,9 @@ const AdminDashboard = () => {
         <div className={`inline-flex items-center gap-2 px-3.5 py-2 border rounded-xl text-xs font-semibold shadow-2xs ${
           isDark ? "bg-slate-800 border-slate-700 text-slate-200" : "bg-white border-[#E5E7EB] text-[#374151]"
         }`}>
-          <span>📅 Real-time Live Metrics</span>
-          <BsChevronDown className="text-xs text-gray-400" />
+          <LuCalendar className="text-sm text-gray-400" />
+          <span>Real-time Live Metrics</span>
+          <BsChevronDown className="text-xs text-gray-400 ml-1" />
         </div>
       </div>
 
@@ -340,8 +343,9 @@ const AdminDashboard = () => {
           <div className={`pt-4 border-t flex flex-wrap items-center justify-between gap-4 text-xs text-gray-500 ${
             isDark ? "border-slate-800" : "border-gray-100"
           }`}>
-            <p>
-              📈 Total Database Volume: <strong className="text-emerald-500">{orders.length} orders</strong> recorded
+            <p className="flex items-center gap-1.5">
+              <LuTrendingUp className="text-emerald-500 text-sm" />
+              <span>Total Database Volume: <strong className="text-emerald-500">{orders.length} orders</strong> recorded</span>
             </p>
             <p>
               Catalog Size: <strong>{products.length} active creations</strong>

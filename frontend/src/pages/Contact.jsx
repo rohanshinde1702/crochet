@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { IoMailOutline, IoCallOutline, IoLocationOutline, IoTimeOutline } from "react-icons/io5";
-import { FaInstagram, FaFacebookF, FaPinterestP, FaYoutube, FaRegEnvelope, FaHeart } from "react-icons/fa";
-import { LuUser, LuMail, LuTag, LuPenLine, LuSend } from "react-icons/lu";
+import { FaInstagram, FaFacebookF, FaPinterestP, FaYoutube, FaRegEnvelope, FaHeart, FaRegHeart } from "react-icons/fa";
+import { LuUser, LuMail, LuTag, LuPenLine, LuSend, LuSparkles } from "react-icons/lu";
 import TopBar from "../components/topBar/TopBar";
 import { useSettings } from "../context/SettingsContext";
 import { API_ENDPOINTS } from "../config/api";
@@ -70,7 +70,7 @@ const Contact = () => {
 
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: "Message sent! We'll reply to your email soon. 💌" },
+          detail: { message: "Message sent! We'll reply to your email soon." },
         })
       );
 
@@ -151,7 +151,7 @@ const Contact = () => {
                 variants={itemVariants}
                 className="text-xs font-bold tracking-wider uppercase text-[#D25F5F] flex items-center gap-1.5"
               >
-                We'd love to hear from you <span className="text-[#D25F5F] text-sm">♥</span>
+                We'd love to hear from you <FaHeart className="text-[#D25F5F] text-xs inline" />
               </motion.span>
 
               <motion.h1
@@ -309,12 +309,12 @@ const Contact = () => {
             className="w-full lg:w-1/2 bg-white rounded-3xl p-6 sm:p-8 md:p-10 shadow-[0_15px_40px_rgba(108,44,18,0.04)] border border-[#F2ECE4] flex flex-col gap-6 relative z-10"
           >
             <div className="text-center">
-              <span className="text-[#D25F5F] text-xl">♡</span>
+              <FaRegHeart className="text-[#D25F5F] text-xl mx-auto" />
               <h2 className="text-2xl font-bold font-serif text-[#6C2C12] mt-1">Send Us a Message</h2>
               {/* Divider Decor */}
               <div className="flex items-center justify-center gap-4 my-2">
                 <span className="w-12 h-px bg-[#EADFD4]"></span>
-                <span className="text-[#E06D77] text-xs font-semibold">✿</span>
+                <LuSparkles className="text-[#E06D77] text-xs" />
                 <span className="w-12 h-px bg-[#EADFD4]"></span>
               </div>
             </div>
@@ -327,7 +327,7 @@ const Contact = () => {
                   exit={{ opacity: 0, height: 0 }}
                   className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl text-sm text-center font-medium"
                 >
-                  Thank you! Your message has been sent successfully. ♥
+                  Thank you! Your message has been sent successfully.
                 </motion.div>
               )}
 

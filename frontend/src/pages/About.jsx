@@ -5,7 +5,7 @@ import { LuHandHeart } from "react-icons/lu";
 import { IoColorPaletteOutline } from "react-icons/io5";
 import { BiLeaf } from "react-icons/bi";
 import { RiHeartsLine } from "react-icons/ri";
-import { FaBullseye, FaRegEye, FaRegStar, FaRegHandshake } from "react-icons/fa";
+import { FaBullseye, FaRegEye, FaRegStar, FaRegHandshake, FaHeart, FaRegHeart } from "react-icons/fa";
 
 const About = () => {
 
@@ -164,7 +164,7 @@ const About = () => {
                             <h3 className="font-semibold uppercase text-[#6C2C12]">Our Story</h3>
                             <div className="flex items-center justify-center lg:justify-start gap-2">
                                 <span className="w-6 sm:w-5 h-px bg-[#d7a87b]"></span>
-                                <span className="text-[#ef7f8f] text-lg">♥</span>
+                                <FaHeart className="text-[#ef7f8f] text-sm" />
                                 <span className="w-12 sm:w-16 h-px bg-[#d7a87b]"></span>
                             </div>
                         </motion.div>
@@ -287,7 +287,7 @@ const About = () => {
 
                         <motion.div variants={itemVariants} className="flex items-center justify-center lg:justify-start gap-2">
                             <span className="w-6 sm:w-5 h-px bg-[#d7a87b]"></span>
-                            <span className="text-[#ef7f8f] text-lg">♥</span>
+                            <FaHeart className="text-[#ef7f8f] text-sm" />
                             <span className="w-12 sm:w-16 h-px bg-[#d7a87b]"></span>
                         </motion.div>
 
@@ -298,7 +298,7 @@ const About = () => {
 
                         <motion.h1 variants={itemVariants} className="rouge-script-regular mt-5 text-3xl">
                             With Love,<br />
-                            <span className="text-[#6C2C12]">Cozy</span><span className="text-[#ef7f8f]">Loops♡</span>
+                            <span className="text-[#6C2C12]">Cozy</span><span className="text-[#ef7f8f]">Loops</span> <FaRegHeart className="inline text-base text-[#ef7f8f] ml-1" />
                         </motion.h1>
                     </motion.div>
                 </div>

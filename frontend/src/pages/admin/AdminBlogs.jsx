@@ -111,7 +111,7 @@ const AdminBlogs = () => {
           detail: {
             message: isPermanent
               ? `Permanently deleted "${deletingBlog.blog.title}".`
-              : `Moved "${deletingBlog.blog.title}" to Recycle Bin. 🗑️`,
+              : `Moved "${deletingBlog.blog.title}" to Recycle Bin.`,
           },
         })
       );
@@ -138,7 +138,7 @@ const AdminBlogs = () => {
       window.dispatchEvent(
         new CustomEvent("showToast", {
           detail: {
-            message: `Restored story "${blog.title}" to active articles! ✨`,
+            message: `Restored story "${blog.title}" to active articles!`,
           },
         })
       );

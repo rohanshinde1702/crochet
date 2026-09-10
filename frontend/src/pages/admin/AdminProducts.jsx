@@ -138,7 +138,7 @@ const AdminProducts = () => {
       window.dispatchEvent(
         new CustomEvent("showToast", {
           detail: {
-            message: `Moved "${deletingProduct.title}" to Recycle Bin. 🗑️`,
+            message: `Moved "${deletingProduct.title}" to Recycle Bin.`,
           },
         })
       );

@@ -96,13 +96,13 @@ const AdminProfile = () => {
 
       setProfileMsg({
         type: "success",
-        text: "Administrator profile details updated successfully! ✨",
+        text: "Administrator profile details updated successfully!",
       });
 
       window.dispatchEvent(new Event("userUpdated"));
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: "Admin profile saved to MongoDB! 🧶" },
+          detail: { message: "Admin profile saved successfully!" },
         })
       );
     } catch (err) {
@@ -148,13 +148,13 @@ const AdminProfile = () => {
 
       setPassMsg({
         type: "success",
-        text: "Administrator password updated successfully! 🔒",
+        text: "Administrator password updated successfully!",
       });
       setPassData({ currentPassword: "", newPassword: "", confirmPassword: "" });
 
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: "Password updated successfully! 🔒" },
+          detail: { message: "Password updated successfully!" },
         })
       );
     } catch (err) {

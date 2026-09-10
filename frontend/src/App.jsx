@@ -88,8 +88,10 @@ const App = () => {
         };
       }
 
-      // Format clean message text (remove trailing heart/yarn emojis from the main body for cleaner typography)
-      const cleanMessage = rawMessage.replace(/[♥🧶♡✿]/g, "").trim();
+      // Format clean message text (remove any stray emojis from the main body for cleaner typography)
+      const cleanMessage = rawMessage
+        .replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[\u2600-\u27BF]|[\u2300-\u23FF]|[\u2B50-\u2B55]|[♥🧶♡✿✨🔒✉️💌📋💬🔗👑👤🗑️🚫✅]/g, "")
+        .trim();
 
       const newToast = {
         id,

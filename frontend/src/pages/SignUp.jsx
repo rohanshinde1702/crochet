@@ -97,8 +97,8 @@ const SignUp = () => {
         new CustomEvent("showToast", {
           detail: {
             message: data.previewOtp
-              ? `Verification code: ${data.previewOtp} (Auto-filled for testing) ✉️`
-              : `Verification code sent to ${email}! ✉️`,
+              ? `Verification code: ${data.previewOtp} (Auto-filled for testing)`
+              : `Verification code sent to ${email}!`,
           },
         })
       );
@@ -158,7 +158,7 @@ const SignUp = () => {
       window.dispatchEvent(new Event("wishlistUpdated"));
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: `Welcome to CozyLoops, ${data.user.name}! 🧶` },
+          detail: { message: `Welcome to CozyLoops, ${data.user.name}!` },
         })
       );
       navigate("/");

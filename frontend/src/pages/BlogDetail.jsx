@@ -76,7 +76,7 @@ const BlogDetail = () => {
     setComments((prev) => [newComment, ...prev]);
     setNewCommentName("");
     setNewCommentText("");
-    triggerToast("Your comment has been posted! 💬");
+    triggerToast("Your comment has been posted!");
   };
 
   if (loading) {

@@ -177,7 +177,7 @@ const AdminCustomers = () => {
       window.dispatchEvent(
         new CustomEvent("showToast", {
           detail: {
-            message: `Customer account "${deletingUser.name}" permanently deleted. 🗑️`,
+            message: `Customer account "${deletingUser.name}" permanently deleted.`,
           },
         })
       );

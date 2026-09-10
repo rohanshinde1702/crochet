@@ -14,6 +14,7 @@ import {
   LuLayers,
 } from "react-icons/lu";
 import { API_ENDPOINTS } from "../../config/api";
+import { getCategoryIcon } from "../../utils/categoryIcons";
 
 const AdminCategories = () => {
   const { isDark } = useOutletContext();
@@ -25,7 +26,6 @@ const AdminCategories = () => {
   // Add Category Modal State
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [newCatName, setNewCatName] = useState("");
-  const [newCatIcon, setNewCatIcon] = useState("🧶");
   const [newCatDesc, setNewCatDesc] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -57,7 +57,6 @@ const AdminCategories = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: newCatName.trim(),
-          icon: newCatIcon.trim() || "🧶",
           description: newCatDesc.trim() || "Custom handcrafted collection.",
         }),
       });
@@ -67,7 +66,7 @@ const AdminCategories = () => {
 
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: `Category "${newCatName.trim()}" created in database! 🧶✨` },
+          detail: { message: `Category "${newCatName.trim()}" created successfully!` },
         })
       );
 
@@ -224,10 +223,10 @@ const AdminCategories = () => {
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <span className={`text-2xl p-2 rounded-2xl border transition-transform group-hover:scale-105 ${
-                    isDark ? "bg-slate-800 border-slate-700" : "bg-gray-50 border-gray-100"
+                  <span className={`text-xl p-2.5 rounded-2xl border transition-transform group-hover:scale-105 flex items-center justify-center ${
+                    isDark ? "bg-slate-800 border-slate-700 text-blue-400" : "bg-blue-50 border-blue-100 text-[#2563EB]"
                   }`}>
-                    {cat.icon || "🧶"}
+                    {getCategoryIcon(cat.name)}
                   </span>
                   <span className="px-2.5 py-0.5 bg-blue-500/10 text-blue-400 rounded-full text-[11px] font-bold border border-blue-500/20">
                     {cat.productCount || 0} Products
@@ -276,9 +275,9 @@ const AdminCategories = () => {
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <span className={`w-10 h-10 rounded-xl border flex items-center justify-center text-lg shrink-0 ${
-                    isDark ? "bg-slate-800 border-slate-700" : "bg-gray-50 border-gray-200"
+                    isDark ? "bg-slate-800 border-slate-700 text-blue-400" : "bg-blue-50 border-blue-100 text-[#2563EB]"
                   }`}>
-                    {cat.icon || "🧶"}
+                    {getCategoryIcon(cat.name)}
                   </span>
                   <div className="min-w-0">
                     <h4 className="font-bold text-xs sm:text-sm truncate">{cat.name}</h4>
@@ -326,13 +325,13 @@ const AdminCategories = () => {
                         isDark ? "hover:bg-slate-800/40" : "hover:bg-gray-50/60"
                       }`}
                     >
-                      {/* Category Name & Emoji Icon */}
+                      {/* Category Name & Real Icon */}
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-3">
-                          <span className={`w-9 h-9 rounded-xl border flex items-center justify-center text-lg shrink-0 ${
-                            isDark ? "bg-slate-800 border-slate-700" : "bg-gray-50 border-gray-200"
+                          <span className={`w-9 h-9 rounded-xl border flex items-center justify-center text-base shrink-0 ${
+                            isDark ? "bg-slate-800 border-slate-700 text-blue-400" : "bg-blue-50 border-blue-100 text-[#2563EB]"
                           }`}>
-                            {cat.icon || "🧶"}
+                            {getCategoryIcon(cat.name)}
                           </span>
                           <div>
                             <span className="font-bold block text-sm">{cat.name}</span>
@@ -421,21 +420,6 @@ const AdminCategories = () => {
                     value={newCatName}
                     onChange={(e) => setNewCatName(e.target.value)}
                     placeholder="e.g. Winter Warmers"
-                    className={`w-full px-3.5 py-2 border rounded-xl text-xs focus:outline-none focus:border-[#2563EB] ${
-                      isDark ? "bg-slate-900 border-slate-700 text-white placeholder-gray-500" : "bg-[#F9FAFB] border-[#E5E7EB] text-[#111827]"
-                    }`}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-gray-400 mb-1.5">
-                    Emoji Icon
-                  </label>
-                  <input
-                    type="text"
-                    value={newCatIcon}
-                    onChange={(e) => setNewCatIcon(e.target.value)}
-                    placeholder="e.g. 🧣"
                     className={`w-full px-3.5 py-2 border rounded-xl text-xs focus:outline-none focus:border-[#2563EB] ${
                       isDark ? "bg-slate-900 border-slate-700 text-white placeholder-gray-500" : "bg-[#F9FAFB] border-[#E5E7EB] text-[#111827]"
                     }`}

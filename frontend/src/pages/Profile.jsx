@@ -11,6 +11,7 @@ import {
   BsHandbag,
   BsBoxArrowRight,
   BsCheck2Circle,
+  BsCheckCircleFill,
   BsExclamationCircle,
   BsPencilSquare,
   BsKey,
@@ -141,7 +142,7 @@ const Profile = () => {
             email: u.email || "",
             phone: u.phone || "",
             avatar: u.avatar || PRESET_AVATARS[0],
-            bio: u.bio || "Passionate crochet & handmade enthusiast 🧶",
+            bio: u.bio || "Passionate crochet & handmade enthusiast",
             address: u.address || "",
             city: u.city || "",
             state: u.state || "",
@@ -233,11 +234,11 @@ const Profile = () => {
       setUser(data.user);
       localStorage.setItem("user", JSON.stringify(data.user));
       window.dispatchEvent(new Event("userUpdated"));
-      setProfileMsg({ type: "success", text: "Profile details updated successfully! ✨" });
+      setProfileMsg({ type: "success", text: "Profile details updated successfully!" });
 
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: "Profile saved successfully! ✨" },
+          detail: { message: "Profile saved successfully!" },
         })
       );
     } catch (err) {
@@ -280,12 +281,12 @@ const Profile = () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to change password");
 
-      setPasswordMsg({ type: "success", text: "Password updated securely! 🔒" });
+      setPasswordMsg({ type: "success", text: "Password updated securely!" });
       setPasswordData({ currentPassword: "", newPassword: "", confirmNewPassword: "" });
 
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: "Password updated successfully! 🔒" },
+          detail: { message: "Password updated successfully!" },
         })
       );
     } catch (err) {
@@ -320,16 +321,16 @@ const Profile = () => {
       setForgotMsg({
         type: "success",
         text: data.previewOtp
-          ? `Code: ${data.previewOtp} (Auto-filled for testing) ✉️`
-          : `Verification code sent to ${user.email}! ✉️`,
+          ? `Code: ${data.previewOtp} (Auto-filled for testing)`
+          : `Verification code sent to ${user.email}!`,
       });
 
       window.dispatchEvent(
         new CustomEvent("showToast", {
           detail: {
             message: data.previewOtp
-              ? `Reset code: ${data.previewOtp} ✉️`
-              : `Reset code sent to ${user.email}! ✉️`,
+              ? `Reset code: ${data.previewOtp}`
+              : `Reset code sent to ${user.email}!`,
           },
         })
       );
@@ -396,7 +397,7 @@ const Profile = () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to reset password");
 
-      setForgotMsg({ type: "success", text: "Password reset successfully! 🔒" });
+      setForgotMsg({ type: "success", text: "Password reset successfully!" });
       setForgotOtp(["", "", "", "", "", ""]);
       setForgotNewPassword("");
       setForgotConfirmPassword("");
@@ -405,13 +406,13 @@ const Profile = () => {
         setForgotStep(1);
         setPasswordMsg({
           type: "success",
-          text: "Your password has been successfully reset! 🔒",
+          text: "Your password has been successfully reset!",
         });
       }, 1500);
 
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: "Password reset successfully! 🔒" },
+          detail: { message: "Password reset successfully!" },
         })
       );
     } catch (err) {
@@ -532,7 +533,7 @@ const Profile = () => {
                 </div>
 
                 <p className="text-xs sm:text-sm text-[#7D6352] max-w-md italic mb-2">
-                  "{formData.bio || user.bio || "Crafting handmade memories with love 🧶"}"
+                  "{formData.bio || user.bio || "Crafting handmade memories with love"}"
                 </p>
 
                 <div className="flex flex-wrap items-center justify-center sm:justify-start gap-y-1.5 gap-x-4 text-xs text-[#8C6D58]">
@@ -796,8 +797,8 @@ const Profile = () => {
                           value={formData.email}
                           className="w-full pl-10 pr-24 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm text-gray-500 cursor-not-allowed select-none font-medium"
                         />
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md border border-emerald-200">
-                          ✓ Verified
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md border border-emerald-200 flex items-center gap-1">
+                          <BsCheckCircleFill className="text-[10px]" /> Verified
                         </span>
                       </div>
                     </div>
@@ -1217,7 +1218,7 @@ const Profile = () => {
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-2 text-sm font-bold text-[#4A2E1B]">
                           <span className="w-7 h-7 rounded-xl bg-[#FAF3EB] text-[#6C2C12] flex items-center justify-center text-xs">
-                            🔑
+                            <LuKeyRound className="text-sm text-[#6C2C12]" />
                           </span>
                           <span>Reset Password via OTP</span>
                         </div>

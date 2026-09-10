@@ -57,7 +57,7 @@ const AdminOrders = () => {
 
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: `Order ${orderId} updated to ${newStatus}! ✨` },
+          detail: { message: `Order ${orderId} updated to ${newStatus}!` },
         })
       );
     } catch (err) {

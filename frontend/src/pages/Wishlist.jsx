@@ -78,7 +78,7 @@ const Wishlist = () => {
       window.dispatchEvent(
         new CustomEvent("showToast", {
           detail: { 
-            message: "Please sign in to add items to your cart! 🧶",
+            message: "Please sign in to add items to your cart!",
             type: "cart_add"
           }
         })
@@ -108,7 +108,7 @@ const Wishlist = () => {
     window.dispatchEvent(
       new CustomEvent("showToast", {
         detail: { 
-          message: `Added "${productTitle}" to cart! 🧶`,
+          message: `Added "${productTitle}" to cart!`,
           type: "cart_add"
         }
       })

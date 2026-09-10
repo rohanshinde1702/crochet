@@ -82,7 +82,7 @@ export const SettingsProvider = ({ children }) => {
 
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: "Store contact info & social links updated globally! 🌐✨" }
+          detail: { message: "Store contact info & social links updated successfully!" }
         })
       );
 

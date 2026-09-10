@@ -7,6 +7,7 @@ import { GiYarn } from "react-icons/gi";
 import { LuRotateCcw } from "react-icons/lu";
 import { saveCart, saveWishlist } from "../utils/syncHelper";
 import { API_ENDPOINTS } from "../config/api";
+import { getCategoryIcon } from "../utils/categoryIcons";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -153,7 +154,7 @@ const Shop = () => {
     if (!localStorage.getItem("token")) {
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: "Please sign in to add items to your cart! 🧶" }
+          detail: { message: "Please sign in to add items to your cart!" }
         })
       );
       navigate("/signin");
@@ -185,7 +186,7 @@ const Shop = () => {
       updatedCart = [...cart, newItem];
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: `Added "${product.title}" to cart! 🧶` }
+          detail: { message: `Added "${product.title}" to cart!` }
         })
       );
     }
@@ -199,7 +200,7 @@ const Shop = () => {
     if (!localStorage.getItem("token")) {
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: "Please sign in to save items to your wishlist! ♥" }
+          detail: { message: "Please sign in to save items to your wishlist!" }
         })
       );
       navigate("/signin");
@@ -228,7 +229,7 @@ const Shop = () => {
       updatedWishlist = [...wishlist, newItem];
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: `Added "${product.title}" to wishlist! ♥` }
+          detail: { message: `Added "${product.title}" to wishlist!` }
         })
       );
     }
@@ -461,6 +462,7 @@ const Shop = () => {
                     : "bg-white text-gray-600 border border-[#EADFD4] hover:bg-[#6C2C12] hover:text-white"
                 }`}
               >
+                <span className="text-sm opacity-90">{getCategoryIcon(category)}</span>
                 <span>{category}</span>
                 <span
                   className={`text-[11px] px-1.5 py-0.5 rounded-full font-bold ${

@@ -76,7 +76,7 @@ const AdminRecycleBin = () => {
 
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: `Product "${product.title}" restored successfully! ✨` },
+          detail: { message: `Product "${product.title}" restored successfully!` },
         })
       );
       fetchRecycleBinData();
@@ -99,7 +99,7 @@ const AdminRecycleBin = () => {
 
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: `Story "${blog.title}" restored successfully! ✨` },
+          detail: { message: `Story "${blog.title}" restored successfully!` },
         })
       );
       fetchRecycleBinData();
@@ -128,7 +128,7 @@ const AdminRecycleBin = () => {
         window.dispatchEvent(
           new CustomEvent("showToast", {
             detail: {
-              message: `Emptied ${target === "products" ? "Products" : "Stories"} Recycle Bin. 🗑️`,
+              message: `Emptied ${target === "products" ? "Products" : "Stories"} Recycle Bin.`,
             },
           })
         );

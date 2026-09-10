@@ -18,7 +18,7 @@ import {
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook, FaArrowRight } from "react-icons/fa";
 import { GiYarn } from "react-icons/gi";
-import { LuSparkles } from "react-icons/lu";
+import { LuSparkles, LuKeyRound } from "react-icons/lu";
 import { API_ENDPOINTS } from "../config/api";
 import SocialAuthModal from "../components/auth/SocialAuthModal";
 
@@ -109,7 +109,7 @@ const SignIn = () => {
       window.dispatchEvent(new Event("wishlistUpdated"));
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: `Welcome back, ${data.user.name}! 🧶` },
+          detail: { message: `Welcome back, ${data.user.name}!` },
         })
       );
       navigate("/");
@@ -148,8 +148,8 @@ const SignIn = () => {
       }
       setForgotSuccess(
         data.previewOtp
-          ? `Reset Code: ${data.previewOtp} (Auto-filled for testing) ✉️`
-          : `Verification code sent to ${forgotEmail}! ✉️`
+          ? `Reset Code: ${data.previewOtp} (Auto-filled for testing)`
+          : `Verification code sent to ${forgotEmail}!`
       );
     } catch (err) {
       setForgotError(err.message);
@@ -208,7 +208,7 @@ const SignIn = () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to reset password");
 
-      setForgotSuccess("Password reset successfully! You can now sign in. 🔒");
+      setForgotSuccess("Password reset successfully! You can now sign in.");
       setTimeout(() => {
         setShowForgotModal(false);
         setForgotStep(1);
@@ -220,7 +220,7 @@ const SignIn = () => {
 
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: "Password reset successfully! 🔒" },
+          detail: { message: "Password reset successfully!" },
         })
       );
     } catch (err) {
@@ -429,7 +429,7 @@ const SignIn = () => {
 
               <div className="text-center mb-5">
                 <div className="w-12 h-12 rounded-full bg-[#FAF3EB] text-[#6C2C12] flex items-center justify-center text-xl mx-auto mb-2 shadow-xs">
-                  🔑
+                  <LuKeyRound className="text-xl text-[#6C2C12]" />
                 </div>
                 <h3 className="text-xl font-bold text-[#4A2E1B]">Reset Password</h3>
                 <p className="text-xs text-[#8C6D58] mt-1">

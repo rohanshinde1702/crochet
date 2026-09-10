@@ -1,10 +1,10 @@
-# 📦 CozyLoops Quick Installation & Setup Guide
+# CozyLoops Quick Installation & Setup Guide
 
 This guide walks you through setting up **CozyLoops** locally or in production in under 5 minutes.
 
 ---
 
-## ⚡ Prerequisites
+## Prerequisites
 
 1. **Node.js** (v18 or higher) — [Download Node.js](https://nodejs.org/)
 2. **MongoDB** (Local Community Server or [MongoDB Atlas Cloud](https://www.mongodb.com/cloud/atlas))
@@ -12,7 +12,7 @@ This guide walks you through setting up **CozyLoops** locally or in production i
 
 ---
 
-## 🛠️ Step 1: Backend Setup
+## Step 1: Backend Setup
 
 ```bash
 # 1. Navigate to the backend directory
@@ -50,7 +50,7 @@ npm run dev
 
 ---
 
-## 🎨 Step 2: Frontend Setup
+## Step 2: Frontend Setup
 
 ```bash
 # 1. Open a new terminal and navigate to frontend directory
@@ -66,7 +66,7 @@ npm run dev
 
 ---
 
-## 🔑 Default Credentials
+## Default Credentials
 
 - **Admin Portal**: `http://localhost:5173/admin`
   - **Email**: `admin@cozyloops.com`
@@ -77,5 +77,5 @@ npm run dev
 
 ---
 
-## 📁 Standalone Documentation
+## Standalone Documentation
 Open **`Documentation/index.html`** in any browser for complete interactive documentation, API guides, and deployment walkthroughs.

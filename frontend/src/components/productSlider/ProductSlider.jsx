@@ -68,7 +68,7 @@ const ProductSlider = () => {
       window.dispatchEvent(
         new CustomEvent("showToast", {
           detail: { 
-            message: "Please sign in to add items to your cart! 🧶",
+            message: "Please sign in to add items to your cart!",
             type: "cart_add"
           }
         })
@@ -107,7 +107,7 @@ const ProductSlider = () => {
     window.dispatchEvent(
       new CustomEvent("showToast", {
         detail: { 
-          message: `Added "${product.title}" to cart! 🧶`,
+          message: `Added "${product.title}" to cart!`,
           type: "cart_add"
         }
       })
@@ -121,7 +121,7 @@ const ProductSlider = () => {
       window.dispatchEvent(
         new CustomEvent("showToast", {
           detail: { 
-            message: "Please sign in to save items to your wishlist! ♥",
+            message: "Please sign in to save items to your wishlist!",
             type: "wishlist_add"
           }
         })
@@ -149,7 +149,7 @@ const ProductSlider = () => {
       window.dispatchEvent(
         new CustomEvent("showToast", {
           detail: { 
-            message: `Saved "${product.title}" to wishlist! ♥`,
+            message: `Saved "${product.title}" to wishlist!`,
             type: "wishlist_add"
           }
         })

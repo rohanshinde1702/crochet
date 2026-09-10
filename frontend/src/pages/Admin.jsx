@@ -14,9 +14,12 @@ import {
   BsArrowCounterclockwise,
   BsRecycle,
   BsEye,
+  BsCalendar3,
 } from "react-icons/bs";
 import { GiYarn } from "react-icons/gi";
+import { FaHeart } from "react-icons/fa";
 import { API_ENDPOINTS } from "../config/api";
+import { getCategoryIcon } from "../utils/categoryIcons";
 import {
   LuLayoutDashboard,
   LuBoxes,
@@ -50,14 +53,6 @@ const CATEGORIES = [
   "Kids & Baby",
   "Personalized",
 ];
-
-const CATEGORY_ICONS = {
-  "Decor & Gifts": "🌻",
-  "Pet & Animal": "🐾",
-  "Home & Living": "🏡",
-  "Kids & Baby": "👶",
-  "Personalized": "🎁",
-};
 
 const BLOG_CATEGORIES = [
   "Crochet Guides",
@@ -357,7 +352,7 @@ const Admin = () => {
       window.dispatchEvent(
         new CustomEvent("showToast", {
           detail: {
-            message: `Product "${product.title}" restored to active catalog! ✨`,
+            message: `Product "${product.title}" restored to active catalog!`,
           },
         })
       );
@@ -383,7 +378,7 @@ const Admin = () => {
       window.dispatchEvent(
         new CustomEvent("showToast", {
           detail: {
-            message: `Story "${blog.title}" restored to active stories! ✨`,
+            message: `Story "${blog.title}" restored to active stories!`,
           },
         })
       );
@@ -425,7 +420,7 @@ const Admin = () => {
         window.dispatchEvent(
           new CustomEvent("showToast", {
             detail: {
-              message: `Recycle Bin emptied successfully. 🗑️`,
+              message: `Recycle Bin emptied successfully.`,
             },
           })
         );
@@ -477,7 +472,7 @@ const Admin = () => {
 
     window.dispatchEvent(
       new CustomEvent("showToast", {
-        detail: { message: `Category "${newCategoryName.trim()}" registered! 🧶` },
+        detail: { message: `Category "${newCategoryName.trim()}" registered successfully!` },
       })
     );
     setNewCategoryName("");
@@ -805,8 +800,9 @@ const Admin = () => {
 
             {/* Date Range Picker Dropdown */}
             <div className="inline-flex items-center gap-2 px-3.5 py-2 bg-white border border-[#E5E7EB] rounded-xl text-xs font-semibold text-[#374151] shadow-2xs">
-              <span>📅 May 20 - May 26, 2026</span>
-              <BsChevronDown className="text-xs text-gray-400" />
+              <BsCalendar3 className="text-gray-400 text-sm" />
+              <span>May 20 - May 26, 2026</span>
+              <BsChevronDown className="text-xs text-gray-400 ml-1" />
             </div>
           </div>
 
@@ -1417,7 +1413,9 @@ const Admin = () => {
                         className="bg-[#F9FAFB] rounded-2xl p-5 border border-[#E5E7EB] flex items-center justify-between"
                       >
                         <div className="flex items-center gap-3">
-                          <span className="text-2xl">{CATEGORY_ICONS[cat] || "🧶"}</span>
+                          <span className="w-10 h-10 rounded-xl bg-blue-50 text-[#2563EB] flex items-center justify-center text-xl shrink-0 border border-blue-100">
+                            {getCategoryIcon(cat)}
+                          </span>
                           <div>
                             <h4 className="font-bold text-sm text-[#111827]">{cat}</h4>
                             <p className="text-xs text-[#6B7280]">{count} Active Products</p>
@@ -2081,7 +2079,7 @@ const Admin = () => {
           {/* Bottom Footer */}
           <div className="pt-6 border-t border-[#E5E7EB] flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-[#9CA3AF]">
             <p>© 2026 CozyLoops. All rights reserved.</p>
-            <p>Made with ❤️ by CozyLoops</p>
+            <p className="flex items-center gap-1">Made with <FaHeart className="inline text-rose-500" /> by CozyLoops</p>
           </div>
         </main>
       </div>

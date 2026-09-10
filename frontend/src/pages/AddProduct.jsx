@@ -25,14 +25,6 @@ const CATEGORIES = [
   "Personalized",
 ];
 
-const CATEGORY_ICONS = {
-  "Decor & Gifts": "🌻",
-  "Pet & Animal": "🐾",
-  "Home & Living": "🏡",
-  "Kids & Baby": "👶",
-  "Personalized": "🎁",
-};
-
 const getCategoryFolder = (category) => {
   if (!category) return "decor";
   const cat = category.toLowerCase().trim();
@@ -166,7 +158,7 @@ const AddProduct = () => {
       window.dispatchEvent(
         new CustomEvent("showToast", {
           detail: {
-            message: `📸 Stored in backend/uploads/products/${data.folder}/!`,
+            message: `Stored in backend/uploads/products/${data.folder}/!`,
           },
         })
       );
@@ -215,8 +207,8 @@ const AddProduct = () => {
         new CustomEvent("showToast", {
           detail: {
             message: isEdit
-              ? `"${formData.title}" updated successfully! ✨`
-              : `"${formData.title}" published to live store! 🧶`,
+              ? `"${formData.title}" updated successfully!`
+              : `"${formData.title}" published to live store!`,
           },
         })
       );
@@ -359,7 +351,7 @@ const AddProduct = () => {
                       >
                         {CATEGORIES.map((cat) => (
                           <option key={cat} value={cat}>
-                            {CATEGORY_ICONS[cat]} {cat}
+                            {cat}
                           </option>
                         ))}
                       </select>
@@ -415,8 +407,8 @@ const AddProduct = () => {
                       onChange={(e) => setFormData({ ...formData, inStock: e.target.value === "true" })}
                       className="w-full px-3.5 py-2.5 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl text-xs sm:text-sm font-semibold text-[#111827] focus:outline-none focus:border-[#2563EB] cursor-pointer"
                     >
-                      <option value="true">🟢 In Stock (Ready to Ship)</option>
-                      <option value="false">🔴 Out of Stock</option>
+                      <option value="true">In Stock (Ready to Ship)</option>
+                      <option value="false">Out of Stock</option>
                     </select>
                   </div>
                 </div>

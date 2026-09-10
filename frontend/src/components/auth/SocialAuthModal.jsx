@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook, FaArrowRight, FaUserCheck } from "react-icons/fa";
-import { LuX, LuPlus, LuShieldCheck, LuUser, LuCheck } from "react-icons/lu";
+import { LuX, LuPlus, LuShieldCheck, LuUser, LuCheck, LuLightbulb } from "react-icons/lu";
 import { BsExclamationCircle } from "react-icons/bs";
 import { API_ENDPOINTS } from "../../config/api";
 
@@ -161,7 +161,7 @@ const SocialAuthModal = ({ isOpen, provider, onClose, onSuccess }) => {
       window.dispatchEvent(
         new CustomEvent("showToast", {
           detail: {
-            message: `Signed in as ${data.user.name} via ${provider}! 🧶✨`,
+            message: `Signed in as ${data.user.name} via ${provider}!`,
           },
         })
       );
@@ -331,8 +331,9 @@ const SocialAuthModal = ({ isOpen, provider, onClose, onSuccess }) => {
                     className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-xs sm:text-sm text-[#2B1810] placeholder-gray-400 focus:outline-none focus:border-[#6C2C12] focus:ring-1 focus:ring-[#6C2C12] font-medium"
                   />
                 </div>
-                <p className="text-[11px] text-gray-400 mt-1">
-                  💡 Type to pick from your browser's saved {provider} accounts.
+                <p className="text-[11px] text-gray-400 mt-1 flex items-center gap-1.5">
+                  <LuLightbulb className="text-amber-500 text-xs shrink-0" />
+                  <span>Type to pick from your browser's saved {provider} accounts.</span>
                 </p>
               </div>
 

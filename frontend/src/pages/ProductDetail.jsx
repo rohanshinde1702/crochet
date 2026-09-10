@@ -82,7 +82,7 @@ const ProductDetail = () => {
     if (!localStorage.getItem("token")) {
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: "Please sign in to add items to your cart! 🧶" }
+          detail: { message: "Please sign in to add items to your cart!" }
         })
       );
       navigate("/signin");
@@ -107,7 +107,7 @@ const ProductDetail = () => {
 
     window.dispatchEvent(
       new CustomEvent("showToast", {
-        detail: { message: `Added "${product.title}" to cart! 🧶` }
+        detail: { message: `Added "${product.title}" to cart!` }
       })
     );
   };
@@ -117,7 +117,7 @@ const ProductDetail = () => {
     if (!localStorage.getItem("token")) {
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: "Please sign in to save items to your wishlist! ♥" }
+          detail: { message: "Please sign in to save items to your wishlist!" }
         })
       );
       navigate("/signin");
@@ -139,7 +139,7 @@ const ProductDetail = () => {
       updatedWishlist = [...wishlist, product];
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: `Saved "${product.title}" to wishlist! ♥` }
+          detail: { message: `Saved "${product.title}" to wishlist!` }
         })
       );
     }
@@ -153,7 +153,7 @@ const ProductDetail = () => {
     navigator.clipboard.writeText(window.location.href);
     window.dispatchEvent(
       new CustomEvent("showToast", {
-        detail: { message: "Product link copied to clipboard! 📋" }
+        detail: { message: "Product link copied to clipboard!" }
       })
     );
   };
@@ -164,7 +164,7 @@ const ProductDetail = () => {
     if (!localStorage.getItem("token")) {
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: "Please sign in to save items to your wishlist! ♥" }
+          detail: { message: "Please sign in to save items to your wishlist!" }
         })
       );
       navigate("/signin");
@@ -186,7 +186,7 @@ const ProductDetail = () => {
       updatedWishlist = [...wishlist, relProduct];
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: `Saved "${relProduct.title}" to wishlist! ♥` }
+          detail: { message: `Saved "${relProduct.title}" to wishlist!` }
         })
       );
     }
@@ -201,7 +201,7 @@ const ProductDetail = () => {
     if (!localStorage.getItem("token")) {
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: "Please sign in to add items to your cart! 🧶" }
+          detail: { message: "Please sign in to add items to your cart!" }
         })
       );
       navigate("/signin");
@@ -227,7 +227,7 @@ const ProductDetail = () => {
 
     window.dispatchEvent(
       new CustomEvent("showToast", {
-        detail: { message: `Added "${relProduct.title}" to cart! 🧶` }
+        detail: { message: `Added "${relProduct.title}" to cart!` }
       })
     );
   };

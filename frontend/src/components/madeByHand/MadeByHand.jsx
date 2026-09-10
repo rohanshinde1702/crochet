@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { LuHeart, LuArrowRight } from "react-icons/lu";
 
 const MadeByHand = () => {
   return (
@@ -21,7 +22,7 @@ const MadeByHand = () => {
 
                 <div className="absolute top-6 sm:top-8 left-1/2 -translate-x-1/2 flex items-center gap-3">
                   <span className="w-10 sm:w-14 h-px bg-[#d7a87b]"></span>
-                  <span className="text-[#ef7f8f] text-xl">♡</span>
+                  <LuHeart className="text-[#ef7f8f] text-lg" />
                   <span className="w-10 sm:w-14 h-px bg-[#d7a87b]"></span>
                 </div>
 
@@ -38,7 +39,7 @@ const MadeByHand = () => {
 
                   <div className="flex items-center justify-center lg:justify-start gap-3 my-5 sm:my-6">
                     <span className="w-12 sm:w-16 h-px bg-[#d7a87b]"></span>
-                    <span className="text-[#ef7f8f] text-lg">♥</span>
+                    <LuHeart className="text-[#ef7f8f] text-sm" />
                     <span className="w-12 sm:w-16 h-px bg-[#d7a87b]"></span>
                   </div>
 
@@ -49,8 +50,8 @@ const MadeByHand = () => {
 
                   <Link to="/about">
                     <button className="mt-6 sm:mt-8 inline-flex items-center gap-3 bg-[#6C2C12] hover:bg-[#54210d] text-white px-6 sm:px-8 py-3 sm:py-3.5 rounded-lg text-sm sm:text-base font-semibold transition-all duration-300 shadow-sm cursor-pointer">
-                      Our Story
-                      <span className="text-lg">→</span>
+                      <span>Our Story</span>
+                      <LuArrowRight className="text-base" />
                     </button>
                   </Link>
                 </div>

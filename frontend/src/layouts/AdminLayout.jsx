@@ -10,6 +10,7 @@ import {
   BsMoonStars,
 } from "react-icons/bs";
 import { GiYarn } from "react-icons/gi";
+import { FaHeart } from "react-icons/fa";
 import {
   LuLayoutDashboard,
   LuBoxes,
@@ -47,7 +48,7 @@ const AdminLayout = () => {
     window.dispatchEvent(
       new CustomEvent("showToast", {
         detail: {
-          message: nextTheme === "dark" ? "🌙 Dark Mode activated!" : "☀️ Light Mode activated!",
+          message: nextTheme === "dark" ? "Dark Mode activated!" : "Light Mode activated!",
         },
       })
     );
@@ -70,7 +71,6 @@ const AdminLayout = () => {
   // Add Category Modal State (Shared)
   const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
-  const [newCategoryIcon, setNewCategoryIcon] = useState("🧶");
   const [isSubmittingCat, setIsSubmittingCat] = useState(false);
 
   // Fetch counts for badges
@@ -142,7 +142,6 @@ const AdminLayout = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: newCategoryName.trim(),
-          icon: newCategoryIcon.trim() || "🧶",
         }),
       });
 
@@ -151,7 +150,7 @@ const AdminLayout = () => {
 
       window.dispatchEvent(
         new CustomEvent("showToast", {
-          detail: { message: `Category "${newCategoryName.trim()}" registered! 🧶✨` },
+          detail: { message: `Category "${newCategoryName.trim()}" created successfully!` },
         })
       );
       setNewCategoryName("");
@@ -557,7 +556,7 @@ const AdminLayout = () => {
                 Theme: <strong className="capitalize">{theme}</strong>
               </span>
               <span>•</span>
-              <p>Made with ❤️ by CozyLoops</p>
+              <p className="flex items-center gap-1">Made with <FaHeart className="inline text-rose-500" /> by CozyLoops</p>
             </div>
           </div>
         </main>
@@ -598,20 +597,6 @@ const AdminLayout = () => {
                     value={newCategoryName}
                     onChange={(e) => setNewCategoryName(e.target.value)}
                     placeholder="e.g. Festive Holiday"
-                    className={`w-full px-3.5 py-2.5 border rounded-xl text-xs sm:text-sm focus:outline-none focus:border-[#2563EB] ${
-                      isDark ? "bg-slate-900 border-slate-700 text-white" : "bg-[#F9FAFB] border-[#E5E7EB] text-[#111827]"
-                    }`}
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-gray-400 mb-1.5">
-                    Emoji Icon
-                  </label>
-                  <input
-                    type="text"
-                    value={newCategoryIcon}
-                    onChange={(e) => setNewCategoryIcon(e.target.value)}
-                    placeholder="e.g. 🎄"
                     className={`w-full px-3.5 py-2.5 border rounded-xl text-xs sm:text-sm focus:outline-none focus:border-[#2563EB] ${
                       isDark ? "bg-slate-900 border-slate-700 text-white" : "bg-[#F9FAFB] border-[#E5E7EB] text-[#111827]"
                     }`}

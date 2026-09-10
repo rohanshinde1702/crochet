@@ -30,7 +30,7 @@ const AdminMedia = () => {
     setCopiedUrl(url);
     window.dispatchEvent(
       new CustomEvent("showToast", {
-        detail: { message: "Media URL copied to clipboard! 📋" },
+        detail: { message: "Media URL copied to clipboard!" },
       })
     );
     setTimeout(() => setCopiedUrl(null), 2000);

@@ -67,7 +67,7 @@ const Blog = () => {
     const url = `${window.location.origin}/blog/${article.id}`;
     if (navigator.clipboard) {
       navigator.clipboard.writeText(url);
-      triggerToast("Article link copied to clipboard! 🔗");
+      triggerToast("Article link copied to clipboard!");
     } else {
       triggerToast("Sharing: " + article.title);
     }

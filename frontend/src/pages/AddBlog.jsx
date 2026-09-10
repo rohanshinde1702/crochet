@@ -151,7 +151,7 @@ const AddBlog = () => {
       window.dispatchEvent(
         new CustomEvent("showToast", {
           detail: {
-            message: `📸 Blog cover stored in backend/uploads/blogs/!`,
+            message: `Blog cover stored in backend/uploads/blogs/!`,
           },
         })
       );
@@ -215,8 +215,8 @@ const AddBlog = () => {
         new CustomEvent("showToast", {
           detail: {
             message: isEdit
-              ? `"${formData.title}" updated successfully! ✨`
-              : `"${formData.title}" published to live blog! 📝🧶`,
+              ? `"${formData.title}" updated successfully!`
+              : `"${formData.title}" published to live blog!`,
           },
         })
       );
@@ -434,7 +434,7 @@ const AddBlog = () => {
                       className="w-full px-3.5 py-2.5 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl text-xs sm:text-sm font-semibold text-[#111827] focus:outline-none focus:border-[#2563EB] cursor-pointer"
                     >
                       <option value="false">Standard Story</option>
-                      <option value="true">⭐ Featured Spotlight</option>
+                      <option value="true">Featured Spotlight</option>
                     </select>
                   </div>
                 </div>
