@@ -21,6 +21,7 @@ import AdminProfile from '../pages/admin/AdminProfile';
 import AdminProducts from '../pages/admin/AdminProducts';
 import AdminCategories from '../pages/admin/AdminCategories';
 import AdminOrders from '../pages/admin/AdminOrders';
+import AdminOrderDetail from '../pages/admin/AdminOrderDetail';
 import AdminCustomers from '../pages/admin/AdminCustomers';
 import AdminBlogs from '../pages/admin/AdminBlogs';
 import AdminRecycleBin from '../pages/admin/AdminRecycleBin';
@@ -69,6 +70,7 @@ const AppRoutes = () => {
         <Route path='products' element={<AdminProducts />} />
         <Route path='categories' element={<AdminCategories />} />
         <Route path='orders' element={<AdminOrders />} />
+        <Route path='orders/:id' element={<AdminOrderDetail />} />
         <Route path='customers' element={<AdminCustomers />} />
         <Route path='blogs' element={<AdminBlogs />} />
         <Route path='recycle-bin' element={<AdminRecycleBin />} />

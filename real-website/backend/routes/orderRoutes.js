@@ -21,6 +21,7 @@ router.put("/:id/status", updateOrderStatus);
 router.get("/", getOrders);
 router.post("/", createOrder);
 router.get("/:id", getOrderById);
+router.put("/:id", updateOrderStatus);
 router.delete("/:id", softDeleteOrder);
 
 module.exports = router;

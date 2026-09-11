@@ -109,12 +109,12 @@ const createOrder = async (req, res) => {
   }
 };
 
-// @desc    Update order status
+// @desc    Update order status and details
 // @route   PUT /api/orders/:id/status
 // @access  Admin
 const updateOrderStatus = async (req, res) => {
   try {
-    const { status, trackingNumber } = req.body;
+    const { status, trackingNumber, paymentStatus, notes, shippingAddress } = req.body;
     const param = req.params.id;
 
     let order = null;
@@ -128,8 +128,16 @@ const updateOrderStatus = async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    if (status) order.status = status;
-    if (trackingNumber) order.trackingNumber = trackingNumber;
+    if (status !== undefined) order.status = status;
+    if (trackingNumber !== undefined) order.trackingNumber = trackingNumber;
+    if (paymentStatus !== undefined) order.paymentStatus = paymentStatus;
+    if (notes !== undefined) order.notes = notes;
+    if (shippingAddress !== undefined) {
+      order.shippingAddress = {
+        ...order.shippingAddress?.toObject?.() || order.shippingAddress,
+        ...shippingAddress
+      };
+    }
 
     const updated = await order.save();
     res.json(updated);
