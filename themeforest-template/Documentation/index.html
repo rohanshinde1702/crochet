@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentation — CozyLoops React eCommerce Template</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --bg-main: #f8fafc;
+      --bg-card: #ffffff;
+      --border-color: #e2e8f0;
+      --sidebar-width: 270px;
+      --code-bg: #0f172a;
+      --code-text: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.65;
+      font-size: 14px;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      width: var(--sidebar-width);
+      background: #0f172a;
+      color: #cbd5e1;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      overflow-y: auto;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+    }
+
+    .brand {
+      padding: 0 10px 18px 10px;
+      border-bottom: 1px solid #1e293b;
+      margin-bottom: 18px;
+    }
+
+    .brand h2 {
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+
+    .brand p {
+      color: #94a3b8;
+      font-size: 11px;
+      margin-top: 3px;
+      font-weight: 500;
+    }
+
+    .nav-section-title {
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #64748b;
+      font-weight: 700;
+      margin: 14px 10px 6px 10px;
+    }
+
+    .nav-list {
+      list-style: none;
+    }
+
+    .nav-list li a {
+      display: block;
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 12.5px;
+      font-weight: 500;
+      padding: 6px 10px;
+      border-radius: 6px;
+      transition: all 0.15s ease;
+      margin-bottom: 2px;
+    }
+
+    .nav-list li a:hover,
+    .nav-list li a.active {
+      color: #ffffff;
+      background: #1e293b;
+    }
+
+    .nav-list li a.active {
+      color: #38bdf8;
+      font-weight: 600;
+    }
+
+    /* Main Content */
+    .main-wrapper {
+      margin-left: var(--sidebar-width);
+      flex: 1;
+      padding: 32px 48px 80px 48px;
+      max-width: 1040px;
+      min-width: 0;
+    }
+
+    /* Item Meta Box (Classic ThemeForest format) */
+    .item-header {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 30px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+
+    .item-header h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.4px;
+      margin-bottom: 6px;
+    }
+
+    .item-header .subtitle {
+      color: var(--text-muted);
+      font-size: 13.5px;
+      margin-bottom: 18px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .meta-item {
+      font-size: 12.5px;
+    }
+
+    .meta-label {
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .meta-val {
+      color: var(--text-main);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    /* Documentation Section */
+    section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 26px 30px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+      scroll-margin-top: 24px;
+    }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h3 {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 18px 0 8px 0;
+    }
+
+    p {
+      color: #334155;
+      font-size: 13.5px;
+      margin-bottom: 12px;
+    }
+
+    ul, ol {
+      margin-left: 20px;
+      margin-bottom: 12px;
+      color: #334155;
+      font-size: 13.5px;
+    }
+
+    li {
+      margin-bottom: 5px;
+    }
+
+    strong {
+      color: #0f172a;
+    }
+
+    /* Code Container & Snippets */
+    .code-block {
+      position: relative;
+      margin: 12px 0 16px 0;
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      font-family: 'Fira Code', monospace;
+      font-size: 12.5px;
+      padding: 14px 18px;
+      border-radius: 8px;
+      overflow-x: auto;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: 'Fira Code', monospace;
+      font-size: 12px;
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 2px 5px;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      border: none;
+    }
+
+    /* Tables */
+    .table-box {
+      width: 100%;
+      overflow-x: auto;
+      margin: 14px 0 16px 0;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 500px;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      background: #f8fafc;
+      font-weight: 700;
+      color: #334155;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Alerts */
+    .note-box {
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin: 14px 0;
+      display: flex;
+      gap: 10px;
+      border-left: 4px solid var(--primary);
+      background: #eff6ff;
+      color: #1e40af;
+    }
+
+    .note-box.success {
+      border-left-color: #10b981;
+      background: #ecfdf5;
+      color: #065f46;
+    }
+
+    .note-box.warning {
+      border-left-color: #f59e0b;
+      background: #fffbeb;
+      color: #92400e;
+    }
+
+    /* Mobile Header */
+    .mobile-bar {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 52px;
+      background: #0f172a;
+      color: white;
+      padding: 0 16px;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 200;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .mobile-toggle {
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 150;
+    }
+
+    /* Responsive */
+    @media (max-width: 860px) {
+      .mobile-bar {
+        display: flex;
+      }
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .backdrop.active {
+        display: block;
+      }
+      .main-wrapper {
+        margin-left: 0;
+        padding: 72px 16px 40px 16px;
+      }
+      section {
+        padding: 20px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Mobile Top Bar -->
+  <div class="mobile-bar">
+    <div style="font-weight: 700; font-size: 15px;">CozyLoops Documentation</div>
+    <button class="mobile-toggle" id="toggleBtn">☰ Menu</button>
+  </div>
+  <div class="backdrop" id="backdrop"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <h2>CozyLoops</h2>
+      <p>React eCommerce Template</p>
+    </div>
+
+    <div class="nav-section-title">Getting Started</div>
+    <ul class="nav-list">
+      <li><a href="#intro" class="active">1. Introduction</a></li>
+      <li><a href="#structure">2. Files & Folder Structure</a></li>
+      <li><a href="#installation">3. Installation & Local Setup</a></li>
+      <li><a href="#build">4. Building for Production</a></li>
+    </ul>
+
+    <div class="nav-section-title">Customization</div>
+    <ul class="nav-list">
+      <li><a href="#branding">5. Logo, Brand & Colors</a></li>
+      <li><a href="#mock-data">6. Editing Products & Content</a></li>
+      <li><a href="#images">7. Image Dimensions Guide</a></li>
+      <li><a href="#backend">8. Connecting a Live API</a></li>
+    </ul>
+
+    <div class="nav-section-title">Reference & Help</div>
+    <ul class="nav-list">
+      <li><a href="#admin">9. Admin Dashboard Pages</a></li>
+      <li><a href="#credits">10. Sources & Credits</a></li>
+      <li><a href="#support">11. Changelog & Support</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-wrapper">
+
+    <!-- Header Meta Box -->
+    <div class="item-header">
+      <h1>CozyLoops — Handcrafted Crochet & Artisan Store Template</h1>
+      <p class="subtitle">Official setup, customization, and developer documentation guide.</p>
+      
+      <div class="meta-grid">
+        <div class="meta-item">
+          <div class="meta-label">Created</div>
+          <div class="meta-val">March 2026</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Updated</div>
+          <div class="meta-val">September 2026</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Version</div>
+          <div class="meta-val">1.0.0</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Platform</div>
+          <div class="meta-val">React 18 / 19 + Vite</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. Introduction -->
+    <section id="intro">
+      <h2>1. Introduction</h2>
+      <p>Thank you for purchasing <strong>CozyLoops</strong>! CozyLoops is a modern, lightweight, and responsive React template designed specifically for handcrafted crochet creators, boutique yarn stores, handmade craft shops, and independent artisans.</p>
+      
+      <div class="note-box success">
+        <div>
+          <strong>Ready Out of the Box:</strong> CozyLoops is built to be 100% functional standalone. It includes structured seed datasets and browser <code>localStorage</code> persistence, meaning you can test all storefront and admin features right away without setting up a backend database.
+        </div>
+      </div>
+
+      <h3>Main Features:</h3>
+      <ul>
+        <li><strong>Artisan Storefront:</strong> Hero slider, category filters, product search, sorting (price, rating), stock indicators, and badges.</li>
+        <li><strong>Product Details Page:</strong> Image preview, rating counter, material composition breakdown, care guide, and social sharing.</li>
+        <li><strong>Handcrafted Journal / Blog:</strong> Tutorials with reading time calculator, tags, and interactive comments.</li>
+        <li><strong>Cart & Wishlist:</strong> Slide-out shopping bag drawer, free shipping threshold calculator, and persistent wishlist.</li>
+        <li><strong>Executive Admin Studio (<code>/admin</code>):</strong> Analytics dashboard, catalog manager, category manager, order fulfillment status, customer directory, blog manager, soft-delete recycle bin, and store settings.</li>
+      </ul>
+    </section>
+
+    <!-- 2. Files & Folder Structure -->
+    <section id="structure">
+      <h2>2. Files & Folder Structure</h2>
+      <p>Inside the extracted package, you will find the following clean directory structure:</p>
+
+      <div class="code-block">
+        <pre><code>frontend/
+├── public/
+│   ├── favicon.svg             # Website favicon
+│   └── uploads/                # Placeholder images with exact pixel dimensions
+│       ├── avatars/            # User & artisan profile photos
+│       ├── blogs/              # Blog post featured banners (1200 × 750)
+│       ├── categories/         # Category card covers (600 × 400)
+│       ├── products/           # Product catalog photos (600 × 600)
+│       └── slider-*.png        # Hero slider banners (1905 × 680)
+├── src/
+│   ├── components/             # Header, Footer, TopBar, Modals, Sliders
+│   ├── config/
+│   │   └── api.js              # Central API URLs and asset path resolver
+│   ├── context/
+│   │   ├── AdminThemeContext.jsx  # Light/Dark mode state for admin
+│   │   └── SettingsContext.jsx    # Store brand, contact & social links state
+│   ├── data/                   # Default datasets (Products, Blogs, Categories, etc.)
+│   │   ├── blogs.js            # Sample blog articles
+│   │   ├── categories.js       # Store categories and emoji icons
+│   │   ├── customers.js        # Sample customer accounts
+│   │   ├── orders.js           # Sample orders with line items
+│   │   ├── products.js         # Complete product catalog
+│   │   ├── settings.js         # Default store settings and social links
+│   │   └── index.js            # Unified data exporter
+│   ├── pages/                  # Storefront & Admin page components
+│   │   ├── admin/              # Admin panel pages (Dashboard, Products, Orders, etc.)
+│   │   ├── Shop.jsx            # Shop catalog with filters
+│   │   ├── ProductDetail.jsx   # Single product view
+│   │   ├── Blog.jsx            # Blog listing & articles
+│   │   └── Contact.jsx         # Contact form
+│   ├── schema/
+│   │   ├── schema.js           # JSDoc type models and shape validation helpers
+│   │   └── SCHEMA.md           # Full JSON schema specifications
+│   ├── services/
+│   │   └── dataService.js      # Data manager (localStorage + optional API fallback)
+│   ├── styles/                 # Modular CSS stylesheets
+│   ├── App.jsx                 # Routes & layout shell
+│   └── main.jsx                # React mount entrypoint
+├── .env.example                # Sample environment variables
+├── package.json                # Project dependencies
+└── vite.config.js              # Vite configuration</code></pre>
+      </div>
+    </section>
+
+    <!-- 3. Installation & Setup -->
+    <section id="installation">
+      <h2>3. Installation & Local Setup</h2>
+      <p>Follow these steps to run the template locally on your computer:</p>
+
+      <h3>Prerequisites:</h3>
+      <p>Make sure you have <a href="https://nodejs.org/" target="_blank">Node.js</a> (v18.0.0 or higher) installed.</p>
+
+      <h3>Step 1: Install Dependencies</h3>
+      <p>Open your terminal, navigate to the <code>frontend</code> folder, and run:</p>
+      <div class="code-block">
+        <pre><code>cd frontend
+npm install</code></pre>
+      </div>
+
+      <h3>Step 2: Start Development Server</h3>
+      <div class="code-block">
+        <pre><code>npm run dev</code></pre>
+      </div>
+      <p>Once started, open your browser and visit: <code>http://localhost:5173</code></p>
+
+      <div class="note-box">
+        <div>
+          <strong>Admin Panel Access:</strong> To view the Admin Dashboard, navigate to <code>http://localhost:5173/admin</code> in your browser.
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Production Build & Deployment -->
+    <section id="build">
+      <h2>4. Building for Production & Deployment</h2>
+
+      <h3>1. Generate Production Bundle</h3>
+      <p>To compile the template for production, run:</p>
+      <div class="code-block">
+        <pre><code>npm run build</code></pre>
+      </div>
+      <p>Vite will create an optimized, minified <code>dist/</code> folder containing static HTML, CSS, JavaScript, and images.</p>
+
+      <h3>2. Deploying to Hosting Providers</h3>
+      <div class="table-box">
+        <table>
+          <thead>
+            <tr>
+              <th>Platform</th>
+              <th>Build Command</th>
+              <th>Publish Directory</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Vercel</strong></td>
+              <td><code>npm run build</code></td>
+              <td><code>dist</code></td>
+            </tr>
+            <tr>
+              <td><strong>Netlify</strong></td>
+              <td><code>npm run build</code></td>
+              <td><code>dist</code></td>
+            </tr>
+            <tr>
+              <td><strong>GitHub Pages</strong></td>
+              <td><code>npm run build</code></td>
+              <td><code>dist</code></td>
+            </tr>
+            <tr>
+              <td><strong>Apache / cPanel</strong></td>
+              <td colspan="2">Upload the contents of the <code>dist/</code> folder to your server's <code>public_html/</code> directory.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 5. Logo, Brand & Colors -->
+    <section id="branding">
+      <h2>5. Changing Logo, Brand & Colors</h2>
+
+      <h3>Changing the Brand Name & Contact Information:</h3>
+      <p>You can change the store name, email, phone number, WhatsApp, and social media links directly in <code>src/data/settings.js</code>, or dynamically via the Admin Panel at <code>/admin/settings</code>.</p>
+
+      <h3>Primary Color Palette:</h3>
+      <p>The template uses clean CSS color variables and utility tokens:</p>
+      <div class="table-box">
+        <table>
+          <thead>
+            <tr>
+              <th>Color Role</th>
+              <th>Hex Code</th>
+              <th>Usage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Brand Primary</strong></td>
+              <td><code>#6C2C12</code></td>
+              <td>Primary buttons, headings, accent badges</td>
+            </tr>
+            <tr>
+              <td><strong>Brand Pink</strong></td>
+              <td><code>#F88897</code></td>
+              <td>Secondary buttons, price badges, highlights</td>
+            </tr>
+            <tr>
+              <td><strong>Light Background</strong></td>
+              <td><code>#FFF5F5</code></td>
+              <td>Warm background tints, promo cards</td>
+            </tr>
+            <tr>
+              <td><strong>Admin Accent</strong></td>
+              <td><code>#2563EB</code></td>
+              <td>Admin dashboard buttons, active navigation</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Typography (Google Fonts):</h3>
+      <p>Fonts are loaded in <code>index.html</code>:</p>
+      <ul>
+        <li><code>Plus Jakarta Sans</code> — Body text, interface buttons, and inputs.</li>
+        <li><code>Playfair Display</code> — Elegant serif headings for handcrafted branding.</li>
+        <li><code>Outfit</code> — Metric counters and modern price tags.</li>
+      </ul>
+    </section>
+
+    <!-- 6. Editing Products & Content -->
+    <section id="mock-data">
+      <h2>6. Editing Products, Categories & Blogs</h2>
+      <p>All demo data is organized into clean JavaScript files in <code>src/data/</code>. You can easily add, edit, or delete items:</p>
+
+      <h3>1. Products (<code>src/data/products.js</code>)</h3>
+      <p>Each product object contains:</p>
+      <div class="code-block">
+        <pre><code>{
+  id: 1,
+  title: "Handmade Velvet Crochet Bear",
+  category: "Decor & Gifts",
+  price: 1299,
+  originalPrice: 1599,
+  img: "/uploads/products/decor/crochet-bear.jpg",
+  rating: 4.9,
+  reviewsCount: 48,
+  badge: "Bestseller",
+  material: "100% Velvet Yarn with hypoallergenic polyfill",
+  description: "Lovingly hand-crocheted plush bear with safety eyes.",
+  inStock: true,
+  stockQuantity: 15,
+  dimensions: "28cm (H) x 18cm (W)",
+  featured: true
+}</code></pre>
+      </div>
+
+      <h3>2. Categories (<code>src/data/categories.js</code>)</h3>
+      <p>To add or change categories, modify the category list with an emoji icon and cover image:</p>
+      <div class="code-block">
+        <pre><code>{
+  name: "Decor & Gifts",
+  slug: "decor-gifts",
+  icon: "🧸",
+  description: "Charming amigurumi and handcrafted home accents.",
+  image: "/uploads/categories/decor.jpg",
+  featured: true,
+  displayOrder: 1
+}</code></pre>
+      </div>
+
+      <h3>3. Blogs (<code>src/data/blogs.js</code>)</h3>
+      <p>Articles support structured content blocks (<code>paragraph</code>, <code>tip</code>, <code>quote</code>, <code>image</code>) and comment threads.</p>
+    </section>
+
+    <!-- 7. Image Dimensions Guide -->
+    <section id="images">
+      <h2>7. Image Dimensions & Replacement Guide</h2>
+      <p>To keep the design sharp and consistent, use the recommended pixel dimensions when replacing placeholder graphics:</p>
+
+      <div class="table-box">
+        <table>
+          <thead>
+            <tr>
+              <th>Image Type</th>
+              <th>Recommended Size</th>
+              <th>Aspect Ratio</th>
+              <th>Folder Location</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Hero Slider Banners</strong></td>
+              <td><code>1905 × 680 px</code></td>
+              <td>~2.8:1</td>
+              <td><code>public/uploads/slider-*.png</code></td>
+            </tr>
+            <tr>
+              <td><strong>Product Thumbnails</strong></td>
+              <td><code>600 × 600 px</code></td>
+              <td>1:1 (Square)</td>
+              <td><code>public/uploads/products/...</code></td>
+            </tr>
+            <tr>
+              <td><strong>Category Cards</strong></td>
+              <td><code>600 × 400 px</code></td>
+              <td>3:2</td>
+              <td><code>public/uploads/categories/...</code></td>
+            </tr>
+            <tr>
+              <td><strong>Blog Featured Covers</strong></td>
+              <td><code>1200 × 750 px</code></td>
+              <td>16:10</td>
+              <td><code>public/uploads/blogs/...</code></td>
+            </tr>
+            <tr>
+              <td><strong>Profile & Team Avatars</strong></td>
+              <td><code>300 × 300 px</code></td>
+              <td>1:1 (Square)</td>
+              <td><code>public/uploads/avatars/...</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 8. Connecting a Live API -->
+    <section id="backend">
+      <h2>8. Connecting Any Live Backend API</h2>
+      <p>If you build or connect your own backend API (Node.js, Express, Firebase, Supabase, Laravel, Django, Python FastAPI, etc.):</p>
+
+      <ol>
+        <li>Create a <code>.env</code> file in the <code>frontend/</code> root:
+          <div class="code-block">
+            <pre><code>VITE_API_URL=https://your-api-domain.com</code></pre>
+          </div>
+        </li>
+        <li>Inspect <code>src/config/api.js</code> where standard REST endpoint paths are defined:
+          <div class="code-block">
+            <pre><code>export const API_ENDPOINTS = {
+  PRODUCTS: `${API_BASE_URL}/api/products`,
+  BLOGS: `${API_BASE_URL}/api/blogs`,
+  ORDERS: `${API_BASE_URL}/api/orders`,
+  CATEGORIES: `${API_BASE_URL}/api/categories`,
+  CUSTOMERS: `${API_BASE_URL}/api/customers`,
+  SETTINGS: `${API_BASE_URL}/api/settings`
+};</code></pre>
+          </div>
+        </li>
+        <li>The <code>src/services/dataService.js</code> handles data fetching and automatically falls back to local storage if the API server is unreachable.</li>
+      </ol>
+    </section>
+
+    <!-- 9. Admin Dashboard Pages -->
+    <section id="admin">
+      <h2>9. Admin Dashboard Overview</h2>
+      <p>The template includes a full-featured Admin Studio accessible at <code>/admin</code>:</p>
+
+      <ul>
+        <li><strong>/admin</strong> — Executive Dashboard with revenue charts, total orders, and real-time activity log.</li>
+        <li><strong>/admin/products</strong> — Product catalog manager with search, category filtering, stock adjustments, and soft-deletion.</li>
+        <li><strong>/admin/categories</strong> — Category manager with emoji icons and product counts.</li>
+        <li><strong>/admin/orders</strong> — Order fulfillment manager with 1-click status dropdowns (<code>Processing</code>, <code>Shipped</code>, <code>Delivered</code>).</li>
+        <li><strong>/admin/customers</strong> — Customer directory with lifetime spend aggregator and order history.</li>
+        <li><strong>/admin/blogs</strong> — Craft tutorial manager with spotlight toggles.</li>
+        <li><strong>/admin/recycle-bin</strong> — Soft-delete safety net with 1-click restore for deleted products and articles.</li>
+        <li><strong>/admin/settings</strong> — Store brand, email, phone, WhatsApp number, working hours, and social media links.</li>
+      </ul>
+    </section>
+
+    <!-- 10. Sources & Credits -->
+    <section id="credits">
+      <h2>10. Sources & Credits</h2>
+      <p>We would like to thank the authors of the following open-source libraries and resources:</p>
+
+      <div class="table-box">
+        <table>
+          <thead>
+            <tr>
+              <th>Library / Asset</th>
+              <th>Author / Source</th>
+              <th>License</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>React</strong></td>
+              <td><a href="https://react.dev/" target="_blank">Meta Open Source</a></td>
+              <td>MIT License</td>
+            </tr>
+            <tr>
+              <td><strong>Vite</strong></td>
+              <td><a href="https://vitejs.dev/" target="_blank">Evan You & Vite Contributors</a></td>
+              <td>MIT License</td>
+            </tr>
+            <tr>
+              <td><strong>Lucide Icons & React Icons</strong></td>
+              <td><a href="https://lucide.dev/" target="_blank">Lucide Contributors</a></td>
+              <td>ISC / MIT License</td>
+            </tr>
+            <tr>
+              <td><strong>Google Fonts</strong></td>
+              <td><a href="https://fonts.google.com/" target="_blank">Google Fonts (Plus Jakarta Sans, Playfair Display, Outfit)</a></td>
+              <td>SIL Open Font License</td>
+            </tr>
+            <tr>
+              <td><strong>Swiper</strong></td>
+              <td><a href="https://swiperjs.com/" target="_blank">Vladimir Kharlampidi</a></td>
+              <td>MIT License</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 11. Changelog & Support -->
+    <section id="support">
+      <h2>11. Changelog & Support</h2>
+
+      <h3>Changelog:</h3>
+      <p><strong>Version 1.0.0 — September 2026</strong></p>
+      <ul>
+        <li>Initial release on ThemeForest.</li>
+        <li>Full eCommerce storefront with responsive layout and slide-out cart.</li>
+        <li>Executive Admin Studio with 8 dedicated modules and dark/light modes.</li>
+        <li>Standalone data layer with <code>localStorage</code> persistence.</li>
+        <li>Standard ThemeForest dimension-labeled placeholder graphics.</li>
+      </ul>
+
+      <h3>Need Support?</h3>
+      <p>If you have any questions, encounter an issue, or need assistance customizing the template, please contact us via our ThemeForest author profile page. We respond to all inquiries within 24–48 business hours.</p>
+
+      <p style="margin-top: 16px; font-weight: 600; color: #0f172a;">
+        Thank you once again for choosing CozyLoops! ❤️
+      </p>
+    </section>
+
+  </main>
+
+  <!-- Mobile Menu Script -->
+  <script>
+    const toggleBtn = document.getElementById('toggleBtn');
+    const sidebar = document.getElementById('sidebar');
+    const backdrop = document.getElementById('backdrop');
+
+    function toggleMenu() {
+      sidebar.classList.toggle('open');
+      backdrop.classList.toggle('active');
+    }
+
+    if (toggleBtn && backdrop) {
+      toggleBtn.addEventListener('click', toggleMenu);
+      backdrop.addEventListener('click', toggleMenu);
+    }
+
+    // Smooth scroll and active link toggle
+    document.querySelectorAll('.nav-list a').forEach(link => {
+      link.addEventListener('click', function() {
+        document.querySelectorAll('.nav-list a').forEach(a => a.classList.remove('active'));
+        this.classList.add('active');
+
+        if (window.innerWidth <= 860) {
+          sidebar.classList.remove('open');
+          backdrop.classList.remove('active');
+        }
+      });
+    });
+
+    // Scroll spy
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-list a');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const top = section.offsetTop - 100;
+        if (window.pageYOffset >= top) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
